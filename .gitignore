@@ -1,9 +1,29 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
 
 # compiled output
 dist
 tmp
 /out-tsc
+
 
 # dependencies
 node_modules
@@ -25,6 +45,7 @@ node_modules
 !.vscode/extensions.json
 
 # misc
+.angular
 /.sass-cache
 /connect.lock
 /coverage
@@ -39,4 +60,3 @@ testem.log
 Thumbs.db
 .vscode
 
-.angular
