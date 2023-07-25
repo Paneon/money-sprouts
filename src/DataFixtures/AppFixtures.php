@@ -23,10 +23,12 @@ class AppFixtures extends Fixture
     {
         $admin = new User();
         $admin->setEmail($_ENV['ADMIN_MAIL']);
-        $admin->setRoles(UserRole::ADMIN);
+        $admin->setRoles([UserRole::ADMIN]);
 
         $password = $this->passwordHasher->hashPassword($admin, $_ENV['ADMIN_PASSWORD']);
         $admin->setPassword($password);
+
+        $manager->persist($admin);
 
         $manager->flush();
     }

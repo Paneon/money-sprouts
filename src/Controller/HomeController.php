@@ -11,7 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    #[Route('/{page}', name: 'app_frontend', condition: "params['page'] != 'admin'")]
+    #[Route(
+        '/{page}',
+        name: 'app_frontend',
+        condition: "params['page'] not in ['admin','login','logout']"
+    )]
     public function index(): Response
     {
         return $this->render('home/index.html.twig', [
