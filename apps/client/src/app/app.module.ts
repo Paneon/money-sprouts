@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { PagesModule } from './pages/pages.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app.routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { AppRoutingModule } from './app.routing.module';
     AppRoutingModule,
     RouterModule,
     SharedModule,
-    PagesModule
+    PagesModule,
+    HttpClientModule
   ],
   providers: [],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA],

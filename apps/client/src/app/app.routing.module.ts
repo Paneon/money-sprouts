@@ -4,6 +4,8 @@ import {UserSelectionComponent} from "./pages/user-selection/user-selection.comp
 import {StartComponent} from "./pages/start/start.component";
 
 import {CommonModule} from "@angular/common";
+import { BalanceOverviewComponent } from "./pages/balance-overview/balance-overview.component";
+import { TransactionHistoryComponent } from "./pages/transaction-history/transaction-history.component";
 
 const routes: Routes = [
   {
@@ -11,13 +13,14 @@ const routes: Routes = [
     component: StartComponent,
   },
   {
-    path: 'useroverview',
-    component: UserSelectionComponent
+    path: 'userselection',
+    component: UserSelectionComponent,
+    children: [
+      { path: ':username/overview', component: BalanceOverviewComponent},
+      { path: ':username/transactionhistory', component: TransactionHistoryComponent}
+    ]
   }
-    /**children: [
-      { path: 'overview', component: BalanceOverviewComponent},
-      { path: 'transactionhistory', component: TransactionHistoryComponent}
-    ]**/
+
   ,
   {
     path: '**',

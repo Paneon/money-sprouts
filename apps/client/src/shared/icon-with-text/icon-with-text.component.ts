@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'money-sprouts-icon-with-text',
@@ -6,9 +7,6 @@ import {Component} from '@angular/core';
   styleUrls: ['./icon-with-text.component.scss'],
 })
 export class IconWithTextComponent {
-  content = '';
-  userAvatarFiles = [
-    'assets/images/avatar_male.png',
-    'assets/images/avatar_female.png'
-  ]
+  @Input() avatarFile: string;
+  @Input() username: string;
 }

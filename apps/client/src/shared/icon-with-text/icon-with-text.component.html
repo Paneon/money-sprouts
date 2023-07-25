@@ -1,6 +1,9 @@
-<div *ngFor="let avatarFile of userAvatarFiles">
-  <button mat-button >
-    <money-sprouts-user-avatar [avatarFile]="avatarFile"></money-sprouts-user-avatar>
-    <span>{{ content }}</span>
-  </button>
+<div class="row">
+  <div class="col-12 col-md-6">
+    <button mat-button class="my-3">
+      <money-sprouts-user-avatar [avatarFile]="avatarFile"></money-sprouts-user-avatar>
+      <label>{{ username }}</label>
+    </button>
+  </div>
 </div>
+
