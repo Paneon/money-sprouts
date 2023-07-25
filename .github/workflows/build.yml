@@ -20,6 +20,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      ## —— NPM ————————————————————————————————————————————————
+      - name: Install Dependencies
+        run: |
+          npm install
+
       - uses: mansagroup/nrwl-nx-action@v3
         with:
           targets: lint,build,test
@@ -85,8 +90,7 @@ jobs:
 
       ## —— Coding standards ✨ ————————————————————————————————————————————————
       - name: Install Dependencies (CS)
-        with:
-          path: tools/php-cs-fixer/
+        working-directory: ./tools/php-cs-fixer/
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
