@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+  font-family: var(--typography-font-family);
+}
+$layout_M_size_min: 600px;
+$layout_M_size_max: 899px;
+
+@media screen and (min max: $layout_M_size_min) and (max-width: $layout_M_size_max){
+  .container {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-bottom: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: rgba(55, 65, 81, 1);
+    width: 100%;
+  }
+}
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
