@@ -7,8 +7,8 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  main:
-    name: Main Workflow
+  frontend:
+    name: Frontend Workflow
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,3 +23,83 @@ jobs:
       - uses: mansagroup/nrwl-nx-action@v3
         with:
           targets: lint,build,test
+
+  server:
+    name: Symfony Build
+    # https://hub.docker.com/_/ubuntu/
+    runs-on: ubuntu-latest
+
+    services:
+      # https://docs.docker.com/samples/library/mysql/
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      # https://hub.docker.com/_/elasticsearch/
+      elasticsearch:
+        image: elasticsearch:6.8.10
+        ports:
+          - 9209:9200
+        options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions: [ '8.1' ]
+    steps:
+      # —— Setup Github actions 🐙 —————————————————————————————————————————————
+      # https://github.com/actions/checkout (official)
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # https://github.com/shivammathur/setup-php (community)
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring
+        env:
+          update: true
+
+      - name: Check PHP Version
+        run: php -v
+
+      # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install Dependencies
+        run: |
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      ## —— Coding standards ✨ ————————————————————————————————————————————————
+      - name: Install Dependencies (CS)
+        with:
+          path: tools/php-cs-fixer/
+        run: |
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Coding standards checks
+        run: |
+          tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
+          composer run php:lint
+        if: matrix.php-versions == '8.1'
+
+      ## —— Static analysis ✨ —————————————————————————————————————————————————
+      - name: Static analysis of PHP code (PHPStan)
+        run: |
+          composer run php:stan
+
+      ## —— (DRAFT) Tests ✅ ———————————————————————————————————————————————————————————
+

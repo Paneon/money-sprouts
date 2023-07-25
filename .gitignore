@@ -60,3 +60,8 @@ testem.log
 Thumbs.db
 .vscode
 
+.php-cs-fixer.cache
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+###< squizlabs/php_codesniffer ###
