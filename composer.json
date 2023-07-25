@@ -104,6 +104,7 @@
     }
   },
   "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^3.4",
     "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "^9.5",
     "slevomat/coding-standard": "^8.13",
