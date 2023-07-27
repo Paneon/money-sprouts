@@ -3,6 +3,13 @@
 * {
   font-family: var(--typography-font-family);
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(rgba(219, 230, 219, 0.5), rgba(223, 235, 223, 0.5)), url("./assets/images/background.jpg") center/cover no-repeat;
+}
+
 $layout_M_size_min: 600px;
 $layout_M_size_max: 899px;
 
