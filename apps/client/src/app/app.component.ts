@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'money-sprouts-root',
+  selector: 'ms-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

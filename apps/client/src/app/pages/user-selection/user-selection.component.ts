@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SettingsService } from '../../services/settings.service';
 import { User } from '../../services/settings.service'
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'money-sprouts-user-selection',
+  selector: 'ms-user-selection',
   templateUrl: './user-selection.component.html',
   styleUrls: ['./user-selection.component.scss'],
 })
 export class UserSelectionComponent implements OnInit{
 
 
-  users: User[] = [];
+  users: Observable<User[]>;
 
   constructor(
     private router: Router,
@@ -20,9 +21,7 @@ export class UserSelectionComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-      this.settings.getUsers().subscribe(users => {
-        this.users = users;
-      })
+      this.users = this.settings.getUsers();
   }
  
   proceed(username: string){

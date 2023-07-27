@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'money-sprouts-user-avatar',
+  selector: 'ms-user-avatar',
   templateUrl: './user-avatar.component.html',
   styleUrls: ['./user-avatar.component.scss'],
 })

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 interface Settings {
-  usernames: string[];
+  users: User[];
 }
 
 export interface User {
@@ -22,6 +22,6 @@ export class SettingsService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>('/assets/settings.json');
+    return this.http.get<Settings>('/assets/settings.json').pipe(map(settings => settings.users));
   }
 }
