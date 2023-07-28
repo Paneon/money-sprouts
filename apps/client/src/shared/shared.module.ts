@@ -1,7 +1,7 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
-import {IconWithTextComponent} from "./icon-with-text/icon-with-text.component";
-import {UserAvatarComponent} from "./user-avatar/user-avatar.component";
-import {CommonModule} from "@angular/common";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
+import { IconWithTextComponent } from "./icon-with-text/icon-with-text.component";
+import { UserAvatarComponent } from "./user-avatar/user-avatar.component";
+import { CommonModule } from "@angular/common";
 
 const components = [
   IconWithTextComponent,

@@ -1,7 +1,7 @@
-import { AppComponent} from './app.component';
-import {CUSTOM_ELEMENTS_SCHEMA, DoBootstrap, Injector, NgModule} from "@angular/core";
-import {createCustomElement} from '@angular/elements';
-import {SharedModule} from "../shared/shared.module";
+import { AppComponent } from './app.component';
+import { CUSTOM_ELEMENTS_SCHEMA, DoBootstrap, Injector, NgModule } from "@angular/core";
+import { createCustomElement } from '@angular/elements';
+import { SharedModule } from "../shared/shared.module";
 import { Router, RouterModule } from '@angular/router';
 import { PagesModule } from './pages/pages.module';
 import { BrowserModule } from '@angular/platform-browser';
