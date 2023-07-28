@@ -1,0 +1,10 @@
+includes:
+	- vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor/phpstan/phpstan-symfony/extension.neon
+
+parameters:
+    symfony:
+        container_xml_path: '%currentWorkingDirectory%/var/cache/dev/App_KernelDevDebugContainer.xml'
+    reportUnmatchedIgnoredErrors: false # for tests when we got newrelic
+    ignoreErrors:
+        - '#Function newrelic_.* not found\.#'
