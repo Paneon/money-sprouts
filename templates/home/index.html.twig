@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="./client/styles.css"></head>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="./client/runtime.js" type="module"></script>
+    <script src="./client/polyfills.js" type="module"></script>
+    <script src="./client/vendor.js" type="module"></script>
+    <script src="./client/main.js" type="module"></script></body>
+{% endblock %}
+
+{% block body %}
+    <money-sprouts-root></money-sprouts-root>
+{% endblock %}
