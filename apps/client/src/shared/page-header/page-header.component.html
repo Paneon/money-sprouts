@@ -1,0 +1,26 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <button
+            class="navbar-brand btn btn-link"
+            (click)="backToDashboard()"
+            title="Go to Dashboard"
+        >
+            <money-sprouts-user-avatar
+                [avatarFile]="(user$ | async)?.avatar | formatUrl"
+            ></money-sprouts-user-avatar>
+        </button>
+        <span class="navbar-text">
+            {{ pageTitle }}
+        </span>
+        <button
+            class="btn btn-link"
+            (click)="backToSelection()"
+            title="Go to User Selection"
+        >
+            <img
+                src="assets/images/two-arrows-icon.png"
+                alt="two-arrows-icon"
+            />
+        </button>
+    </div>
+</nav>

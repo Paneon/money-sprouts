@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ms-start',
+  selector: 'money-sprouts-start',
   templateUrl: './start.component.html',
   styleUrls: ['./start.component.scss'],
 })

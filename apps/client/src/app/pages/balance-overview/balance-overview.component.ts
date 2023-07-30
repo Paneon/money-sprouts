@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ms-balance-overview',
+  selector: 'money-sprouts-balance-overview',
   templateUrl: './balance-overview.component.html',
   styleUrls: ['./balance-overview.component.scss'],
 })
