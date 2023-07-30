@@ -61,7 +61,8 @@ class SecurityController extends AbstractController
             // whether to enable or not the "forgot password?" link (default: false)
             'forgot_password_enabled' => false,
 
-            // the path (i.e. a relative or absolute URL) to visit when clicking the "forgot password?" link (default: '#')
+            // the path (i.e. a relative or absolute URL) to visit
+            // when clicking the "forgot password?" link (default: '#')
             // 'forgot_password_path' => $this->generateUrl('...', ['...' => '...']),
 
             // the label displayed for the "forgot password?" link (the |trans filter is applied to it)
@@ -84,6 +85,6 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException('This method can be blank');
     }
 }
