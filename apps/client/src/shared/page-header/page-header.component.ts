@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User, UserService } from '../../app/services/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'money-sprouts-page-header',
@@ -18,7 +18,18 @@ export class PageHeaderComponent implements OnInit {
   ngOnInit() {
     const urlSegments = this.router.url.split('/');
     this.username = urlSegments[1];
-    this.user$ = this.settings.fetchUser(this.username);
+    
+    this.settings.user$.subscribe((user: User | null) => {
+      // Only fetch the user if no user is present or the username has changed
+      if (!user || user.username !== this.username) {
+        this.settings.fetchUser(this.username).subscribe((fetchedUser: User | null) => {
+          this.user$ = of(fetchedUser);
+        });
+      } else {
+        // Assign the user to this.user$
+        this.user$ = of(user);
+      }
+    });
   }
 
   backToDashboard() {
