@@ -1,14 +1,28 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
-  standalone: true,
-  imports: [NxWelcomeComponent, RouterModule],
-  selector: 'money-sprouts-root',
+  selector: 'ms-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'client';
+export class AppComponent implements OnInit, OnDestroy {
+  title = 'Money Pig';
+  private readonly destroy$ = new Subject();
+
+  constructor(
+    private router: Router,
+  ) {}
+
+  ngOnInit(): void {
+      this.router.initialNavigation()
+    
+  }
+
+  ngOnDestroy() {
+    this.router.navigate(['']);
+    this.destroy$.next(null);
+    this.destroy$.complete();
+  }
 }

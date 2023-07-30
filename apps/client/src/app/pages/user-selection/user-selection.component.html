@@ -1,0 +1,12 @@
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="row gx-5 text-center" style="margin-top: -50px;">
+    <ms-icon-with-text
+    *ngFor="let user of users | async" 
+    [avatarFile]="user.avatar"
+    [username]="user.username"
+    (click)="proceed(user.username)"
+    class="col-12 col-md-6 pt-5"
+    ></ms-icon-with-text>
+  </div>
+</div>
+
