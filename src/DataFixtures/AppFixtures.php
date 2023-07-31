@@ -4,32 +4,37 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
-use App\Enum\UserRole;
+use App\Factory\TransactionFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct()
     {
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function load(ObjectManager $manager): void
     {
-        $admin = new User();
-        $admin->setEmail($_ENV['ADMIN_MAIL']);
-        $admin->setRoles([UserRole::ADMIN]);
 
-        $password = $this->passwordHasher->hashPassword($admin, $_ENV['ADMIN_PASSWORD']);
-        $admin->setPassword($password);
+        UserFactory::createMany(2);
+
+        TransactionFactory::createMany(
+            10,
+            function () {
+                return [
+                    'user' => UserFactory::random(),
+                ];
+            },
+        );
+
+        // Create admin afterwards, so it doesn't get transactions
+        $admin = UserFactory::new()->admin($_ENV['ADMIN_PASSWORD'])->create()
+            ->setEmail($_ENV['ADMIN_MAIL'])
+            ->setName('Admin');
 
         $manager->persist($admin);
-
         $manager->flush();
     }
 }
