@@ -23,6 +23,9 @@ class Transaction
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $type = null;
 
+    /**
+     * Transaction value in cents.
+     */
     #[ORM\Column]
     private ?int $value = null;
 

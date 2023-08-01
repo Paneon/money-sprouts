@@ -36,6 +36,8 @@ class TransactionCrudController extends AbstractCrudController
                 TransactionType::EXPENSE => 'danger',
             ]);
         yield BooleanField::new('applied');
-        yield NumberField::new('value');
+        yield NumberField::new('value')->formatValue(function ($value) {
+            return (intval($value)/100).' €';
+        });
     }
 }

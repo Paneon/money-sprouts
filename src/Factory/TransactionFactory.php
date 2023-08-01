@@ -33,10 +33,10 @@ final class TransactionFactory extends ModelFactory
     {
         return [
             'applied' => self::faker()->boolean(),
-            'title' => self::faker()->text(180),
+            'title' => self::faker()->words(3),
             'type' => self::faker()->randomElement(TransactionType::getConstants()),
             'user' => UserFactory::random(),
-            'value' => self::faker()->numberBetween(0.49, 12.00),
+            'value' => self::faker()->numberBetween(49, 1500),
         ];
     }
 
