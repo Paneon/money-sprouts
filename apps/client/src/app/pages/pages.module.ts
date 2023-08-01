@@ -5,6 +5,9 @@ import { SharedModule } from '../../shared/shared.module';
 import { StartComponent } from './start/start.component';
 import { BalanceOverviewComponent } from './balance-overview/balance-overview.component';
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { SpendingsComponent } from './spendings/spendings.component';
 
 const components = [UserSelectionComponent];
 const modules = [CommonModule, SharedModule];
@@ -15,6 +18,10 @@ const modules = [CommonModule, SharedModule];
     StartComponent,
     BalanceOverviewComponent,
     TransactionHistoryComponent,
+    DashboardComponent,
+    LoginComponent,
+    UserSelectionComponent,
+    SpendingsComponent,
   ],
   imports: [...modules],
   exports: [...components, ...modules],

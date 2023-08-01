@@ -33,7 +33,7 @@ export class AppModule implements DoBootstrap {
   ngDoBootstrap() {
     const app = createCustomElement(AppComponent, { injector: this.injector});
 
-    customElements.define('ms', app);
+    customElements.define('money-sprouts', app);
 
     this.router.initialNavigation();
   }

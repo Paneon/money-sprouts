@@ -17,7 +17,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "ms",
+            "prefix": "money-sprouts",
             "style": "kebab-case"
           }
         ]

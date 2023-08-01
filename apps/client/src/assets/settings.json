@@ -1,12 +1,10 @@
-{
-    "users": [
-      {
-        "username": "THEA",
-        "avatar": "assets/images/avatar_female.png"
-      },
-      {
-        "username": "ROBERT",
-        "avatar": "assets/images/avatar_male.png"
-      }
-    ]
+[
+  {
+    "username": "THEA",
+    "avatar": "assets/images/avatar_female.png"
+  },
+  {
+    "username": "ROBERT",
+    "avatar": "assets/images/avatar_male.png"
   }
+]
