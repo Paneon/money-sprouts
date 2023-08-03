@@ -1,10 +1,19 @@
-button.my-3 {
+.avatar-container {
   border: none;
   outline: none;
   box-shadow: 0 0 0 2px rgba(9, 135, 82, 0.25);
   border-radius: 10%;
+  width: 10vw;
+  height: 10vw;
+  min-width: 200px;
+  min-height: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-label {
+.label {
   color: rgba(9, 135, 82, 1);
 }

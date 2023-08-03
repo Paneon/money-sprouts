@@ -9,60 +9,53 @@ import { TransactionHistoryComponent } from './pages/transaction-history/transac
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SpendingsComponent } from './pages/spendings/spendings.component';
-import { LayoutComponent } from './pages/layout/layout.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full',
-    },
-    {
-        path: 'home',
-        component: StartComponent,
-    },
-    {
-        path: 'login',
-        component: LoginComponent,
-    },
-    {
-        path: 'userselection',
-        component: UserSelectionComponent,
-    },
-    {
-        path: 'user/:username',
-        component: LayoutComponent,
-        children: [
-            {
-                path: 'dashboard',
-                component: DashboardComponent,
-            },
-            {
-                path: 'overview',
-                component: BalanceOverviewComponent,
-            },
-            {
-                path: 'history',
-                component: TransactionHistoryComponent,
-            },
-            {
-                path: 'plan',
-                component: SpendingsComponent,
-            },
-        ],
-    },
-    {
-        path: '**',
-        redirectTo: 'home',
-    },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    component: StartComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'userselection',
+    component: UserSelectionComponent,
+  },
+  {
+    path: 'user/:username/dashboard',
+    component: DashboardComponent,
+  },
+  {
+    path: 'user/:username/overview',
+    component: BalanceOverviewComponent,
+  },
+  {
+    path: 'user/:username/history',
+    component: TransactionHistoryComponent,
+  },
+  {
+    path: 'user/:username/plan',
+    component: SpendingsComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
+  },
 ];
 
 @NgModule({
-    declarations: [],
-    imports: [
-        CommonModule,
-        RouterModule.forRoot(routes, { enableTracing: false }),
-    ],
-    exports: [RouterModule, CommonModule],
+  declarations: [],
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(routes, { enableTracing: false }),
+  ],
+  exports: [RouterModule, CommonModule],
 })
 export class AppRoutingModule {}

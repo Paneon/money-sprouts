@@ -4,7 +4,9 @@
 // Variables
 $layout_M_size_min: 600px;
 $layout_M_size_max: 899px;
-$primary-color: rgba(9, 135, 82, 1);
+$primary-color: rgba(99, 100, 91, 1);
+$secondary-color: rgba(187, 215, 110, 1);
+$tertiary-color: rgba(212, 225, 124, 1);
 $font-family: Arial, sans-serif;
 
 * {
@@ -13,7 +15,7 @@ $font-family: Arial, sans-serif;
 
 html,
 body {
-  height: 100%;
+  min-height: 100vh;
   margin: 0;
   color: $primary-color;
   background: linear-gradient(
@@ -21,13 +23,22 @@ body {
       rgba(223, 235, 223, 0.5)
     ),
     url('./assets/images/background.jpg') center/cover no-repeat;
+
+  display: flex;
+  flex-direction: column;
+
+  .full-height-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @media screen and (min-width: $layout_M_size_min) and (max-width: $layout_M_size_max) {
   .container {
-    margin-left: 10px;
-    margin-right: 10px;
-    padding-bottom: 3rem 1rem 0;
+    margin: 10px;
+    padding: 3rem 1rem 0;
     color: $primary-color;
     width: 100%;
   }
