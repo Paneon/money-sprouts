@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { User } from '../../services/user.service';
 import { Observable, first } from 'rxjs';
+import { User } from '@money-sprouts/shared/domain';
 
 @Component({
   selector: 'money-sprouts-user-selection',

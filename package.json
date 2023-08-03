@@ -6,7 +6,8 @@
     "start-all": "nx run-many --target=serve --projects=client,server",
     "start-client": "nx serve client",
     "start-server": "nx serve server",
-    "build:dev": "nx run client:build --configuration=development"
+    "build:dev": "nx run client:build --configuration=development",
+    "generate:interfaces": "npm init @api-platform/client http://localhost:8101/api/ libs/shared/domain/src/ -- --generator typescript"
   },
   "private": true,
   "dependencies": {

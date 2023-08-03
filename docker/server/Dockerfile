@@ -9,7 +9,7 @@ WORKDIR /var/www/html
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions gd pdo_mysql bcmath zip intl opcache
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/local/bin/composer
 
 # Copy your application code to the container (make sure you have a .dockerignore)
 # COPY . /var/www/html/

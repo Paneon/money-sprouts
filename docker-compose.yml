@@ -46,7 +46,7 @@ services:
       - symfony_net
 
   db_admin:
-    image: phpmyadmin/phpmyadmin:5
+    image: arm64v8/phpmyadmin:5.2
     container_name: '${APP_NAME}-db-admin'
     ports:
       - '${APP_DB_ADMIN_PORT}:80'

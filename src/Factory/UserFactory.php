@@ -41,10 +41,14 @@ final class UserFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'allowance' => self::faker()->numberBetween(1, 10),
+            'allowance' => self::faker()->numberBetween(100, 1000),
             'email' => self::faker()->email,
             'name' => self::faker()->firstName,
             'password' => self::faker()->password,
+            'avatar' => self::faker()->randomElement([
+                '/build/assets/images/avatar_female.png',
+                '/build/assets/images/avatar_male.png'
+            ]),
             'roles' => [UserRole::USER],
         ];
     }
