@@ -1,2 +1,5 @@
-export * from './lib/models/user';
-export * from './lib/models/transaction';
+export * from './interfaces/user';
+export * from './interfaces/transaction';
+export * from './interfaces/types';
+export * from './interfaces/ApiResource';
+export * from './interfaces/Collection';

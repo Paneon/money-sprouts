@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
 
-export interface User {
-  username: string;
-  avatar: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })

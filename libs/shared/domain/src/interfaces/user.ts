@@ -1,8 +1,8 @@
 export interface User {
-  "@id"?: string;
+  '@id'?: string;
   email?: string;
   name?: string;
-  roles?: any;
+  roles?: string[];
   password?: string;
   allowance?: number;
   nextPayday?: Date;

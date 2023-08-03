@@ -45,7 +45,10 @@ final class UserFactory extends ModelFactory
             'email' => self::faker()->email,
             'name' => self::faker()->firstName,
             'password' => self::faker()->password,
-            'avatar' => self::faker()->randomElement(['/build/assets/images/avatar_female.png', '/build/assets/images/avatar_male.png']),
+            'avatar' => self::faker()->randomElement([
+                '/build/assets/images/avatar_female.png',
+                '/build/assets/images/avatar_male.png'
+            ]),
             'roles' => [UserRole::USER],
         ];
     }

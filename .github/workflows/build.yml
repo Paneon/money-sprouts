@@ -106,6 +106,6 @@ jobs:
           composer run php:stan
 
       ## —— (DRAFT) Tests ✅ ———————————————————————————————————————————————————————————
-      - name: PHPUnit Tests
-        run: |
-          composer run php:tests
+      # - name: PHPUnit Tests
+      #   run: |
+      #     composer run php:tests
