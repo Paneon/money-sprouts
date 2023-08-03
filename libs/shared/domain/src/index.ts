@@ -1,1 +1,2 @@
-export * from './lib/models/IUser';
+export * from './lib/models/user';
+export * from './lib/models/transaction';

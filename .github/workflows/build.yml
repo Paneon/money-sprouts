@@ -2,9 +2,9 @@ name: Build 🚀
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   frontend:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 18.x ]
+        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -52,7 +52,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: [ '8.1' ]
+        php-versions: ['8.1']
     steps:
       # —— Setup Github actions 🐙 —————————————————————————————————————————————
       # https://github.com/actions/checkout (official)
@@ -106,4 +106,6 @@ jobs:
           composer run php:stan
 
       ## —— (DRAFT) Tests ✅ ———————————————————————————————————————————————————————————
-
+      - name: PHPUnit Tests
+        run: |
+          composer run php:tests
