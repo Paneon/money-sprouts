@@ -4,7 +4,7 @@
         <money-sprouts-icon-with-text
             *ngFor="let user of users$ | async; index as i"
             [avatarFile]="user.avatar | formatUrl"
-            [username]="user.username"
+            [username]="user.name"
             (userSelected)="proceed($event)"
         ></money-sprouts-icon-with-text>
     </div>

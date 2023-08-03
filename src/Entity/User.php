@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,6 +25,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[ORM\Column(length: 180)]
+    private ?string $name = null;
+
     #[ORM\Column]
     private array $roles = [];
 
@@ -28,6 +36,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column]
+    private int $allowance = 0;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $nextPayday = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $avatar = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transaction::class, orphanRemoval: true)]
+    private Collection $transactions;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $balance = null;
+
+    public function __construct()
+    {
+        $this->transactions = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     public function getId(): ?int
     {
@@ -97,5 +130,91 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getAllowance(): int
+    {
+        return $this->allowance;
+    }
+
+    public function setAllowance(int $allowance): User
+    {
+        $this->allowance = $allowance;
+        return $this;
+    }
+
+    public function getNextPayday(): ?DateTime
+    {
+        return $this->nextPayday;
+    }
+
+    public function setNextPayday(?DateTime $nextPayday): User
+    {
+        $this->nextPayday = $nextPayday;
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar ?? '';
+    }
+
+    public function setAvatar(?string $avatar): User
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): static
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): static
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getUser() === $this) {
+                $transaction->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getBalance(): ?int
+    {
+        return $this->balance;
+    }
+
+    public function setBalance(?int $balance): static
+    {
+        $this->balance = $balance;
+
+        return $this;
     }
 }

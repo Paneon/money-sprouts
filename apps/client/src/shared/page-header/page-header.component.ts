@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User, UserService } from '../../app/services/user.service';
-import { Observable, of } from 'rxjs';
+import { UserService } from '../../app/services/user.service';
+import { Observable } from 'rxjs';
+import { User } from '@money-sprouts/shared/domain';
 
 @Component({
     selector: 'money-sprouts-page-header',

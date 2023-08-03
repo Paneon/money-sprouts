@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
-
-export interface User {
-  username: string;
-  avatar: string;
-}
+import { User } from '@money-sprouts/shared/domain';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +38,7 @@ export class UserService {
       return of(currentUser);
     }
     return this.users$.pipe(
-      map((users) => users?.find((user) => user.username === username) || null),
+      map((users) => users?.find((user) => user.name === username) || null),
       tap((user) => {
         if (user) {
           this.setUser(user);

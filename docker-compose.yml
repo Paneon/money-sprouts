@@ -13,7 +13,7 @@ services:
       - '${APP_PORT}:80'
     working_dir: /var/www/html
     environment:
-      - 'DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db_server:3306/${MYSQL_DATABASE}?serverVersion=10.5'
+      - 'DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db_server:3306/${MYSQL_DATABASE}?serverVersion=10.4.4-MariaDB&charset=utf8'
     volumes:
       - ./:/var/www/html
       - ./docker/server/apache/sites-enabled:/etc/apache2/sites-enabled
@@ -46,7 +46,7 @@ services:
       - symfony_net
 
   db_admin:
-    image: phpmyadmin/phpmyadmin:5
+    image: arm64v8/phpmyadmin:5.2
     container_name: '${APP_NAME}-db-admin'
     ports:
       - '${APP_DB_ADMIN_PORT}:80'
