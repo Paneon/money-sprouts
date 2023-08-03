@@ -14,6 +14,6 @@ export class StartComponent {
   }
 
   handleLogin() {
-    this.router.navigate(['login']);
+    this.router.navigate(['userselection']);
   }
 }
