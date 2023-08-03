@@ -2,12 +2,13 @@
 @import 'bootstrap/scss/bootstrap';
 
 // Variables
-$layout_M_size_min: 600px;
-$layout_M_size_max: 899px;
 $primary-color: rgba(99, 100, 91, 1);
 $secondary-color: rgba(187, 215, 110, 1);
 $tertiary-color: rgba(212, 225, 124, 1);
+$background-color: rgba(219, 230, 219, 0.8);
 $font-family: Arial, sans-serif;
+
+// layout
 
 * {
   font-family: $font-family;
@@ -26,20 +27,50 @@ body {
 
   display: flex;
   flex-direction: column;
+}
 
-  .full-height-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@mixin make-flexbox() {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+@mixin make-container($padding-x, $padding-y) {
+  width: 100%;
+  padding: {
+    top: $padding-y;
+    right: $padding-x;
+    bottom: $padding-y;
+    left: $padding-x;
+  }
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+@mixin create-text-box($width, $opacity, $padding-x, $padding-y) {
+  background: $background-color;
+  width: $width;
+  max-width: 800px;
+  opacity: $opacity;
+  padding: {
+    top: $padding-y;
+    right: $padding-x;
+    bottom: $padding-y;
+    left: $padding-x;
   }
 }
 
-@media screen and (min-width: $layout_M_size_min) and (max-width: $layout_M_size_max) {
-  .container {
-    margin: 10px;
-    padding: 3rem 1rem 0;
-    color: $primary-color;
-    width: 100%;
+.custom-container {
+  @include make-container(5rem, 10rem);
+  @include make-flexbox();
+}
+
+.custom-text-box {
+  @include create-text-box(70%, 0.8, 3rem, 5rem);
+  @include make-flexbox();
+  @media (max-width: 768px) {
+    width: 400px;
   }
 }
