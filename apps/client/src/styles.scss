@@ -3,9 +3,11 @@
 
 // Variables
 $primary-color: rgba(99, 100, 91, 1);
-$secondary-color: rgba(187, 215, 110, 1);
+$secondary-color: rgba(195, 216, 126, 1);
 $tertiary-color: rgba(212, 225, 124, 1);
 $background-color: rgba(219, 230, 219, 0.8);
+$highlight-light: rgba(230, 235, 193, 1);
+$white: rgba(239, 243, 237, 1);
 $font-family: Arial, sans-serif;
 
 * {
@@ -76,7 +78,7 @@ body {
 }
 
 .custom-text-box {
-  @include create-text-box(70%, 0.8, 3rem, 5rem);
+  @include create-text-box(70%, 0.9, 3rem, 5rem);
   @include make-flexbox();
   @media (max-width: 768px) {
     width: 400px;
@@ -97,6 +99,7 @@ body {
 .image-text-button {
   border: 2px solid $secondary-color;
   border-radius: 10%;
+  background: linear-gradient($white, $highlight-light);
   text-align: center;
   padding: 30px 50px;
   margin: 20px;
