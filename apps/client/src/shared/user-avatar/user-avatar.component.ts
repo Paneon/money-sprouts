@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
 
@@ -9,6 +16,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 })
 export class UserAvatarComponent implements OnInit, OnDestroy {
     @Input() avatarFile = '';
+    @Output() classChange = new EventEmitter<string>();
     urlSegment = '';
     smallPaths: string[] = ['dashboard', 'overview', 'history', 'plan'];
     destroy$: Subject<boolean> = new Subject<boolean>();
@@ -16,14 +24,14 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     constructor(private router: Router) {}
 
     ngOnInit() {
-        this.urlSegment = this.router.url.split('/')[2];
+        this.urlSegment = this.router.url.split('/')[3];
         this.router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
                 takeUntil(this.destroy$)
             )
             .subscribe((event: NavigationEnd) => {
-                this.urlSegment = event.url.split('/')[2];
+                this.urlSegment = event.url.split('/')[3];
             });
     }
 
@@ -33,13 +41,11 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     }
 
     getClass() {
-        if (this.urlSegment === 'userselection') {
-            return 'avatar-icon';
-        } else if (this.smallPaths.includes(this.urlSegment)) {
-            console.log('blub-small');
-            return 'avatar-icon--small';
+        let cssClass = '';
+        if (this.smallPaths.includes(this.urlSegment)) {
+            return (cssClass = 'avatar-icon--small');
         } else {
-            return '';
+            return (cssClass = 'avatar-icon');
         }
     }
 

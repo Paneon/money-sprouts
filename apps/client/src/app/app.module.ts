@@ -1,9 +1,9 @@
 import { AppComponent } from './app.component';
 import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  DoBootstrap,
-  Injector,
-  NgModule,
+    CUSTOM_ELEMENTS_SCHEMA,
+    DoBootstrap,
+    Injector,
+    NgModule,
 } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { SharedModule } from '../shared/shared.module';
@@ -15,28 +15,30 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    RouterModule,
-    SharedModule,
-    PagesModule,
-    HttpClientModule,
-    CommonModule,
-  ],
-  providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        RouterModule,
+        SharedModule,
+        PagesModule,
+        HttpClientModule,
+        CommonModule,
+    ],
+    providers: [],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    bootstrap: [AppComponent],
 })
 export class AppModule implements DoBootstrap {
-  constructor(private readonly router: Router, private injector: Injector) {}
+    constructor(private readonly router: Router, private injector: Injector) {}
 
-  ngDoBootstrap() {
-    const app = createCustomElement(AppComponent, { injector: this.injector });
+    ngDoBootstrap() {
+        const app = createCustomElement(AppComponent, {
+            injector: this.injector,
+        });
 
-    customElements.define('money-sprouts', app);
+        customElements.define('money-sprouts', app);
 
-    this.router.initialNavigation();
-  }
+        this.router.initialNavigation();
+    }
 }

@@ -9,48 +9,60 @@ import { TransactionHistoryComponent } from './pages/transaction-history/transac
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SpendingsComponent } from './pages/spendings/spendings.component';
+import { LayoutComponent } from './pages/layout/layout.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: StartComponent,
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'userselection',
-    component: UserSelectionComponent,
-  },
-  {
-    path: ':username/dashboard',
-    component: DashboardComponent,
-  },
-  {
-    path: ':username/overview',
-    component: BalanceOverviewComponent,
-  },
-  {
-    path: ':username/history',
-    component: TransactionHistoryComponent,
-  },
-  {
-    path: ':username/plan',
-    component: SpendingsComponent,
-  },
-  {
-    path: '**',
-    redirectTo: 'startpage',
-  },
+    {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+    },
+    {
+        path: 'home',
+        component: StartComponent,
+    },
+    {
+        path: 'login',
+        component: LoginComponent,
+    },
+    {
+        path: 'userselection',
+        component: UserSelectionComponent,
+    },
+    {
+        path: 'user/:username',
+        component: LayoutComponent,
+        children: [
+            {
+                path: 'dashboard',
+                component: DashboardComponent,
+            },
+            {
+                path: 'overview',
+                component: BalanceOverviewComponent,
+            },
+            {
+                path: 'history',
+                component: TransactionHistoryComponent,
+            },
+            {
+                path: 'plan',
+                component: SpendingsComponent,
+            },
+        ],
+    },
+    {
+        path: '**',
+        redirectTo: 'home',
+    },
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forRoot(routes, { enableTracing: false }),
-  ],
-  exports: [RouterModule],
+    declarations: [],
+    imports: [
+        CommonModule,
+        RouterModule.forRoot(routes, { enableTracing: false }),
+    ],
+    exports: [RouterModule, CommonModule],
 })
 export class AppRoutingModule {}
