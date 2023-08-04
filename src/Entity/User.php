@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +21,16 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Patch(),
+    ]
+)]
+#[ApiFilter(BooleanFilter::class, properties: ['tracked'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -28,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $name = null;
 
+    /**
+     * @property array<string> $roles
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -46,11 +65,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $avatar = null;
 
+    /**
+     * @var Collection<Transaction> $transactions
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transaction::class, orphanRemoval: true)]
     private Collection $transactions;
 
     #[ORM\Column(nullable: true)]
     private ?int $balance = null;
+
+    #[ORM\Column]
+    private ?bool $tracked = false;
 
     public function __construct()
     {
@@ -79,19 +104,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string)$this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -101,6 +118,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -146,12 +166,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getNextPayday(): ?DateTime
     {
         return $this->nextPayday;
-    }
-
-    public function setNextPayday(?DateTime $nextPayday): User
-    {
-        $this->nextPayday = $nextPayday;
-        return $this;
     }
 
     public function getAvatar(): ?string
@@ -214,6 +228,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBalance(?int $balance): static
     {
         $this->balance = $balance;
+
+        return $this;
+    }
+
+    public function isTracked(): ?bool
+    {
+        return $this->tracked;
+    }
+
+    public function setTracked(bool $tracked): static
+    {
+        $this->tracked = $tracked;
 
         return $this;
     }

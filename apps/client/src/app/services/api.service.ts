@@ -1,44 +1,66 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import {
+  PagedCollection,
   Transaction,
   User,
-  PagedCollection,
 } from '@money-sprouts/shared/domain';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  /**
-   * TODO replace with .env variable
-   */
-  private baseUrl = 'http://localhost:8081';
+  private baseUrl = environment.apiUrl;
+
+  private usersCache: User[] = [];
+  private transactionCache: Transaction[] = [];
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<PagedCollection<User>> {
-    return this.http.get<PagedCollection<User>>(`${this.baseUrl}/api/users/`);
+  getUsers(forceRefresh = false): Observable<User[]> {
+    if (this.usersCache.length && !forceRefresh) {
+      return of(this.usersCache);
+    }
+
+    return this.http
+      .get<User[]>(`${this.baseUrl}/users.json?tracked=true`)
+      .pipe(
+        map((response) => {
+          console.log({ response });
+          this.usersCache = response;
+          return this.usersCache;
+        })
+      );
   }
 
   getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/api/users/${id}`);
+    return this.http.get<User>(`${this.baseUrl}/users/${id}`);
   }
 
-  getTransactions(): Observable<PagedCollection<Transaction>> {
-    return this.http.get<PagedCollection<Transaction>>(
-      `${this.baseUrl}/api/transactions/`
-    );
+  getTransactions(forceRefresh = false): Observable<Transaction[]> {
+    if (this.transactionCache.length && !forceRefresh) {
+      return of(this.transactionCache);
+    }
+
+    return this.http
+      .get<PagedCollection<Transaction>>(`${this.baseUrl}/transactions/`)
+      .pipe(
+        map((response) => {
+          this.transactionCache = response['hydra:member'];
+          return this.transactionCache;
+        })
+      );
   }
 
   getTransactionById(id: string): Observable<Transaction> {
-    return this.http.get<Transaction>(`${this.baseUrl}/api/transactions/${id}`);
+    return this.http.get<Transaction>(`${this.baseUrl}/transactions/${id}`);
   }
 
   getTransactionsByUserId(userId: string): Observable<Transaction> {
     return this.http.get<Transaction>(
-      `${this.baseUrl}/api/users/${userId}/transactions`
+      `${this.baseUrl}/users/${userId}/transactions`
     );
   }
 }

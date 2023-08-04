@@ -23,7 +23,7 @@ class TransactionCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id');
+        yield IdField::new('id')->hideOnForm();
         yield TextField::new('title');
         yield AssociationField::new('user');
         yield ChoiceField::new('type')

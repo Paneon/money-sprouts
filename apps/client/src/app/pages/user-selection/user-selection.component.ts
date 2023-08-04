@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { Observable, first } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'money-sprouts-user-selection',
@@ -15,22 +15,18 @@ export class UserSelectionComponent implements OnInit {
   constructor(
     private router: Router,
     public readonly route: ActivatedRoute,
-    private settings: UserService
+    private api: ApiService
   ) {}
 
   ngOnInit(): void {
-    this.users$ = this.settings.getUsers();
+    this.users$ = this.api.getUsers();
   }
 
   proceed(username: string) {
     if (!username) {
       return;
     }
-    this.settings
-      .fetchUser(username)
-      .pipe(first())
-      .subscribe(() => {
-        this.router.navigate([`${username}/dashboard`]);
-      });
+
+    this.router.navigate([`${username}/dashboard`]);
   }
 }
