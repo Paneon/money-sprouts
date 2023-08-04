@@ -1,10 +1,40 @@
 [
   {
-    "username": "THEA",
-    "avatar": "assets/images/avatar_female.png"
+    "@id": "/api/users/1",
+    "@type": "User",
+    "id": 1,
+    "email": "stroman.lonny@gmail.com",
+    "name": "THEA",
+    "roles": ["ROLE_USER"],
+    "password": "$2y$13$oPKDGHh.3nTCe0ZKHzGVIuIihrx90RMgCtoX7.b1mvZCFD60L9TWq",
+    "allowance": 310,
+    "avatar": "/build/assets/images/avatar_female.png",
+    "transactions": [
+      "/api/transactions/1",
+      "/api/transactions/4",
+      "/api/transactions/6",
+      "/api/transactions/7",
+      "/api/transactions/8",
+      "/api/transactions/10"
+    ],
+    "userIdentifier": "stroman.lonny@gmail.com"
   },
   {
-    "username": "ROBERT",
-    "avatar": "assets/images/avatar_male.png"
+    "@id": "/api/users/2",
+    "@type": "User",
+    "id": 2,
+    "email": "kautzer.linnea@gmail.com",
+    "name": "ROBERT",
+    "roles": ["ROLE_USER"],
+    "password": "$2y$13$VNdZsI6clow.zdau7OErJOcp/HFEYwPWtEuIuNoTYYIdXD7pgZX7G",
+    "allowance": 921,
+    "avatar": "/build/assets/images/avatar_male.png",
+    "transactions": [
+      "/api/transactions/2",
+      "/api/transactions/3",
+      "/api/transactions/5",
+      "/api/transactions/9"
+    ],
+    "userIdentifier": "kautzer.linnea@gmail.com"
   }
 ]

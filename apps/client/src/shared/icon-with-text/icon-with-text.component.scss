@@ -1,10 +1,12 @@
-button.my-3 {
-  border: none;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(9, 135, 82, 0.25);
-  border-radius: 10%;
+@import '../../styles.scss';
+
+
+
+.label {
+  color: $primary-color;
+  margin: auto;
 }
 
-label {
-  color: rgba(9, 135, 82, 1);
+.avatar-image {
+  margin: auto;
 }

@@ -32,6 +32,12 @@ export class UserService {
   }
 
   fetchUser(username: string): Observable<User | null> {
+    const currentUser = this.userSubject.getValue();
+    if (currentUser && currentUser.name === username) {
+      console.log('currentUser.name')
+      // Return the current user without making a network request if the user is already present
+      return of(currentUser);
+    }
     return this.users$.pipe(
       map((users) => users?.find((user) => user.name === username) || null),
       tap((user) => {

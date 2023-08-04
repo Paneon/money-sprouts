@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../app/services/user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 
 @Component({
@@ -10,21 +10,36 @@ import { User } from '@money-sprouts/shared/domain';
   styleUrls: ['./page-header.component.scss'],
 })
 export class PageHeaderComponent implements OnInit {
+  childClass: string;
   username: string;
   user$: Observable<User | null>;
   urlSegments: string;
+  logout = 'Logout';
 
   constructor(private router: Router, private settings: UserService) {}
 
   ngOnInit() {
     const urlSegments = this.router.url.split('/');
-    this.username = urlSegments[1];
-    this.user$ = this.settings.fetchUser(this.username);
+    this.username = urlSegments[2];
+
+    this.settings.user$.subscribe((user: User | null) => {
+      // Only fetch the user if no user is present or the username has changed
+      if (!user || user.name !== this.username) {
+        this.settings
+          .fetchUser(this.username)
+          .subscribe((fetchedUser: User | null) => {
+            this.user$ = of(fetchedUser);
+          });
+      } else {
+        // Assign the user to this.user$
+        this.user$ = of(user);
+      }
+    });
   }
 
   backToDashboard() {
     if (this.urlSegments !== 'dashboard') {
-      this.router.navigate([`${this.username}/dashboard`]);
+      this.router.navigate([`user/${this.username}/dashboard`]);
     } else {
       return;
     }
@@ -35,7 +50,7 @@ export class PageHeaderComponent implements OnInit {
   }
 
   get pageTitle(): string {
-    const pageName = this.router.url.split('/')[2];
+    const pageName = this.router.url.split('/')[3];
     switch (pageName) {
       case 'dashboard':
         return 'Dashboard';
@@ -48,5 +63,9 @@ export class PageHeaderComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  handleClassChange(cssClass: string) {
+    this.childClass = cssClass;
   }
 }

@@ -1,14 +1,11 @@
-<div
-    class="container d-flex align-items-center justify-content-center"
-    style="min-height: 100vh"
->
-    <div class="row gx-5 text-center" style="margin-top: -50px">
+<money-sprouts-page-header></money-sprouts-page-header>
+<div id="user-selection" class="custom-container">
+    <div class="button-container">
         <money-sprouts-icon-with-text
             *ngFor="let user of users$ | async; index as i"
             [avatarFile]="user.avatar | formatUrl"
             [username]="user.name"
             (userSelected)="proceed($event)"
-            class="col-12 col-md-6 pt-5"
         ></money-sprouts-icon-with-text>
     </div>
 </div>
