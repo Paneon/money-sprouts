@@ -1,0 +1,38 @@
+[
+  {
+    "@id": "/api/users/34",
+    "@type": "User",
+    "id": 34,
+    "email": "kattie13@gmail.com",
+    "name": "Casimir",
+    "roles": ["ROLE_USER"],
+    "password": "$2y$13$65/tjqe3q381W8t30JKGTu.q9LSFWMgVOtjo3SqSMfBHVodkgjA6C",
+    "allowance": 540,
+    "avatar": "/build/assets/images/avatar_male.png",
+    "transactions": ["/api/transactions/97", "/api/transactions/101"],
+    "userIdentifier": "kattie13@gmail.com"
+  },
+  {
+    "@id": "/api/users/35",
+    "@type": "User",
+    "id": 35,
+    "email": "ankunding.chasity@sporer.com",
+    "name": "Danielle",
+    "roles": ["ROLE_USER"],
+    "password": "$2y$13$PTi3P5C7jQwzbmTKe7//ouCx3NJHf3.hX8XodkQR6KIDvLa8UwEpO",
+    "allowance": 437,
+    "avatar": "/build/assets/images/avatar_male.png",
+    "transactions": [
+      "/api/transactions/91",
+      "/api/transactions/92",
+      "/api/transactions/93",
+      "/api/transactions/94",
+      "/api/transactions/95",
+      "/api/transactions/96",
+      "/api/transactions/98",
+      "/api/transactions/99",
+      "/api/transactions/100"
+    ],
+    "userIdentifier": "ankunding.chasity@sporer.com"
+  }
+]
