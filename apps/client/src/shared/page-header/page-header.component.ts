@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../app/services/user.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 
 @Component({
@@ -13,8 +13,11 @@ export class PageHeaderComponent implements OnInit {
   childClass: string;
   username: string;
   user$: Observable<User | null>;
-  urlSegments: string;
+  urlSegment: string;
   logout = 'Logout';
+  smallPaths: string[] = ['dashboard', 'overview', 'history', 'plan'];
+  showImages = false;
+  avatar: string;
 
   constructor(private router: Router, private settings: UserService) {}
 

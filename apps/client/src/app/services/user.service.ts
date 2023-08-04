@@ -13,6 +13,8 @@ export class UserService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
 
+  avatar: string;
+
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[] | null> {
@@ -43,6 +45,7 @@ export class UserService {
       tap((user) => {
         if (user) {
           this.setUser(user);
+          this.avatar = user.avatar;
         }
       })
     );
