@@ -73,7 +73,7 @@ body {
 }
 
 .custom-container {
-  @include make-container(5rem, 10rem);
+  @include make-container(5rem, 4rem);
   @include make-flexbox();
 }
 
@@ -101,7 +101,7 @@ body {
   border-radius: 10%;
   background: linear-gradient($white, $highlight-light);
   text-align: center;
-  padding: 30px 50px;
+  padding: 50px 70px;
   margin: 20px;
   @include make-flexbox();
 }
