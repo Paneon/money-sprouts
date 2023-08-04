@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, first, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, take, map, of, tap } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class UserService {
       tap((users) => {
         this.usersSubject.next(users);
       }),
-      first()
+      take(1)
     );
   }
 
@@ -49,7 +49,7 @@ export class UserService {
           this.avatar = user.avatar;
         }
       }),
-      first()
+      take(1)
     );
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { Observable, first } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 
 @Component({
@@ -28,9 +28,10 @@ export class UserSelectionComponent implements OnInit {
         }
         this.settings
             .fetchUser(username)
-            .pipe(first())
+            .pipe(take(1))
             .subscribe(() => {
                 this.router.navigate([`user/${username}/dashboard`]);
             });
     }
+
 }
