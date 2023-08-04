@@ -105,3 +105,11 @@ body {
   margin: 20px;
   @include make-flexbox();
 }
+
+.page-title {
+  font-weight: bold;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+}
