@@ -1,26 +1,38 @@
 <nav class="navbar navbar-light bg-light">
-    <div class="container-fluid">
-        <button
-            class="navbar-brand btn btn-link"
-            (click)="backToDashboard()"
-            title="Go to Dashboard"
-        >
-            <money-sprouts-user-avatar
-                [avatarFile]="(user$ | async)?.avatar | formatUrl"
-            ></money-sprouts-user-avatar>
-        </button>
-        <span class="navbar-text">
-            {{ pageTitle }}
-        </span>
-        <button
-            class="btn btn-link"
-            (click)="backToSelection()"
-            title="Go to User Selection"
-        >
-            <img
-                src="assets/images/two-arrows-icon.png"
-                alt="two-arrows-icon"
-            />
-        </button>
+    <div
+        class="container-fluid d-flex justify-content-between align-items-center"
+    >
+        <div class="d-flex align-items-center">
+            <button
+                class="btn btn-link"
+                (click)="backToDashboard()"
+                title="Go to Dashboard"
+            >
+                <money-sprouts-user-avatar
+                    [avatarFile]="(user$ | async)?.avatar | formatUrl"
+                    (classChange)="handleClassChange($event)"
+                ></money-sprouts-user-avatar>
+            </button>
+            <button
+                class="btn btn-link"
+                (click)="backToSelection()"
+                title="Go to User Selection"
+            >
+                <img
+                    src="assets/images/two-arrows-icon.png"
+                    alt="two-arrows-icon"
+                />
+            </button>
+        </div>
+        <div class="flex-grow-1 text-center">
+            <span class="navbar-text">
+                {{ pageTitle }}
+            </span>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-link" title="Logout">
+                {{ logout }}
+            </button>
+        </div>
     </div>
 </nav>

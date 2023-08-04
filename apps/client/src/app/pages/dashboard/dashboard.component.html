@@ -1,15 +1,9 @@
 <money-sprouts-page-header></money-sprouts-page-header>
-<div
-    class="container d-flex align-items-center justify-content-center"
-    style="min-height: 100vh"
->
-    <div class="row gx-5 text-center" style="margin-top: -50px">
-        <div
-            *ngFor="let section of sections; index as i"
-            class="col-12 col-md-4 pt-5"
-        >
+<div id="user-dashboard" class="custom-container">
+    <div class="button-container">
+        <div *ngFor="let section of sections; index as i">
             <button
-                class="my-3 py-4 px-5 d-flex flex-column align-items-center justify-content-center"
+                class="image-text-button"
                 (click)="goToSection(section.name)"
             >
                 <img [src]="section.image" />

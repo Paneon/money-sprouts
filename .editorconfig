@@ -9,7 +9,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 max_line_length = off
 
-[*.php]
+[*.php,*.ts]
 indent_size = 4
 
 [{*.html,*.html.twig}]

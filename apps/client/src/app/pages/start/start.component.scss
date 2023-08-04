@@ -1,0 +1,8 @@
+@import './../../../styles.scss';
+
+button {
+  border: none;
+  border-radius: 10%;
+  color: $primary-color;
+  background: $secondary-color;
+}

@@ -4,20 +4,24 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { CommonModule } from '@angular/common';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { FormatUrlPipe } from '../app/pipes/format-url.pipe';
-
-const components = [
-  IconWithTextComponent,
-  UserAvatarComponent,
-  PageHeaderComponent,
-  FormatUrlPipe,
-];
-const modules = [CommonModule];
+import { UserService } from '../app/services/user.service';
 
 @NgModule({
-  declarations: [...components],
-  imports: [...modules],
-  exports: [...components, ...modules],
+  imports: [CommonModule],
+  declarations: [
+    IconWithTextComponent,
+    UserAvatarComponent,
+    PageHeaderComponent,
+    FormatUrlPipe,
+  ],
+  exports: [
+    IconWithTextComponent,
+    UserAvatarComponent,
+    PageHeaderComponent,
+    FormatUrlPipe,
+    CommonModule,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
+  providers: [UserService],
 })
 export class SharedModule {}

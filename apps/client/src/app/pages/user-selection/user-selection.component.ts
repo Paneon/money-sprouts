@@ -5,18 +5,18 @@ import { User } from '@money-sprouts/shared/domain';
 import { ApiService } from '../../services/api.service';
 
 @Component({
-  selector: 'money-sprouts-user-selection',
-  templateUrl: './user-selection.component.html',
-  styleUrls: ['./user-selection.component.scss'],
+    selector: 'money-sprouts-user-selection',
+    templateUrl: './user-selection.component.html',
+    styleUrls: ['./user-selection.component.scss'],
 })
 export class UserSelectionComponent implements OnInit {
-  users$: Observable<User[]>;
+    users$: Observable<User[]>;
 
-  constructor(
-    private router: Router,
-    public readonly route: ActivatedRoute,
-    private api: ApiService
-  ) {}
+    constructor(
+        private router: Router,
+        public readonly route: ActivatedRoute,
+        private api: ApiService
+    ) {}
 
   ngOnInit(): void {
     this.users$ = this.api.getUsers();
@@ -27,6 +27,6 @@ export class UserSelectionComponent implements OnInit {
       return;
     }
 
-    this.router.navigate([`${username}/dashboard`]);
+    this.router.navigate([`user/${username}/dashboard`]);
   }
 }

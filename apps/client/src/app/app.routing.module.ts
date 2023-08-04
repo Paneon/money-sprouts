@@ -13,6 +13,11 @@ import { SpendingsComponent } from './pages/spendings/spendings.component';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
     component: StartComponent,
   },
   {
@@ -24,24 +29,24 @@ const routes: Routes = [
     component: UserSelectionComponent,
   },
   {
-    path: ':username/dashboard',
+    path: 'user/:username/dashboard',
     component: DashboardComponent,
   },
   {
-    path: ':username/overview',
+    path: 'user/:username/overview',
     component: BalanceOverviewComponent,
   },
   {
-    path: ':username/history',
+    path: 'user/:username/history',
     component: TransactionHistoryComponent,
   },
   {
-    path: ':username/plan',
+    path: 'user/:username/plan',
     component: SpendingsComponent,
   },
   {
     path: '**',
-    redirectTo: 'startpage',
+    redirectTo: 'home',
   },
 ];
 
@@ -51,6 +56,6 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes, { enableTracing: false }),
   ],
-  exports: [RouterModule],
+  exports: [RouterModule, CommonModule],
 })
 export class AppRoutingModule {}

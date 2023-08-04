@@ -1,10 +1,12 @@
+@import '../../../styles.scss';
+
 button.my-3 {
-    border: none;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(9, 135, 82, 0.25);
-    border-radius: 10%;
-  }
-  
-  label {
-    color: rgba(9, 135, 82, 1);
-  }
+  border: none;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(9, 135, 82, 0.25);
+  border-radius: 10%;
+}
+
+label {
+  color: rgba(9, 135, 82, 1);
+}
