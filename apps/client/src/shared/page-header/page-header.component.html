@@ -8,16 +8,21 @@
                     title="Go to Dashboard">
                    
                     <div>
-                        <div *ngIf="username === 'Thea'; else showMaleAvatar" >
+                        <ng-container *ngIf="username === 'Thea'; else showMaleAvatar" >
                             <img src="assets/images/avatar_female.png" alt="avatar image Thea" style="width:50px; height:50px;" />
-                        </div>
+                        </ng-container>
                         <ng-template #showMaleAvatar>
-                            <img src="assets/images/avatar_male.png" alt="avatar image Robert" style="width:50px; height:50px;" />
+                            <ng-container *ngIf="username === 'Robert'; else showDefaultAvatar">
+                                <img src="assets/images/avatar_male.png" alt="avatar image Robert" style="width:50px; height:50px;" />
+                            </ng-container>
+                        </ng-template>
+                        <ng-template #showDefaultAvatar>
+                            <img src="assets/images/avatar_default_color.png" alt="default avatar image" style="width:50px; height:50px;" />
                         </ng-template>
                     </div>
                 </button>
                 <button class="btn btn-link" (click)="backToSelection()" title="Go to User Selection">
-                    <img src="assets/images/change-user_grey_small.png" alt="change user" title="Click to change user"/>
+                    <img src="assets/images/change-user_gradient.png" alt="change user" title="Click to change user" style="width:50px; height:50px;" />
                 </button>
             </div>
         </div>
@@ -29,7 +34,7 @@
         </div>
         <div class="d-flex justify-content-end">
             <button class="btn btn-link" title="Logout">
-                <img src="assets/images/logout-grey-small.png" alt="logout button" title="Logout"/>
+                <img src="assets/images/logout_gradient.png" alt="logout button" title="Logout" style="width:50px; height:50px;" />
             </button>
         </div>
     </div> 
