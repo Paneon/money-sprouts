@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, take, map, of, tap } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 
 @Injectable({
@@ -13,6 +13,8 @@ export class UserService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
 
+  avatar: string;
+
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[] | null> {
@@ -23,7 +25,8 @@ export class UserService {
     return this.http.get<User[]>('/assets/settings.json').pipe(
       tap((users) => {
         this.usersSubject.next(users);
-      })
+      }),
+      take(1)
     );
   }
 
@@ -43,8 +46,10 @@ export class UserService {
       tap((user) => {
         if (user) {
           this.setUser(user);
+          this.avatar = user.avatar;
         }
-      })
+      }),
+      take(1)
     );
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { User } from '@money-sprouts/shared/domain';
 
@@ -41,7 +41,10 @@ export class DashboardComponent implements OnInit {
     this.sections;
     const urlSegments = this.router.url.split('/');
     this.username = urlSegments[2];
-    this.user$ = this.settings.fetchUser(this.username).pipe(
+    this.user$ = this.settings
+    .fetchUser(this.username)
+    .pipe(
+      take(1),
       tap((user: User) => {
         if (user) {
           this.username = user.name;

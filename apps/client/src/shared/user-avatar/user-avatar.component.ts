@@ -19,7 +19,7 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     @Output() classChange = new EventEmitter<string>();
     urlSegment = '';
     smallPaths: string[] = ['dashboard', 'overview', 'history', 'plan'];
-    destroy$: Subject<boolean> = new Subject<boolean>();
+    private destroy$ = new Subject<void>();
 
     constructor(private router: Router) {}
 
@@ -35,11 +35,6 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy() {
-        this.destroy$.next(true);
-        this.destroy$.unsubscribe();
-    }
-
     getClass() {
         let cssClass = '';
         if (this.smallPaths.includes(this.urlSegment)) {
@@ -51,5 +46,10 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
 
     getAvatarFile() {
         return this.avatarFile;
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
