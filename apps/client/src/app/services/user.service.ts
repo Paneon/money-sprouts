@@ -33,7 +33,8 @@ export class UserService {
 
   fetchUser(username: string): Observable<User | null> {
     const currentUser = this.userSubject.getValue();
-    if (currentUser && currentUser.username === username) {
+    if (currentUser && currentUser.name === username) {
+      console.log('currentUser.name')
       // Return the current user without making a network request if the user is already present
       return of(currentUser);
     }

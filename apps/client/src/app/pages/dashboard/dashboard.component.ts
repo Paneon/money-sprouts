@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { User } from '@money-sprouts/shared/domain';
 
@@ -42,9 +42,9 @@ export class DashboardComponent implements OnInit {
     const urlSegments = this.router.url.split('/');
     this.username = urlSegments[2];
     this.user$ = this.settings.fetchUser(this.username).pipe(
-      tap((user) => {
+      tap((user: User) => {
         if (user) {
-          this.username = user.username;
+          this.username = user.name;
           console.log('User data:', user);
         } else {
           console.error('User data not available');

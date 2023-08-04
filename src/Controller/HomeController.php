@@ -14,7 +14,11 @@ class HomeController extends AbstractController
     #[Route(
         '/{page}',
         name: 'app_frontend',
-        condition: "params['page'] not in ['admin','login','logout']"
+        condition: "params['page'] not in ['admin','login','logout', 'api']"
+    )]
+    #[Route(
+        '/user/{user}/{page}',
+        name: 'app_user_page'
     )]
     public function index(): Response
     {
