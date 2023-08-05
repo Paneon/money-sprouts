@@ -7,7 +7,7 @@ namespace App\Tests\Api;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Transaction;
 use App\Enum\TransactionType;
-use App\Factory\TransactionFactory;
+use App\Factory\ExpenseFactory;
 use App\Factory\UserFactory;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
@@ -25,7 +25,7 @@ class TransactionTest extends ApiTestCase
 
     public function testGetCollection(): void
     {
-        TransactionFactory::createMany(100);
+        ExpenseFactory::createMany(100);
 
         $response = static::createClient()->request('GET', '/api/transactions');
         $this->assertResponseIsSuccessful();
@@ -71,6 +71,7 @@ class TransactionTest extends ApiTestCase
         $this->assertMatchesRegularExpression('~^/api/transactions/\d+$~', $response->toArray()['@id']);
         $this->assertMatchesResourceItemJsonSchema(Transaction::class);
     }
+
     public function testCreateInvalidTransaction(): void
     {
         $userIri = '/api/users/'.$this->user->getId();
@@ -86,9 +87,10 @@ class TransactionTest extends ApiTestCase
             'hydra:title' => 'An error occurred',
         ]);
     }
+
     public function testUpdateTransaction(): void
     {
-        $transaction = TransactionFactory::createOne();
+        $transaction = ExpenseFactory::createOne();
 
         $client = static::createClient();
 
@@ -107,9 +109,10 @@ class TransactionTest extends ApiTestCase
             'title' => 'New Title',
         ]);
     }
+
     public function testDeleteTransaction(): void
     {
-        $transaction = TransactionFactory::createOne();
+        $transaction = ExpenseFactory::createOne();
         $id = $transaction->getId();
         $client = static::createClient();
         $client->request('DELETE', '/api/transactions/'.$transaction->getId());

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\Entity\Transaction;
-use App\Enum\TransactionType;
 use Zenstruck\Foundry\ModelFactory;
 
 /**
  * @extends ModelFactory<Transaction>
  */
-final class TransactionFactory extends ModelFactory
+final class ExpenseFactory extends ModelFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -32,11 +31,11 @@ final class TransactionFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'applied' => self::faker()->boolean(),
+            'applied' => false,
             'title' => self::faker()->realText(80),
-            'type' => self::faker()->randomElement(TransactionType::getConstants()),
             'user' => UserFactory::random(),
-            'value' => self::faker()->numberBetween(49, 1500),
+            'category' => CategoryFactory::find(['name' => 'Expense']),
+            'value' => self::faker()->numberBetween(-1500, -49),
         ];
     }
 

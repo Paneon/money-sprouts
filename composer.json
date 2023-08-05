@@ -80,7 +80,7 @@
     "php:stan": [
       "@putenv APP_DEBUG=true",
       "@php bin/console cache:warmup --env=dev",
-      "@php vendor/bin/phpstan analyze src --level=2 --configuration=extension.neon",
+      "@php vendor/bin/phpstan analyze src --level=5 --configuration=extension.neon",
       "@php bin/console cache:clear --env=dev"
     ],
     "php:tests": [
