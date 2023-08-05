@@ -1,0 +1,70 @@
+{% extends '@!EasyAdmin/page/login.html.twig' %}
+
+{% block head_stylesheets %}
+      {{ parent() }}
+      <style>
+        body.ea.page-login {
+            background: linear-gradient(rgba(219, 230, 219, 0.5), rgba(223, 235, 223, 0.5)), url('./assets/images/background.jpg') center/cover no-repeat;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            padding: 4rem 2rem;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section.content, div.form-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-wrapper .content {
+            border: 2px solid rgba(195, 216, 126, 1);
+            border-radius: 10%;
+            background: linear-gradient(rgba(239, 243, 237, 1), rgba(230, 235, 193, 1));
+        }
+
+        button.btn.btn-primary, 
+        button.btn.btn-primary.btn-lg.btn-block,
+        button.btn.btn-primary.btn-lg.btn-block:active,
+        button.btn.btn-primary.btn-lg.btn-block:focus,
+        button.btn.btn-primary.btn-lg.btn-block:hover {
+            border: none;
+            border-radius: 10%;
+            background-color: rgba(195, 216, 126, 1);
+            color: transparent;  
+            box-shadow: none;
+            font-family: 'arial'; 
+            position: relative; 
+            padding: 1rem 1.5rem;
+        }
+
+        button.btn.btn-primary::after, 
+        button.btn.btn-primary.btn-lg.btn-block::after,
+        button.btn.btn-primary.btn-lg.btn-block:active::after,
+        button.btn.btn-primary.btn-lg.btn-block:focus::after,
+        button.btn.btn-primary.btn-lg.btn-block:hover::after {
+            content: "LOGIN";  
+            position: absolute;
+            top: 50%; 
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            background-color: rgba(195, 216, 126, 1);
+            color: rgba(99, 100, 91, 1);
+        }
+
+        label.form-control-label.required {
+            color: rgba(99, 100, 91, 1);
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+      </style>
+{% endblock %}
