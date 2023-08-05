@@ -1,50 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, take, map, of, tap } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private usersSubject = new BehaviorSubject<User[] | null>(null);
-  users$ = this.usersSubject.asObservable();
+  private users: User[] | null;
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  currentUser$ = this.currentUserSubject.asObservable();
 
-  private userSubject = new BehaviorSubject<User | null>(null);
-  user$ = this.userSubject.asObservable();
-
-  constructor(private http: HttpClient) {}
-
-  getUsers(): Observable<User[] | null> {
-    const users = this.usersSubject.getValue();
-    if (users !== null) {
-      return of(users);
+  constructor(
+    private http: HttpClient,
+    private api: ApiService) {
+      this.getUsers();
     }
-    return this.http.get<User[]>('/assets/settings.json').pipe(
-      tap((users) => {
-        this.usersSubject.next(users);
-      })
-    );
+
+  private getUsers(): void {
+    this.api.getUsers().subscribe(users => this.users =users);
+  }
+
+  // fetch all users
+  getUserByUsername(username: string): void {
+    const user = this.users.find(user => user.name === username);
+    this.currentUserSubject.next(user);
   }
 
   setUser(user: User) {
-    this.userSubject.next(user);
-  }
-
-  fetchUser(username: string): Observable<User | null> {
-    const currentUser = this.userSubject.getValue();
-    if (currentUser && currentUser.name === username) {
-      console.log('currentUser.name')
-      // Return the current user without making a network request if the user is already present
-      return of(currentUser);
-    }
-    return this.users$.pipe(
-      map((users) => users?.find((user) => user.name === username) || null),
-      tap((user) => {
-        if (user) {
-          this.setUser(user);
-        }
-      })
-    );
+    this.currentUserSubject.next(user);
   }
 }

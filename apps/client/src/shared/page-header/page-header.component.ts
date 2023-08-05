@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../app/services/user.service';
-import { Observable, of } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 
 @Component({
@@ -9,40 +9,51 @@ import { User } from '@money-sprouts/shared/domain';
   templateUrl: './page-header.component.html',
   styleUrls: ['./page-header.component.scss'],
 })
-export class PageHeaderComponent implements OnInit {
+export class PageHeaderComponent implements OnInit, OnDestroy {
   childClass: string;
   username: string;
-  user$: Observable<User | null>;
-  urlSegments: string;
+  user$: Observable<User | null>
+  urlSegment: string;
   logout = 'Logout';
+  avatar: string;
+  id: number;
 
-  constructor(private router: Router, private settings: UserService) {}
+  private destroy$ = new Subject<void>();
+
+
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    ) {}
 
   ngOnInit() {
     const urlSegments = this.router.url.split('/');
+    this.urlSegment = urlSegments[urlSegments.length - 1];
     this.username = urlSegments[2];
 
-    this.settings.user$.subscribe((user: User | null) => {
-      // Only fetch the user if no user is present or the username has changed
-      if (!user || user.name !== this.username) {
-        this.settings
-          .fetchUser(this.username)
-          .subscribe((fetchedUser: User | null) => {
-            this.user$ = of(fetchedUser);
-          });
-      } else {
-        // Assign the user to this.user$
-        this.user$ = of(user);
-      }
-    });
+    this.user$ = this.userService.currentUser$;
+    
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        map(() => this.router.url.split('/')[1]), // assuming username is the second part of url
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+       .subscribe(username => {
+        this.username = username;
+        this.userService.getUserByUsername(username)
+      });
   }
 
-  backToDashboard() {
-    if (this.urlSegments !== 'dashboard') {
-      this.router.navigate([`user/${this.username}/dashboard`]);
-    } else {
-      return;
-    }
+  goBack() {
+      if (this.urlSegment === 'dashboard') {
+          this.router.navigate(['userselection']);
+      } else if (this.urlSegment === 'history' || this.urlSegment === 'plan' || this.urlSegment === 'overview'){
+        this.router.navigate([`user/${this.username}/dashboard`]);
+      } else {
+        return;
+      }
   }
 
   backToSelection() {
@@ -67,5 +78,10 @@ export class PageHeaderComponent implements OnInit {
 
   handleClassChange(cssClass: string) {
     this.childClass = cssClass;
+  }
+
+  ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
   }
 }

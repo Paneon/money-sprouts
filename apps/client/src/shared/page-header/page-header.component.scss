@@ -1,1 +1,38 @@
+@import '../../app/styles/abstract';
 
+.image-50x50 {
+    width: 50px;
+    height: 50px;
+}
+
+.navbar-text {
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+  }
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100; 
+    min-height: 10vh;
+    background-color: $background-color;
+    opacity: 0.9;
+}
+
+@supports not (position: sticky) {
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100; 
+        min-height: 10vh;
+        background-color: $background-color;
+        opacity: 0.9;
+    }
+
+    body {
+        padding-top: 10vh;
+    }
+}

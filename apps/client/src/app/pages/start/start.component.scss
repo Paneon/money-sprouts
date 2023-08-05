@@ -1,6 +1,6 @@
-@import './../../../styles.scss';
+@import '../../styles/abstract';
 
-button {
+.login-button {
   border: none;
   border-radius: 10%;
   color: $primary-color;

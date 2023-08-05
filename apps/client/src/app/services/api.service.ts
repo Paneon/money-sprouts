@@ -35,8 +35,8 @@ export class ApiService {
       );
   }
 
-  getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/users/${id}`);
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/users/${id}.json`);
   }
 
   getTransactions(forceRefresh = false): Observable<Transaction[]> {

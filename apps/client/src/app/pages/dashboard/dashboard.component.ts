@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { Observable, Subject, distinctUntilChanged, filter, map, take, takeUntil, tap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { User } from '@money-sprouts/shared/domain';
 
@@ -35,22 +35,28 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  constructor(private router: Router, private settings: UserService) {}
+  private destroy$ = new Subject<void>();
+
+
+  constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
     this.sections;
     const urlSegments = this.router.url.split('/');
     this.username = urlSegments[2];
-    this.user$ = this.settings.fetchUser(this.username).pipe(
-      tap((user: User) => {
-        if (user) {
-          this.username = user.name;
-          console.log('User data:', user);
-        } else {
-          console.error('User data not available');
-        }
-      })
-    );
+    this.user$ = this.userService.currentUser$;
+    
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        map(() => this.router.url.split('/')[1]), // assuming username is the second part of url
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(username => {
+        this.username = username;
+        this.userService.getUserByUsername(username)
+      });
   }
 
   goToSection(section: string) {
