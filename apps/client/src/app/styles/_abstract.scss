@@ -1,0 +1,53 @@
+// Variables
+$primary-color: rgba(99, 100, 91, 1);
+$secondary-color: rgba(195, 216, 126, 1);
+$tertiary-color: rgba(212, 225, 124, 1);
+$background-color: rgba(219, 230, 219, 0.8);
+$highlight-light: rgba(230, 235, 193, 1);
+$white: rgba(239, 243, 237, 1);
+$font-family: Arial, sans-serif;
+
+
+// Mixins
+@mixin make-flexbox() {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @mixin make-grid() {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @mixin make-container($padding-x, $padding-y) {
+    width: 100%;
+    padding: {
+      top: $padding-y;
+      right: $padding-x;
+      bottom: $padding-y;
+      left: $padding-x;
+    }
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  
+  @mixin create-text-box($width, $opacity, $padding-x, $padding-y) {
+    background: $background-color;
+    width: $width;
+    max-width: 800px;
+    opacity: $opacity;
+    border-radius: 2%;
+    padding: {
+      top: $padding-y;
+      right: $padding-x;
+      bottom: $padding-y;
+      left: $padding-x;
+    }
+  }
