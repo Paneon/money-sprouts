@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $name = null;
 
     /**
-     * @property array<string> $roles
+     * @property array<int, string> $roles
      */
     #[ORM\Column]
     private array $roles = [];
@@ -62,17 +62,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTime $nextPayday = null;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $avatar = null;
+    #[ORM\ManyToOne(targetEntity: Avatar::class)]
+    private ?Avatar $avatar = null;
 
     /**
-     * @var Collection<Transaction> $transactions
+     * @var Collection<int, Transaction> $transactions
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transaction::class, orphanRemoval: true)]
     private Collection $transactions;
 
     #[ORM\Column(nullable: true)]
-    private ?int $balance = null;
+    private ?int $balance = 0;
 
     #[ORM\Column]
     private ?bool $tracked = false;
@@ -168,14 +168,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nextPayday;
     }
 
-    public function getAvatar(): ?string
+    public function getAvatar(): ?Avatar
     {
-        return $this->avatar ?? '';
+        return $this->avatar;
     }
 
-    public function setAvatar(?string $avatar): User
+    public function getAvatarUrl(): ?string
+    {
+        return $this->avatar?->getUrl();
+    }
+
+    public function setAvatar(?Avatar $avatar): User
     {
         $this->avatar = $avatar;
+
         return $this;
     }
 
@@ -220,12 +226,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBalance(): ?int
+    public function getBalance(): int
     {
-        return $this->balance;
+        return $this->balance === null ? 0 : $this->balance;
     }
 
-    public function setBalance(?int $balance): static
+    public function setBalance(int $balance): static
     {
         $this->balance = $balance;
 

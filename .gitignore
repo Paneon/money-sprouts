@@ -65,3 +65,4 @@ Thumbs.db
 /.phpcs-cache
 ###< squizlabs/php_codesniffer ###
 public/build
+.fleet

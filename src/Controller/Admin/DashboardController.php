@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use _PHPStan_d55c4f2c2\Nette\Neon\Exception;
+use App\Entity\Avatar;
+use App\Entity\Category;
 use App\Entity\Transaction;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -35,8 +37,12 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToUrl('App', 'fas fa-home', $this->generateUrl('app_home'));
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
+        yield MenuItem::section('User');
         yield MenuItem::linkToCrud('User', 'fa-solid fa-user', User::class);
         yield MenuItem::linkToCrud('Transaction', 'fa-solid fa-money-bill-transfer', Transaction::class);
+        yield MenuItem::section('General');
+        yield MenuItem::linkToCrud('Avatar', 'fa-solid fa-image', Avatar::class);
+        yield MenuItem::linkToCrud('Category', 'fa-solid fa-list', Category::class);
     }
 
     /**
@@ -48,6 +54,6 @@ class DashboardController extends AbstractDashboardController
             throw new Exception('Invalid User Entity');
         }
 
-        return parent::configureUserMenu($user)->setAvatarUrl($user->getAvatar());
+        return parent::configureUserMenu($user)->setAvatarUrl($user->getAvatar()->getUrl());
     }
 }

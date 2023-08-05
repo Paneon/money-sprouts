@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Transaction;
 use App\Enum\TransactionType;
+use App\Trait\HasCurrencyFormatter;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -16,6 +17,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class TransactionCrudController extends AbstractCrudController
 {
+    use HasCurrencyFormatter;
+
     public static function getEntityFqcn(): string
     {
         return Transaction::class;
@@ -26,6 +29,7 @@ class TransactionCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('title');
         yield AssociationField::new('user');
+        yield AssociationField::new('category');
         yield ChoiceField::new('type')
             ->setChoices([
                 '+' => TransactionType::EARNING,
@@ -37,7 +41,7 @@ class TransactionCrudController extends AbstractCrudController
             ]);
         yield BooleanField::new('applied');
         yield NumberField::new('value')->formatValue(function ($value) {
-            return (intval($value)/100).' €';
+            return $this->formatCurrency($value);
         });
     }
 }

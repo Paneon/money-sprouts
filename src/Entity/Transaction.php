@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\TransactionType;
 use App\Repository\TransactionRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
@@ -22,21 +22,20 @@ class Transaction
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $type = null;
-
-    /**
-     * Transaction value in cents.
-     */
     #[ORM\Column]
+    #[ApiProperty(description: "The value of the transaction in cents.")]
     private ?int $value = null;
 
     #[ORM\Column]
+    #[ApiProperty(description: "True if the transaction has been factored into the balance of the user.")]
     private bool $applied = false;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\ManyToOne]
+    private ?Category $category = null;
 
     public function getId(): ?int
     {
@@ -55,26 +54,19 @@ class Transaction
         return $this;
     }
 
-    public function getType(): ?int
+    public function getType(): int
     {
-        return $this->type;
-    }
-
-    public function setType(int $type): static
-    {
-        $this->type = $type;
-
-        return $this;
+        return $this->value < 0 ? TransactionType::EXPENSE : TransactionType::EARNING;
     }
 
     public function isExpense(): bool
     {
-        return $this->type === TransactionType::EXPENSE;
+        return $this->value < 0;
     }
 
     public function isEarning(): bool
     {
-        return $this->type === TransactionType::EARNING;
+        return $this->value > 0;
     }
 
     public function getValue(): ?int
@@ -109,6 +101,18 @@ class Transaction
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

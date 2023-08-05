@@ -4,6 +4,11 @@ RUN a2enmod rewrite
 
 RUN apt-get update && apt-get install -y git unzip zip
 
+# Add Symfony CLI
+RUN apk add --no-cache bash
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | sudo -E bash
+RUN apk add symfony-cli
+
 WORKDIR /var/www/html
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
