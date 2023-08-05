@@ -46,12 +46,14 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  backToDashboard() {
-    if (this.urlSegment !== 'dashboard') {
-      this.router.navigate([`user/${this.username}/dashboard`]);
-    } else {
-      return;
-    }
+  goBack() {
+      if (this.urlSegment === 'dashboard') {
+          this.router.navigate(['userselection']);
+      } else if (this.urlSegment === 'history' || this.urlSegment === 'plan' || this.urlSegment === 'overview'){
+        this.router.navigate([`user/${this.username}/dashboard`]);
+      } else {
+        return;
+      }
   }
 
   backToSelection() {

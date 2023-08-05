@@ -1,16 +1,13 @@
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <ng-container *ngIf="urlSegment !== 'userselection' && urlSegment !== 'dashboard'; else placeholder">
+        <div *ngIf="urlSegment !== 'userselection'">
             <button 
                 class="btn btn-link" 
-                (click)="backToDashboard()"
-                title="Go back to dashboard">
+                (click)="goBack()"
+                title="Go back to previous page">
                 <img src="assets/images/go-back-arrow_small.png" alt="Go back arrow" style="width:50px; height:50px;" />
             </button>
-        </ng-container>
-        <ng-template #placeholder>
-            <div style="width: 50px; height: 50px;"></div>
-        </ng-template>
+        </div>
 
         <div class="d-flex justify-content-center">
             <div *ngIf="urlSegment !== 'userselection'">
@@ -37,14 +34,8 @@
         </div>
         
         <div class="d-flex justify-content-end align-items-center">
-            <div *ngIf="urlSegment !== 'userselection'">
-                <button class="btn btn-link" (click)="backToSelection()" title="Go to User Selection">
-                    <img src="assets/images/change-user_person_grey_small.png" alt="change user" title="Click to change user" style="width:50px; height:50px;" />
-                </button>
-            </div>
-      
             <button class="btn btn-link" title="Logout">
-                <img src="assets/images/logout-grey-small.png" alt="logout button" title="Logout" style="width:50px; height:50px;" />
+                <img src="assets/images/logout-round-grey_small.png" alt="logout button" title="Logout" style="width:50px; height:50px;" />
             </button>
         </div>
     </div> 
