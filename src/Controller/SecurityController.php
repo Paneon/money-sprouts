@@ -40,14 +40,14 @@ class SecurityController extends AbstractController
             // the title visible above the login form (define this option only if you are
             // rendering the login template in a regular Symfony controller; when rendering
             // it from an EasyAdmin Dashboard this is automatically set as the Dashboard title)
-            'page_title' => 'Backoffice',
+            'page_title' => '',
 
             // the string used to generate the CSRF token. If you don't define
             // this parameter, the login form won't include a CSRF token
             'csrf_token_intention' => 'authenticate',
 
             // the URL users are redirected to after the login (default: '/admin')
-            'target_path' => $this->generateUrl('admin'),
+            'target_path' => '/userselection',
 
             // the label displayed for the username form field (the |trans filter is applied to it)
             'username_label' => 'Your username',
@@ -56,7 +56,7 @@ class SecurityController extends AbstractController
             'password_label' => 'Your password',
 
             // the label displayed for the Sign In form button (the |trans filter is applied to it)
-            'sign_in_label' => 'Log in',
+            'sign_in_label' => 'LOGIN',
 
             // whether to enable or not the "forgot password?" link (default: false)
             'forgot_password_enabled' => false,

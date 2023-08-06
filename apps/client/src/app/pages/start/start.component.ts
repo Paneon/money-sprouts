@@ -10,10 +10,6 @@ export class StartComponent {
   buttonText: string;
 
   constructor(private router: Router) {
-    this.buttonText = 'LOGIN';
-  }
-
-  handleLogin() {
-    this.router.navigate(['userselection']);
+    this.buttonText = 'Go to LOGIN';
   }
 }
