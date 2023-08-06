@@ -3,9 +3,10 @@
     <div class="button-container">
         <money-sprouts-icon-with-text
             *ngFor="let user of users$ | async; index as i"
+         
             [avatarFile]="user.avatar | formatUrl"
             [username]="user.name"
-            (userSelected)="proceed($event)"
-        ></money-sprouts-icon-with-text>
+            (userSelected)="proceed($event)">
+        </money-sprouts-icon-with-text>
     </div>
 </div>

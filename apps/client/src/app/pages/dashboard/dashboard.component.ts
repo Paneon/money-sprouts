@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Observable, Subject, distinctUntilChanged, filter, map, take, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { User } from '@money-sprouts/shared/domain';
 
@@ -38,7 +38,10 @@ export class DashboardComponent implements OnInit {
   private destroy$ = new Subject<void>();
 
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(
+    private router: Router, 
+    private userService: UserService
+    ) {}
 
   ngOnInit() {
     this.sections;
@@ -49,7 +52,7 @@ export class DashboardComponent implements OnInit {
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
-        map(() => this.router.url.split('/')[1]), // assuming username is the second part of url
+        map(() => this.router.url.split('/')[2]),
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )

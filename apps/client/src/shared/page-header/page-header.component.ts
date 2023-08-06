@@ -23,7 +23,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private userService: UserService,
+    public userService: UserService,
     ) {}
 
   ngOnInit() {
@@ -36,14 +36,16 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
-        map(() => this.router.url.split('/')[1]), // assuming username is the second part of url
+        map(() => this.router.url.split('/')[2]),
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
        .subscribe(username => {
+        console.log(console.log('User in header: ', username))
         this.username = username;
         this.userService.getUserByUsername(username)
       });
+    
   }
 
   goBack() {
@@ -76,8 +78,8 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleClassChange(cssClass: string) {
-    this.childClass = cssClass;
+  onLogout() {
+    this.userService.logoutOrDeselectUser();
   }
 
   ngOnDestroy(): void {

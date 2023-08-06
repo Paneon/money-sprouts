@@ -13,17 +13,7 @@
             <div *ngIf="urlSegment !== 'userselection'">
                 <div class="d-flex align-items-center"> 
                     <div>
-                        <ng-container *ngIf="username === 'Thea'; else showMaleAvatar" >
-                            <img src="assets/images/avatar_female.png" alt="avatar image Thea" class="image-50x50" />
-                        </ng-container>
-                        <ng-template #showMaleAvatar>
-                            <ng-container *ngIf="username === 'Robert'; else showDefaultAvatar">
-                                <img src="assets/images/avatar_male.png" alt="avatar image Robert" class="image-50x50" />
-                            </ng-container>
-                        </ng-template>
-                        <ng-template #showDefaultAvatar>
-                            <img src="assets/images/avatar_default_color.png" alt="default avatar image" class="image-50x50" />
-                        </ng-template>
+                        <img [src]="userService.getAvatarForUser(user$ | async)" alt="User avatar" class="image-50x50" />
                     </div>
               
                     <div class="navbar-text page-title px-3 px-3">
@@ -34,7 +24,7 @@
         </div>
         
         <div class="d-flex justify-content-end align-items-center">
-            <a href="/logout" class="btn btn-link" title="Logout">
+            <a href="/logout" (click)="onLogout()" class="btn btn-link" title="Logout">
                 <img src="assets/images/logout-round-grey_small.png" alt="logout button" class="image-50x50" />
             </a>
         </div>
