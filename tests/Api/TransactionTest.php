@@ -9,6 +9,8 @@ use App\Entity\Transaction;
 use App\Enum\TransactionType;
 use App\Factory\ExpenseFactory;
 use App\Factory\UserFactory;
+use App\Story\DefaultCategoriesStory;
+use App\Story\DefaultTransactionStory;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
@@ -25,7 +27,8 @@ class TransactionTest extends ApiTestCase
 
     public function testGetCollection(): void
     {
-        ExpenseFactory::createMany(100);
+        DefaultCategoriesStory::load();
+        DefaultTransactionStory::load();
 
         $response = static::createClient()->request('GET', '/api/transactions');
         $this->assertResponseIsSuccessful();
@@ -90,6 +93,7 @@ class TransactionTest extends ApiTestCase
 
     public function testUpdateTransaction(): void
     {
+        DefaultCategoriesStory::load();
         $transaction = ExpenseFactory::createOne();
 
         $client = static::createClient();
@@ -112,6 +116,7 @@ class TransactionTest extends ApiTestCase
 
     public function testDeleteTransaction(): void
     {
+        DefaultCategoriesStory::load();
         $transaction = ExpenseFactory::createOne();
         $id = $transaction->getId();
         $client = static::createClient();

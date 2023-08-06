@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\OverviewController;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -166,6 +167,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getNextPayday(): ?DateTime
     {
         return $this->nextPayday;
+    }
+
+    public function setNextPayday(?DateTime $dateTime): User
+    {
+        $this->nextPayday = $dateTime;
+        return $this;
     }
 
     public function getAvatar(): ?Avatar
