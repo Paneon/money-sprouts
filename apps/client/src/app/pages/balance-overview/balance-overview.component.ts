@@ -19,12 +19,21 @@ export class BalanceOverviewComponent implements OnInit {
   }
 
   getFunnyImage(balance: number | undefined): string {
-    if (!balance) return './assets/images/3d-empty-box.png'; 
-    if (balance < 500) return './assets/images/3d-dog-from-behind.png'; 
-    if (balance < 1000) return './assets/images/3d-sitting-dog.png'; 
-    if (balance < 1500) return './assets/images/3d-dog-with-leash.png';
-    if (balance < 2000) return './assets/images/3d-dog-with-bag.png';
-    if (balance < 5000) return './assets/images/3d-man-playing-with-dog.png';
-    return './assets/images/3d-dog-and-boy-jumping.png';
+    switch (true) {
+      case balance <= 0:
+        return './assets/images/3d-empty-box.png';
+      case balance < 500:
+        return './assets/images/3d-dog-from-behind.png'; 
+      case balance < 1000:
+        return './assets/images/3d-sitting-dog.png'; 
+      case balance < 1500:
+        return './assets/images/3d-dog-with-leash.png';
+      case balance < 2000:
+        return './assets/images/3d-dog-with-bag.png';
+      case balance < 5000:
+        return './assets/images/3d-man-playing-with-dog.png';
+      default:
+        return './assets/images/3d-dog-and-boy-jumping.png';
+    }
   }
 }

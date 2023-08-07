@@ -53,7 +53,7 @@ export class UserService {
   }
 
   getAvatarForUser(user: User | null): string {
-    if (!user) return 'assets/images/avatar_default_color.png';
+    if (!user) return '';
     
     switch (user.name) {
       case 'Thea':
@@ -61,7 +61,7 @@ export class UserService {
       case 'Robert':
         return 'assets/images/avatar_male.png';
       default:
-        return 'assets/images/avatar_default_color.png';
+        return '';
     }
   }
 
