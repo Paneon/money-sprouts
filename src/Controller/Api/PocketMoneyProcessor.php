@@ -2,37 +2,36 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
+use App\Entity\User;
 use App\Factory\EarningFactory;
-use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class OverviewController extends AbstractController
+#[AsController]
+class PocketMoneyProcessor extends AbstractController
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly UserRepository  $userRepository,
     )
     {
     }
 
-    #[Route(path: "/api/overview/{userId}.{_format}")]
-    public function getOverview(int $userId, EntityManagerInterface $entityManager): Response
+    public function __invoke(?User $user, EntityManagerInterface $entityManager): User
     {
-        $user = $this->userRepository->find($userId);
-
+        $this->logger->debug('OverviewController::__invoke', [$user]);
         if (!$user) {
             $this->json(null, Response::HTTP_NOT_FOUND);
         }
 
         if (!$user->isTracked()) {
-            return $this->json(null, Response::HTTP_BAD_REQUEST);
+            throw new BadRequestHttpException("This endpoint works only for tracked Users.");
         }
 
         $now = new DateTime();
@@ -48,12 +47,11 @@ class OverviewController extends AbstractController
             $this->logger->debug('Set Next Payday to {next}', ['next' => $next]);
 
             $pocketMoney = EarningFactory::createPocketMoney($user, $effectiveOn);
-
             $entityManager->persist($pocketMoney);
             $entityManager->persist($user);
             $entityManager->flush();
         }
 
-        return $this->json($user, Response::HTTP_OK);
+        return $user;
     }
 }
