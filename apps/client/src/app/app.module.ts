@@ -13,6 +13,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app.routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import { LOCALE_ID } from '@angular/core';
+
+registerLocaleData(localeDe);
 
 @NgModule({
     declarations: [AppComponent],
@@ -25,7 +30,9 @@ import { CommonModule } from '@angular/common';
         HttpClientModule,
         CommonModule,
     ],
-    providers: [],
+    providers: [
+        { provide: LOCALE_ID, useValue: 'de' }
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
 })

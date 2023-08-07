@@ -12,9 +12,9 @@
         <div class="d-flex justify-content-center">
             <div *ngIf="urlSegment !== 'userselection'">
                 <div class="d-flex align-items-center"> 
-                    <div>
-                        <img [src]="userService.getAvatarForUser(user$ | async)" alt="User avatar" class="image-50x50" />
-                    </div>
+                    <button *ngIf="!isLoading" class="btn btn-link" (click)="goToUserselection()" title="Go to user selection">
+                        <img [src]="userService.getAvatarForUser(user$ | async)"  alt="User avatar" class="image-50x50" />
+                    </button>
               
                     <div class="navbar-text page-title px-3 px-3">
                         {{ pageTitle }}

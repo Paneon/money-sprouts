@@ -26,6 +26,9 @@ body {
 .custom-container {
   @include make-container(5rem, 4rem);
   @include make-flexbox();
+  @media (max-width: 768px) {
+    margin-top: 0;
+  }
 }
 
 .custom-text-box {

@@ -17,4 +17,23 @@ export class BalanceOverviewComponent implements OnInit {
     this.user$ = this.userService.currentUser$;
     
   }
+
+  getFunnyImage(balance: number | undefined): string {
+    switch (true) {
+      case balance <= 0:
+        return './assets/images/3d-empty-box.png';
+      case balance < 500:
+        return './assets/images/3d-dog-from-behind.png'; 
+      case balance < 1000:
+        return './assets/images/3d-sitting-dog.png'; 
+      case balance < 1500:
+        return './assets/images/3d-dog-with-leash.png';
+      case balance < 2000:
+        return './assets/images/3d-dog-with-bag.png';
+      case balance < 5000:
+        return './assets/images/3d-man-playing-with-dog.png';
+      default:
+        return './assets/images/3d-dog-and-boy-jumping.png';
+    }
+  }
 }
