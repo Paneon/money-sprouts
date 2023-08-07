@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Enum\UserRole;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -43,12 +42,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function findAllUsers(): array
+    /**
+     * @return User[]
+     */
+    public function findTrackedUsers(): array
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.roles NOT LIKE :admin_role')
-            ->setParameter('admin_role', '%'.UserRole::ADMIN.'%')
-            ->orderBy('u.id', 'ASC')
+            ->andWhere('u.tracked = 1')
             ->getQuery()
             ->getResult();
     }

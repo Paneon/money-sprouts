@@ -168,6 +168,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nextPayday;
     }
 
+    public function setNextPayday(?DateTime $dateTime): User
+    {
+        $this->nextPayday = $dateTime;
+        return $this;
+    }
+
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;

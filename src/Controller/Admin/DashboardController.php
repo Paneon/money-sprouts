@@ -9,6 +9,7 @@ use App\Entity\Avatar;
 use App\Entity\Category;
 use App\Entity\Transaction;
 use App\Entity\User;
+use App\Repository\TransactionRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -20,10 +21,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(private readonly TransactionRepository $transactionRepository)
+    {
+    }
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
+        $notApprovedTransactions = $this->transactionRepository->findNotApplied();
+
         return $this->render('admin/index.html.twig');
     }
 
@@ -36,6 +43,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToUrl('App', 'fas fa-home', $this->generateUrl('app_home'));
+        yield MenuItem::linkToUrl('API Docs', 'fas fa-book', $this->generateUrl('api_doc'));
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
         yield MenuItem::section('User');
         yield MenuItem::linkToCrud('User', 'fa-solid fa-user', User::class);
