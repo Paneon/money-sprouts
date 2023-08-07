@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\TransactionType;
 use App\Repository\TransactionRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource]
+#[ApiFilter(NumericFilter::class, properties: ['user'])]
 class Transaction
 {
     use TimestampableEntity;
@@ -71,11 +75,14 @@ class Transaction
         return $this->value < 0 ? TransactionType::EXPENSE : TransactionType::EARNING;
     }
 
+    #[SerializedName("isExpense")]
     public function isExpense(): bool
     {
         return $this->value < 0;
     }
 
+
+    #[SerializedName("isEarning")]
     public function isEarning(): bool
     {
         return $this->value > 0;
@@ -140,6 +147,7 @@ class Transaction
         return $this->appliedAt;
     }
 
+    #[SerializedName("isPocketMoney")]
     public function isPocketMoney(): ?bool
     {
         return $this->pocketMoney;
