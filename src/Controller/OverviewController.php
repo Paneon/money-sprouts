@@ -37,14 +37,17 @@ class OverviewController extends AbstractController
 
         $now = new DateTime();
 
-        if ($now >= $user->getNextPayday()) {
+        while ($now >= $user->getNextPayday()) {
             // Update balance and nextPayday
             $next = clone $user->getNextPayday();
             $next->modify('+1 week');
+
+            $effectiveOn = clone $user->getNextPayday();
+
             $user->setNextPayday($next);
             $this->logger->debug('Set Next Payday to {next}', ['next' => $next]);
 
-            $pocketMoney = EarningFactory::createPocketMoney($user);
+            $pocketMoney = EarningFactory::createPocketMoney($user, $effectiveOn);
 
             $entityManager->persist($pocketMoney);
             $entityManager->persist($user);

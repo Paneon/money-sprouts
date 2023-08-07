@@ -12,6 +12,10 @@
 
   <rule ref="Squiz.Strings.ConcatenationSpacing" />
 
+  <rule ref="Squiz.Strings.ConcatenationSpacing.PaddingFound">
+    <severity>0</severity>
+  </rule>
+
   <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
     <properties>
       <property name="spacesCountAroundEqualsSign" value="0" />

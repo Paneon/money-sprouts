@@ -46,6 +46,9 @@ class Transaction
     #[ORM\Column]
     private ?bool $pocketMoney = false;
 
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?DateTime $effectiveOn = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -145,6 +148,18 @@ class Transaction
     public function setPocketMoney(bool $pocketMoney): static
     {
         $this->pocketMoney = $pocketMoney;
+
+        return $this;
+    }
+
+    public function getEffectiveOn(): ?DateTime
+    {
+        return $this->effectiveOn;
+    }
+
+    public function setEffectiveOn(?DateTime $effectiveOn): static
+    {
+        $this->effectiveOn = $effectiveOn;
 
         return $this;
     }

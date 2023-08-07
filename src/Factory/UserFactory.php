@@ -62,6 +62,13 @@ final class UserFactory extends ModelFactory
         ]);
     }
 
+    public function nextPaydayTwoWeeksAgo(): self
+    {
+        return $this->addState([
+            'nextPayday' => new DateTime('-12 days'),
+        ]);
+    }
+
     public function tracked(): self
     {
         return $this->addState(['tracked' => true]);

@@ -10,7 +10,6 @@ use App\Entity\Category;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Repository\TransactionRepository;
-use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -22,7 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private UserRepository $userRepository, private TransactionRepository $transactionRepository)
+    public function __construct(private readonly TransactionRepository $transactionRepository)
     {
     }
 
