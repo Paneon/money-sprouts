@@ -1,2 +1,33 @@
 <money-sprouts-page-header></money-sprouts-page-header>
-<p>transaction-history works!</p>
+<div id="transaction-history" class="custom-container">
+    <table class="custom-text-box transaction-table">
+        <thead>
+            <tr>
+              <th><img src="assets/images/money.png" alt="Income"></th>
+              <th><img src="assets/images/shopping-card_small.png" alt="Expenses"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <div *ngIf="user$ | async">
+                <ng-container *ngFor="let _ of [].constructor(maxLength); let i = index">
+                    <tr>
+                        <td *ngIf="incomes[i]; else emptyCell">
+                            <span class="income-amount">+{{ (incomes[i].value) / 100 | currency:'EUR':'symbol':'1.2' }}</span> 
+                          
+                            <span class="transaction-title">{{ incomes[i].title }}</span>
+                         
+                           
+                        </td>
+                        <td *ngIf="expenses[i]; else emptyCell">
+                            <span class="expense-amount">{{ (expenses[i].value) / 100 | currency:'EUR':'symbol':'1.2'  }}</span> 
+                            <span class="transaction-title">{{ expenses[i].title }}</span>
+                        </td>
+                    </tr>
+                </ng-container>
+    
+                <ng-template #emptyCell><td></td></ng-template>
+            </div>
+
+          </tbody>
+    </table>
+</div>

@@ -1,0 +1,94 @@
+@import '../../styles/abstract';
+
+.transaction-table {
+    border-collapse: collapse;
+    width: 100%;
+  
+    thead {
+      th {
+        text-align: center;
+        padding: 10px 70px;
+        border-bottom: 1px solid $primary-color; 
+
+        img {
+          width: 50px;
+          vertical-align: middle; 
+        }
+
+        @media (max-width: 768px) {
+            padding: 10px 50px;
+        }
+      }
+    }
+  
+    tbody {
+      tr {
+        border-bottom: 1px solid $primary-color; 
+      }
+  
+      td {
+        padding: 10px;
+        vertical-align: top;
+  
+        .transaction-title {
+          font-size: 1.2rem;
+        }
+  
+        .income-amount {
+          color: $dark-green;
+          font-weight: bold;
+          margin-right: 5px;
+        }
+  
+        .expense-amount {
+          color: $dark-red;
+          font-weight: bold;
+          margin-right: 5px;
+        }
+
+        .income-amount + .transaction-title {
+            white-space: nowrap;
+        }
+
+        .expense-amount + .transaction-title {
+            white-space: nowrap;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .transaction-table {
+      tbody {
+    
+        td {
+            .transaction-title {
+                font-size: 1rem;
+            }
+
+            .income-amount, .expense-amount {
+                font-size: 1rem;
+            }      
+        }
+      }
+    }
+  }
+
+  @media (max-width: 660px) {
+    .transaction-table {
+      tbody {
+    
+        td {
+          .income-amount + .transaction-title {
+            display: none;
+            }
+
+            .expense-amount + .transaction-title {
+            display: none;
+            }
+          
+        }
+      }
+    }
+  }
+  

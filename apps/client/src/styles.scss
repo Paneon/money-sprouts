@@ -28,6 +28,7 @@ body {
   @include make-flexbox();
   @media (max-width: 768px) {
     margin-top: 0;
+   
   }
 }
 
@@ -35,7 +36,9 @@ body {
   @include create-text-box(70%, 0.9, 3rem, 5rem);
   @include make-flexbox();
   @media (max-width: 768px) {
-    width: 400px;
+    min-width: 380px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 }
 
