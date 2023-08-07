@@ -1,34 +1,76 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, take, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, shareReplay, tap, throwError } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 import { ApiService } from './api.service';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private users: User[] | null;
+  
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
+
+   // Declare users$ as an Observable using shareReplay and cache last emitted value
+   private users$ = this.api.getUsers().pipe(
+    tap(users => console.log('Fetched users')), 
+    catchError(err => {
+      console.error("Error fetching users:", err);
+      return throwError(() => err); 
+    }),
+    shareReplay(1)
+  );
 
   constructor(
     private http: HttpClient,
     private api: ApiService) {
-      this.getUsers();
+      const savedUser = localStorage.getItem('selectedUser');
+      if (savedUser) {
+        this.currentUserSubject.next(JSON.parse(savedUser));
+      }
     }
 
-  private getUsers(): void {
-    this.api.getUsers().subscribe(users => this.users =users);
+  // fetch all users and use tap to store them locally
+  getUsers(): Observable<User[]> {
+    return this.users$;
   }
 
-  // fetch all users
   getUserByUsername(username: string): void {
-    const user = this.users.find(user => user.name === username);
+    this.users$.subscribe(users => {
+      const user = users.find(user => user.name === username);
     this.currentUserSubject.next(user);
+    });
   }
 
   setUser(user: User) {
+    console.log("Storing selected user in local storage: ", JSON.stringify(user));
+    localStorage.setItem('selectedUser', JSON.stringify(user));
+    console.log("Setting user:", user);
     this.currentUserSubject.next(user);
   }
+
+  getAvatarForUser(user: User | null): string {
+    if (!user) return 'assets/images/avatar_default_color.png';
+    
+    switch (user.name) {
+      case 'Thea':
+        return 'assets/images/avatar_female.png';
+      case 'Robert':
+        return 'assets/images/avatar_male.png';
+      default:
+        return 'assets/images/avatar_default_color.png';
+    }
+  }
+
+  logoutOrDeselectUser() {
+    localStorage.removeItem('selectedUser');
+    this.currentUserSubject.next(null);
+  }
 }
+
+export const usersResolver: ResolveFn<User[]> =
+    (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User[]> => {
+        return inject(UserService).getUsers();
+    };
