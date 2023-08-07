@@ -17,6 +17,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
   logout = 'Logout';
   avatar: string;
   id: number;
+  isLoading = false;
 
   private destroy$ = new Subject<void>();
 
@@ -24,7 +25,11 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     public userService: UserService,
-    ) {}
+    ) {
+      this.userService.loading.subscribe(loading => {
+        this.isLoading = loading;
+      });
+    }
 
   ngOnInit() {
     const urlSegments = this.router.url.split('/');
@@ -58,7 +63,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
       }
   }
 
-  backToSelection() {
+  goToUserselection() {
     this.router.navigate(['userselection']);
   }
 

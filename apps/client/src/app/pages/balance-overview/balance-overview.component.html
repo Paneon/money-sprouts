@@ -1,2 +1,19 @@
 <money-sprouts-page-header></money-sprouts-page-header>
-<p>balance-overview works!</p>
+<div id="balance-overview" class="custom-container">
+    <div class="custom-text-box" *ngIf="user$ | async as user">
+        <div class="balance-display">
+            {{ (user.balance / 100) | currency:'EUR':'symbol':'1.2' }}
+        </div>
+        
+        <div class="funny-image-wrapper">
+            <figure>
+                <img [src]="getFunnyImage(user.balance)" alt="funny image" />
+                <figcaption class="image-caption">Illustration by Icons 8 from <a href="https://icons8.com/illustrations">Ouch!</a></figcaption>
+            </figure>
+           
+        </div>
+        <div class="payday-info">
+            Next payday: in {{ user.nextPayday}} days.
+        </div>
+    </div>
+</div>

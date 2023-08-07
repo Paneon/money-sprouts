@@ -12,6 +12,7 @@ export class UserService {
   
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
+  loading = new BehaviorSubject<boolean>(false);
 
    // Declare users$ as an Observable using shareReplay and cache last emitted value
    private users$ = this.api.getUsers().pipe(
@@ -65,8 +66,12 @@ export class UserService {
   }
 
   logoutOrDeselectUser() {
+    this.loading.next(true);
     localStorage.removeItem('selectedUser');
-    this.currentUserSubject.next(null);
+    setTimeout(() => {
+      this.currentUserSubject.next(null);
+      this.loading.next(false);
+    }, 500);
   }
 }
 
