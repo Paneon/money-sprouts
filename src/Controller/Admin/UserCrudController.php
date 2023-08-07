@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -19,7 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 class UserCrudController extends AbstractCrudController
 {
     use HasCurrencyFormatter;
-    
+
     public static function getEntityFqcn(): string
     {
         return User::class;
@@ -34,7 +35,13 @@ class UserCrudController extends AbstractCrudController
         yield EmailField::new('email');
         yield ArrayField::new('roles');
         yield BooleanField::new('tracked');
-        yield NumberField::new('balance')
+        yield DateField::new('nextPayday');
+        yield NumberField::new('allowance')
+            ->addCssClass('text-success')
+            ->formatValue(function ($value) {
+                return $this->formatCurrency($value);
+            });
+        yield NumberField::new('balance')->addCssClass('text-bg-primary text-white')
             ->hideOnForm()
             ->formatValue(function ($value) {
                 return $this->formatCurrency($value);

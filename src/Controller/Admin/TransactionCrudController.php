@@ -40,6 +40,7 @@ class TransactionCrudController extends AbstractCrudController
                 TransactionType::EXPENSE => 'danger',
             ]);
         yield BooleanField::new('applied');
+        yield BooleanField::new('pocketMoney');
         yield NumberField::new('value')->formatValue(function ($value) {
             return $this->formatCurrency($value);
         });

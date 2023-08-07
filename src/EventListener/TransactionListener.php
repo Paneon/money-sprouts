@@ -41,8 +41,8 @@ class TransactionListener
 
         /** @var Transaction $transaction */
         $transaction = $args->getObject();
-
-        if ($args->getOldValue('applied') !== $args->getNewValue('applied')) {
+        
+        if ($args->hasChangedField('applied')) {
             $this->updatedTransactions[] = $transaction;
         }
     }
