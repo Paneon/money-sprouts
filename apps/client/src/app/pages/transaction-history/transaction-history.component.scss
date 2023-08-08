@@ -1,22 +1,84 @@
 @import '../../styles/abstract';
 
+.tablehead-image-wrapper {
+    text-align: center;
+
+    img {
+        padding-bottom: 15px;
+      
+    }
+}
+
+.toggle-content-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: $tertiary-color;
+    padding-top: 15px;
+
+    img {
+        width: 50px;
+        height: 50px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
+}
+
+.custom-table-button-grid {
+    @include create-text-box(70%, 0.9, 2rem, 5rem);
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    grid-template-areas: 
+      "table table"
+      "button button";
+  
+    table.transaction-table {
+        grid-area: table;
+        width: 90%;
+        margin: 0 auto;
+    }
+  
+    div {
+        grid-area: button;
+        display: flex;
+          
+        justify-content: center;
+        align-items: center;
+    }
+  
+    @media (max-width: 768px) {
+      min-width: 380px;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    @media (max-width: 1200px){
+        @include create-text-box(80%, 0.9, 2rem, 4rem);
+    }
+
+    @media (max-width: 1000px){
+        @include create-text-box(90%, 0.9, 2rem, 3rem);
+    }
+  }
+
 .transaction-table {
     border-collapse: collapse;
     width: 100%;
   
     thead {
       th {
-        text-align: center;
-        padding: 10px 70px;
         border-bottom: 1px solid $primary-color; 
 
         img {
           width: 50px;
           vertical-align: middle; 
-        }
-
-        @media (max-width: 768px) {
-            padding: 10px 50px;
         }
       }
     }

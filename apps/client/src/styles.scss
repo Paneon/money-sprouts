@@ -8,6 +8,10 @@
   font-family: $font-family;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
   min-height: 100vh;
@@ -28,7 +32,6 @@ body {
   @include make-flexbox();
   @media (max-width: 768px) {
     margin-top: 0;
-   
   }
 }
 
@@ -40,6 +43,29 @@ body {
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
+  @media (max-width: 1200px){
+    @include create-text-box(80%, 0.9, 2rem, 4rem);
+  }
+
+  @media (max-width: 1000px){
+    @include create-text-box(90%, 0.9, 2rem, 3rem);
+  }
+}
+
+
+
+.button {
+  border: none;
+  border-radius: 10%;
+  color: $primary-color;
+  background: $secondary-color;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+}
+
+.button:hover,
+.button:active{
+  border: 1px solid $tertiary-color;
 }
 
 .button-container {
@@ -61,6 +87,11 @@ body {
   padding: 50px 70px;
   margin: 20px;
   @include make-flexbox();
+}
+
+.image-text-button:hover,
+.image-text-button:active {
+  border: 2px solid $tertiary-color;
 }
 
 

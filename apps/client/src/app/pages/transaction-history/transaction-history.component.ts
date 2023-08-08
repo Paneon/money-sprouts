@@ -13,21 +13,15 @@ export class TransactionHistoryComponent implements OnInit {
 
   user$: Observable<User | null>;
 
-  transactions = [
-    // Example data
-    /** 
-    { type: '+', title: 'pocket money', value: 2000 },
-    { type: '+', title: 'interest', value: 50 },
-    { type: '-', title: 'books', value: 1500 },
-    { type: '-', title: 'toys', value: 800 },
-    { type: '+', title: 'interest', value: 50 },
-    */
-  ];
+  transactions = [];
 
   incomes: any[] = [];
   expenses: any[] = [];
 
   maxLength = 0;
+  displayedItems = 5;
+
+  Math = Math;
 
 
   constructor(
@@ -57,7 +51,13 @@ export class TransactionHistoryComponent implements OnInit {
 
 
 
-  loadMore() {
-    // logic will be added
+  showMore() {
+    if(this.displayedItems < this.maxLength) {
+      this.displayedItems = Math.min(this.displayedItems + 5, this.maxLength);
+    }
+  }
+
+  hideExtra(){
+      this.displayedItems = 5;
   }
 }
