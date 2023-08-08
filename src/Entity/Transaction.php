@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource]
-#[ApiFilter(NumericFilter::class, properties: ['user'])]
+#[ApiFilter(NumericFilter::class, properties: ['user.id'])]
 class Transaction
 {
     use TimestampableEntity;

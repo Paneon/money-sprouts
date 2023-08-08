@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Transaction } from '@money-sprouts/shared/domain';
-import { Observable, catchError, shareReplay, tap, throwError } from 'rxjs';
+import { Observable, Subject, catchError, shareReplay, takeUntil, tap, throwError } from 'rxjs';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -18,6 +18,8 @@ export class TransactionService {
     shareReplay(1)
   )
 
+  destroy$ = new Subject<Transaction>();
+
   constructor(
     private http: HttpClient,
     private api: ApiService
@@ -25,5 +27,16 @@ export class TransactionService {
 
   getTransactions(): Observable<Transaction[]> {
     return this.transactions$;
-}
+  }
+
+  getTransactionsByUserId(userId: number): Observable<Transaction[]> {
+    return this.api.getTransactionsByUserId(userId)
+    .pipe(
+      takeUntil(this.destroy$),
+      tap(transactions => console.log('Fetched transactions:', transactions)),
+      catchError(err => {
+        console.error("Error fetching transactions: ", err);
+        return throwError(() => err);
+      }))
+  }
 }
