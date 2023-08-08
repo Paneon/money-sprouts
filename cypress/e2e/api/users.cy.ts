@@ -12,10 +12,16 @@
 // https://on.cypress.io/introduction-to-cypress
 
 describe('API - Users', () => {
-    it('returns JSON', () => {
-        cy.request('/api/users.json')
-            .its('headers')
-            .its('content-type')
-            .should('include', 'application/json');
+    describe('GET - User Collection', () => {
+        it('should return JSON', () => {
+            cy.request('/api/users.json')
+                .its('headers')
+                .its('content-type')
+                .should('include', 'application/json');
+        });
+    });
+
+    describe('GET - Single User', () => {
+        it('should ', () => {});
     });
 });
