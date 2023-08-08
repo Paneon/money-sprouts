@@ -15,7 +15,9 @@
 html,
 body {
   min-height: 100vh;
-  margin: 0;
+  padding: 0;
+  width: 100%;
+  margin: 0 auto;
   color: $primary-color;
   background: linear-gradient(
       rgba(219, 230, 219, 0.5),

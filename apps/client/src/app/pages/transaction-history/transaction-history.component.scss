@@ -43,22 +43,16 @@
         grid-area: table;
         width: 90%;
         margin: 0 auto;
+
     }
   
     div {
         grid-area: button;
-        display: flex;
-          
+        display: flex;    
         justify-content: center;
         align-items: center;
     }
   
-    @media (max-width: 768px) {
-      min-width: 380px;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-    }
-
     @media (max-width: 1200px){
         @include create-text-box(80%, 0.9, 2rem, 4rem);
     }
@@ -66,6 +60,12 @@
     @media (max-width: 1000px){
         @include create-text-box(90%, 0.9, 2rem, 3rem);
     }
+
+    @media (max-width: 768px) {
+        min-width: 380px;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
   }
 
 .transaction-table {
