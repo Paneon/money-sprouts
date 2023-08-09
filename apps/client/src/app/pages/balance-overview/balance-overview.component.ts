@@ -3,6 +3,14 @@ import { User } from '@money-sprouts/shared/domain';
 import { Observable, map, take } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { DatePipe } from '@angular/common';
+import { combineLatest } from 'rxjs';
+
+interface CompoundData {
+  user: User | null;  // Replace 'any' with your User type
+  nextPayday: Date | null;
+  formatedNextPayday: string;
+  daysUntilNextPayday: string;
+}
 
 @Component({
   selector: 'money-sprouts-balance-overview',
@@ -12,6 +20,7 @@ import { DatePipe } from '@angular/common';
 export class BalanceOverviewComponent implements OnInit {
   user$: Observable<User | null>;
   nextPayday$: Observable<Date | null>;
+  compoundData$: Observable<CompoundData>;
 
   constructor(
     private userService: UserService,
@@ -21,22 +30,23 @@ export class BalanceOverviewComponent implements OnInit {
   ngOnInit() {
     this.user$ = this.userService.currentUser$;
   
-    this.nextPayday$ = this.user$.pipe(take(1),
+    this.nextPayday$ = this.user$.pipe(
       map(user => {
         console.log('next payday of this user: ', user?.nextPayday)
         return user ? user.nextPayday : null
       })
     );
   
-    this.user$.pipe(take(1)).subscribe(
-      user => console.log('Emitted user:', user),
-      error => console.error('Error in user$:', error)
-    );
-  
-    this.nextPayday$.pipe(take(1)).subscribe(
-      date => console.log('Emitted next payday:', date),
-      error => console.error('Error in nextPayday$:', error)
-    );
+    this.compoundData$ = combineLatest([this.user$, this.nextPayday$]).pipe(
+      map(([user, nextPayday]) => {
+        return {
+          user,
+          nextPayday,
+          formatedNextPayday: this.getFormatedNextPayday(nextPayday),
+          daysUntilNextPayday: this.getDaysUntilNextPayday(nextPayday)
+        }
+      }
+    ))
   }
 
   getFunnyImage(balance: number | undefined): string {

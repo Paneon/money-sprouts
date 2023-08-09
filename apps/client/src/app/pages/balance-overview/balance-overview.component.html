@@ -12,9 +12,9 @@
             </figure>
            
         </div>
-        <div class="payday-info" *ngIf="nextPayday$ | async as nextPayday">
-            <div>Next pocket money: <span class="bold-text">{{ getFormatedNextPayday(nextPayday) }}</span></div>
-            <div>Days until payday: <span class="bold-text">{{ getDaysUntilNextPayday(nextPayday) }}</span></div>
+        <div class="payday-info" *ngIf="compoundData$ | async as data">
+            <div>Next pocket money: <span class="bold-text">{{ data.formatedNextPayday }}</span></div>
+            <div>Days until payday: <span class="bold-text">{{ data.daysUntilNextPayday }}</span></div>
         </div>
     </div>
 </div>
