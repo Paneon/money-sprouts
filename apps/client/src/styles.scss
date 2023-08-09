@@ -32,8 +32,10 @@ body {
 .custom-container {
   @include make-container(5rem, 4rem);
   @include make-flexbox();
-  @media (max-width: 768px) {
-    margin-top: 0;
+
+  @media (max-width: 400px) {
+    padding-right: 0;
+    padding-left: 0;
   }
 }
 
@@ -51,6 +53,11 @@ body {
 
   @media (max-width: 1000px){
     @include create-text-box(90%, 0.9, 2rem, 3rem);
+  }
+
+  @media (max-width: 768px){
+    @include create-text-box(100%, 0.9, 2rem, 2rem);
+    font-size: 1rem;
   }
 }
 
