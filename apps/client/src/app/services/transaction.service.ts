@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Transaction } from '@money-sprouts/shared/domain';
-import { Observable, Subject, catchError, shareReplay, takeUntil, tap, throwError } from 'rxjs';
+import { Observable, Subject, catchError, of, shareReplay, tap, throwError } from 'rxjs';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
+
+  private transactionCache: { [userId: number]: Transaction[] } = {};
 
   private transactions$ = this.api.getTransactions().pipe(
     tap(transactions => console.log('Fetched transactions:', transactions)),
@@ -30,10 +32,15 @@ export class TransactionService {
   }
 
   getTransactionsByUserId(userId: number): Observable<Transaction[]> {
-    return this.api.getTransactionsByUserId(userId)
-    .pipe(
-      takeUntil(this.destroy$),
-      tap(transactions => console.log('Fetched transactions:', transactions)),
+    if(this.transactionCache[userId]) {
+      return of(this.transactionCache[userId]);
+    }
+   
+    return this.api.getTransactionsByUserId(userId).pipe(
+      tap(transactions => {
+        console.log('Fetched transactions:', transactions);
+        this.transactionCache[userId] = transactions;
+      }),
       catchError(err => {
         console.error("Error fetching transactions: ", err);
         return throwError(() => err);

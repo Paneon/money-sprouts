@@ -96,7 +96,7 @@ final class UserFactory extends ModelFactory
         return [
             'allowance' => self::faker()->numberBetween(100, 1000),
             'email' => self::faker()->email,
-            'name' => self::faker()->firstName,
+            'name' => self::faker()->randomElement(['Thea','Robert']),
             'password' => self::faker()->password,
             'avatar' => null,
             'roles' => [UserRole::USER],

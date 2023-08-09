@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@money-sprouts/shared/domain';
-import { Observable, map, take } from 'rxjs';
+import { Observable, debounceTime, distinctUntilChanged, map, take } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { DatePipe } from '@angular/common';
 import { combineLatest } from 'rxjs';
 
-interface CompoundData {
+interface CombinedDataOverview {
   user: User | null;  // Replace 'any' with your User type
   nextPayday: Date | null;
   formatedNextPayday: string;
@@ -20,7 +20,7 @@ interface CompoundData {
 export class BalanceOverviewComponent implements OnInit {
   user$: Observable<User | null>;
   nextPayday$: Observable<Date | null>;
-  compoundData$: Observable<CompoundData>;
+  combinedDataOverview$: Observable<CombinedDataOverview>;
 
   constructor(
     private userService: UserService,
@@ -28,7 +28,12 @@ export class BalanceOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user$ = this.userService.currentUser$;
+    this.user$ = this.userService.currentUser$.pipe(
+      debounceTime(300), // waits 300ms between emisssions
+      distinctUntilChanged((prevUser, currUser) => {
+        return prevUser && currUser ? prevUser.id === currUser.id : prevUser === currUser;
+      })
+    );  
   
     this.nextPayday$ = this.user$.pipe(
       map(user => {
@@ -37,7 +42,7 @@ export class BalanceOverviewComponent implements OnInit {
       })
     );
   
-    this.compoundData$ = combineLatest([this.user$, this.nextPayday$]).pipe(
+    this.combinedDataOverview$ = combineLatest([this.user$, this.nextPayday$]).pipe(
       map(([user, nextPayday]) => {
         return {
           user,

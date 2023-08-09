@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, shareReplay, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, shareReplay, take, tap, throwError } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 import { ApiService } from './api.service';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
@@ -11,7 +11,10 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular
 export class UserService {
   
   private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
+  currentUser$ = this.currentUserSubject.asObservable().pipe(
+    tap(user => console.log('Emission from currentUser$: ', user)),
+    shareReplay(1)
+  );
   loading = new BehaviorSubject<boolean>(false);
 
    // Declare users$ as an Observable using shareReplay and cache last emitted value
@@ -41,7 +44,10 @@ export class UserService {
   getUserByUsername(username: string): void {
     this.users$.subscribe(users => {
       const user = users.find(user => user.name === username);
-    this.currentUserSubject.next(user);
+      // currentUserSubject only emits new value if user is not the same as the current one
+      if(!this.currentUserSubject.getValue() || (user && user.id !== this.currentUserSubject.getValue().id)){
+        this.currentUserSubject.next(user);
+      }
     });
   }
 

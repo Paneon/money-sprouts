@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Observable, Subject, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { User } from '@money-sprouts/shared/domain';
 
@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   username: string;
   user$: Observable<User>;
   users$: Observable<User[]>;
+
+
   urlSegments: string;
 
   sections: Section[] = [
@@ -47,7 +49,12 @@ export class DashboardComponent implements OnInit {
     this.sections;
     const urlSegments = this.router.url.split('/');
     this.username = urlSegments[2];
-    this.user$ = this.userService.currentUser$;
+    this.user$ = this.userService.currentUser$.pipe(
+      debounceTime(300), // waits 300ms between emisssions
+      distinctUntilChanged((prevUser, currUser) => {
+        return prevUser && currUser ? prevUser.id === currUser.id : prevUser === currUser;
+      })
+    );  
     
     this.router.events
       .pipe(
