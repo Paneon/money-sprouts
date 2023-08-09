@@ -74,10 +74,8 @@ export class UserService {
   logoutOrDeselectUser() {
     this.loading.next(true);
     localStorage.removeItem('selectedUser');
-    setTimeout(() => {
-      this.currentUserSubject.next(null);
-      this.loading.next(false);
-    }, 500);
+    this.currentUserSubject.next(null);
+    this.loading.next(false);
   }
 }
 

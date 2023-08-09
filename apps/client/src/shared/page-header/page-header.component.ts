@@ -85,8 +85,10 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  onLogout() {
+  onLogout(event: Event) {
+    event.preventDefault();
     this.userService.logoutOrDeselectUser();
+    this.router.navigate(['/']);
   }
 
   ngOnDestroy(): void {
