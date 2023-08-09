@@ -20,4 +20,16 @@
 .payday-info {
     font-size: 1.2rem;
     margin-top: 20px;
+    
+    @media (max-size: 768px) {
+        font-size: 1rem;
+    }
 }
+
+.bold-text {
+    font-weight: bold;
+    font-size: 1.2rem;
+    @media (max-size: 768px) {
+        font-size: 1rem;
+    }
+  }

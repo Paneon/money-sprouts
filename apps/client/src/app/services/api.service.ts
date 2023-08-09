@@ -59,7 +59,7 @@ export class ApiService {
   }
 
   getTransactionsByUserId(userId: number): Observable<Transaction[]> {
-    return this.http.get<Transaction>(
+    return this.http.get<Transaction[]>(
       `${this.baseUrl}/transactions.json?user.id=${userId}`
     );
   }

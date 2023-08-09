@@ -16,7 +16,7 @@ export class UserService {
 
    // Declare users$ as an Observable using shareReplay and cache last emitted value
    private users$ = this.api.getUsers().pipe(
-    tap(users => console.log('Fetched users')), 
+    tap(users => console.log('Fetched users: ', users)), 
     catchError(err => {
       console.error("Error fetching users:", err);
       return throwError(() => err); 
