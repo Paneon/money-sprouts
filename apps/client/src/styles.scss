@@ -3,12 +3,13 @@
 
 @import './app/styles/abstract';
 
-
 * {
   font-family: $font-family;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -47,21 +48,19 @@ body {
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
-  @media (max-width: 1200px){
+  @media (max-width: 1200px) {
     @include create-text-box(80%, 0.9, 2rem, 4rem);
   }
 
-  @media (max-width: 1000px){
+  @media (max-width: 1000px) {
     @include create-text-box(90%, 0.9, 2rem, 3rem);
   }
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     @include create-text-box(100%, 0.9, 2rem, 2rem);
     font-size: 1rem;
   }
 }
-
-
 
 .button {
   border: none;
@@ -73,7 +72,7 @@ body {
 }
 
 .button:hover,
-.button:active{
+.button:active {
   border: 1px solid $tertiary-color;
 }
 
@@ -103,4 +102,6 @@ body {
   border: 2px solid $tertiary-color;
 }
 
-
+.not-applied {
+  color: $grey;
+}

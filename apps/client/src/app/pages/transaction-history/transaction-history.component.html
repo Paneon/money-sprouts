@@ -1,58 +1,115 @@
 <money-sprouts-page-header></money-sprouts-page-header>
 <div id="transaction-history" class="custom-container">
     <div class="custom-table-button-grid">
-
-        <!-- Table section -->  
+        <!-- Table section -->
         <ng-container *ngIf="combinedDataTransaction$ | async as data">
             <table class="transaction-table">
                 <thead>
                     <tr>
-                    <th class="tablehead-image-wrapper"><img src="assets/images/money.png" alt="Income"></th>
-                    <th class="tablehead-image-wrapper"><img src="assets/images/shopping-card_small.png" alt="Expenses"></th>
+                        <th class="tablehead-image-wrapper">
+                            <img src="assets/images/money.png" alt="Income" />
+                        </th>
+                        <th class="tablehead-image-wrapper">
+                            <img
+                                src="assets/images/shopping-card_small.png"
+                                alt="Expenses"
+                            />
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <ng-container *ngIf="user$ | async">
-                        <ng-container *ngFor="let _ of [].constructor(Math.min(displayedItems, data.maxLength)); let i = index">
+                        <ng-container
+                            *ngFor="
+                                let _ of [].constructor(
+                                    Math.min(displayedItems, data.maxLength)
+                                );
+                                let i = index
+                            "
+                        >
                             <tr>
-                                <td *ngIf="data.transactions.incomes[i]; else emptyCell">
-                                    <span class="income-amount">+{{ (data.transactions.incomes[i].value) / 100 | currency:'EUR':'symbol':'1.2' }}</span> 
-                                
-                                    <span class="transaction-title">{{ data.transactions.incomes[i].title }}</span>
-                                
-                                
+                                <td
+                                    [ngClass]="data.transactions.classes[i]"
+                                    *ngIf="
+                                        data.transactions.transactions.incomes[
+                                            i
+                                        ];
+                                        else emptyCell
+                                    "
+                                >
+                                    <span class="income-amount"
+                                        >+{{
+                                            data.transactions.transactions
+                                                .incomes[i].value / 100
+                                                | currency
+                                                    : 'EUR'
+                                                    : 'symbol'
+                                                    : '1.2'
+                                        }}</span
+                                    >
+
+                                    <span class="transaction-title">{{
+                                        data.transactions.transactions.incomes[
+                                            i
+                                        ].title
+                                    }}</span>
                                 </td>
-                                <td *ngIf="data.transactions.expenses[i]; else emptyCell">
-                                    <span class="expense-amount">{{ (data.transactions.expenses[i].value) / 100 | currency:'EUR':'symbol':'1.2'  }}</span> 
-                                    <span class="transaction-title">{{ data.transactions.expenses[i].title }}</span>
+                                <td
+                                    [ngClass]="data.transactions.classes[i]"
+                                    *ngIf="
+                                        data.transactions.transactions.expenses[
+                                            i
+                                        ];
+                                        else emptyCell
+                                    "
+                                >
+                                    <span class="expense-amount">{{
+                                        data.transactions.transactions.expenses[
+                                            i
+                                        ].value / 100
+                                            | currency
+                                                : 'EUR'
+                                                : 'symbol'
+                                                : '1.2'
+                                    }}</span>
+                                    <span class="transaction-title">{{
+                                        data.transactions.transactions.expenses[
+                                            i
+                                        ].title
+                                    }}</span>
                                 </td>
                             </tr>
                         </ng-container>
-            
+
                         <ng-template #emptyCell><td></td></ng-template>
                     </ng-container>
-    
                 </tbody>
             </table>
-        
-        <!-- Button section -->
+
+            <!-- Button section -->
             <div>
-                <ng-container *ngIf="displayedItems < latestCombinedData?.maxLength">
+                <ng-container
+                    *ngIf="displayedItems < latestCombinedData?.maxLength"
+                >
                     <button (click)="showMore()" class="toggle-content-button">
                         <span>Show more</span>
-                        <img src="assets/images/arrow-down_small.png" alt="Arrow">
+                        <img
+                            src="assets/images/arrow-down_small.png"
+                            alt="Arrow"
+                        />
                     </button>
                 </ng-container>
-                        
+
                 <ng-container *ngIf="displayedItems > initialItems">
                     <button (click)="hideExtra()" class="toggle-content-button">
-                        <img src="assets/images/arrow-up_small.png" alt="Arrow">
+                        <img
+                            src="assets/images/arrow-up_small.png"
+                            alt="Arrow"
+                        />
                         <span>Show less</span>
                     </button>
                 </ng-container>
             </div>
-
         </ng-container>
     </div>
-            
 </div>
