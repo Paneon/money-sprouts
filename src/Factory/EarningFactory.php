@@ -60,7 +60,7 @@ final class EarningFactory extends ModelFactory
     {
         return [
             'applied' => false,
-            'title' => self::faker()->realText(80),
+            'title' => 'Pocket Money',
             'user' => UserFactory::random(),
             'effectiveOn' => null,
             'pocketMoney' => true,

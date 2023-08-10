@@ -71,14 +71,14 @@ class AppFixtures extends Fixture
             'tracked' => true
         ]);
 
-        EarningFactory::createOne([
+        EarningFactory::createMany(2, [
             'user' => $user,
             'category' => $this->catEarn,
             'value' => 3000,
         ]);
 
         ExpenseFactory::createMany(
-            5,
+            30,
             [
                 'user' => $user,
                 'category' => $this->catSpent,

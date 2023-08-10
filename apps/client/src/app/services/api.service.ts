@@ -54,13 +54,13 @@ export class ApiService {
       );
   }
 
-  getTransactionById(id: string): Observable<Transaction> {
-    return this.http.get<Transaction>(`${this.baseUrl}/transactions/${id}`);
+  getTransactionById(id: number): Observable<Transaction> {
+    return this.http.get<Transaction>(`${this.baseUrl}/transactions/${id}.json`);
   }
 
-  getTransactionsByUserId(userId: string): Observable<Transaction> {
-    return this.http.get<Transaction>(
-      `${this.baseUrl}/users/${userId}/transactions`
+  getTransactionsByUserId(userId: number): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(
+      `${this.baseUrl}/transactions.json?user.id=${userId}`
     );
   }
 }

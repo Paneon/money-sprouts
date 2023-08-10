@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../app/services/user.service';
-import { Observable, Subject, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
 import { User } from '@money-sprouts/shared/domain';
 
 @Component({
@@ -36,8 +36,10 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     this.urlSegment = urlSegments[urlSegments.length - 1];
     this.username = urlSegments[2];
 
-    this.user$ = this.userService.currentUser$;
-    
+    this.user$ = this.userService.currentUser$.pipe(
+      distinctUntilChanged()
+    );   
+
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
