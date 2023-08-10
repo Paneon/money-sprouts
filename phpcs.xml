@@ -16,6 +16,10 @@
     <severity>0</severity>
   </rule>
 
+  <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace">
+    <severity>0</severity>
+  </rule>
+
   <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
     <properties>
       <property name="spacesCountAroundEqualsSign" value="0" />
