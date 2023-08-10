@@ -7,21 +7,21 @@ import { FormatUrlPipe } from '../app/pipes/format-url.pipe';
 import { UserService } from '../app/services/user.service';
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [
-    IconWithTextComponent,
-    UserAvatarComponent,
-    PageHeaderComponent,
-    FormatUrlPipe,
-  ],
-  exports: [
-    IconWithTextComponent,
-    UserAvatarComponent,
-    PageHeaderComponent,
-    FormatUrlPipe,
-    CommonModule,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [UserService],
+    imports: [CommonModule],
+    declarations: [
+        IconWithTextComponent,
+        UserAvatarComponent,
+        PageHeaderComponent,
+        FormatUrlPipe,
+    ],
+    exports: [
+        IconWithTextComponent,
+        UserAvatarComponent,
+        PageHeaderComponent,
+        FormatUrlPipe,
+        CommonModule,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    providers: [UserService],
 })
 export class SharedModule {}

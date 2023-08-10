@@ -1,12 +1,12 @@
 <money-sprouts-page-header></money-sprouts-page-header>
-<div id="user-selection" class="custom-container">
+<div id="user-selection" class="custom-container no-transparency">
     <div class="button-container">
         <money-sprouts-icon-with-text
             *ngFor="let user of users$ | async; index as i"
-         
             [avatarFile]="user.avatar | formatUrl"
             [username]="user.name"
-            (userSelected)="proceed($event)">
+            (userSelected)="proceed($event)"
+        >
         </money-sprouts-icon-with-text>
     </div>
 </div>

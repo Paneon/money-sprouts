@@ -16,6 +16,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { LOCALE_ID } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 registerLocaleData(localeDe);
 
@@ -29,11 +30,11 @@ registerLocaleData(localeDe);
         PagesModule,
         HttpClientModule,
         CommonModule,
+        BrowserAnimationsModule,
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'de' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
-
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
