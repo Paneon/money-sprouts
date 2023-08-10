@@ -17,6 +17,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UsersResolver } from './services/users-resolver.service';
 
 registerLocaleData(localeDe);
 
@@ -35,6 +36,7 @@ registerLocaleData(localeDe);
     providers: [
         { provide: LOCALE_ID, useValue: 'de' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
+        UsersResolver,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
