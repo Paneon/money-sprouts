@@ -74,12 +74,18 @@ export class BalanceOverviewComponent implements OnInit {
   }
 
   getFormatedNextPayday(nextPayday: Date): string {
+    if(!nextPayday) {
+      return 'Ask Mom or Dad!';
+    }
     const formattedDate = this.datePipe.transform(nextPayday, 'dd. MMMM yyyy', undefined, 'en');
     const dayName = this.datePipe.transform(nextPayday, 'EEEE', undefined, 'en');
     return `${dayName} (${formattedDate})`;
   }
 
   getDaysUntilNextPayday(nextPayday: Date): string {
+    if(!nextPayday){
+      return 'Ask Mom or Dad!';
+    }
     const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
     return `${dayDifference}`;
   }
