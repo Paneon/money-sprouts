@@ -7,7 +7,6 @@ namespace App\Factory;
 use App\Entity\User;
 use App\Enum\UserRole;
 use App\Repository\UserRepository;
-use DateTime;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -55,52 +54,17 @@ final class UserFactory extends ModelFactory
         ]);
     }
 
-    public function nextPaydayYesterday(): self
-    {
-        return $this->addState([
-            'nextPayday' => new DateTime('-1 day'),
-        ]);
-    }
-
-    public function nextPaydayTwoWeeksAgo(): self
-    {
-        return $this->addState([
-            'nextPayday' => new DateTime('-12 days'),
-        ]);
-    }
-
-    public function tracked(): self
-    {
-        return $this->addState(['tracked' => true]);
-    }
-
-    public function withAllowance(int $allowance): self
-    {
-        return $this->addState([
-            'allowance' => $allowance,
-        ]);
-    }
-
-    public function withAvatar(): self
-    {
-        return $this->addState([
-            'avatar' => AvatarFactory::random(),
-        ]);
-    }
-
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      */
     protected function getDefaults(): array
     {
         return [
-            'allowance' => self::faker()->numberBetween(100, 1000),
             'email' => self::faker()->email,
-            'name' => self::faker()->randomElement(['Thea','Robert']),
+            'name' => self::faker()->name,
             'password' => self::faker()->password,
-            'avatar' => null,
+            'avatar' => AvatarFactory::random(),
             'roles' => [UserRole::USER],
-            'tracked' => false,
         ];
     }
 

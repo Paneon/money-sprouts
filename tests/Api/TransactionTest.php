@@ -7,6 +7,8 @@ namespace App\Tests\Api;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Transaction;
 use App\Enum\TransactionType;
+use App\Factory\AccountFactory;
+use App\Factory\AvatarFactory;
 use App\Factory\ExpenseFactory;
 use App\Factory\UserFactory;
 use App\Story\DefaultCategoriesStory;
@@ -22,7 +24,9 @@ class TransactionTest extends ApiTestCase
 
     public function setUp(): void
     {
+        AvatarFactory::createMany(2);
         $this->user = UserFactory::createOne();
+        AccountFactory::createMany(2);
     }
 
     public function testGetCollection(): void
@@ -57,9 +61,10 @@ class TransactionTest extends ApiTestCase
 
     public function testCreateTransaction(): void
     {
+        $randomAccount = (AccountFactory::random())->getId();
         $response = static::createClient()->request('POST', '/api/transactions', ['json' => [
             'title' => 'Some Transaction',
-            'user' => '/api/users/'.$this->user->getId(),
+            'account' => '/api/accounts/' . $randomAccount,
             'type' => TransactionType::EARNING,
             'value' => 1000,
         ]]);
@@ -69,7 +74,7 @@ class TransactionTest extends ApiTestCase
             '@context' => '/api/contexts/Transaction',
             '@type' => 'Transaction',
             'title' => 'Some Transaction',
-            'user' => '/api/users/'.$this->user->getId(),
+            'account' => '/api/accounts/' . $randomAccount,
         ]);
         $this->assertMatchesRegularExpression('~^/api/transactions/\d+$~', $response->toArray()['@id']);
         $this->assertMatchesResourceItemJsonSchema(Transaction::class);
@@ -77,7 +82,7 @@ class TransactionTest extends ApiTestCase
 
     public function testCreateInvalidTransaction(): void
     {
-        $userIri = '/api/users/'.$this->user->getId();
+        $userIri = '/api/users/' . $this->user->getId();
         static::createClient()->request('POST', '/api/transactions', ['json' => [
             'user' => $userIri,
             'title' => 'Some Transaction',
@@ -99,7 +104,7 @@ class TransactionTest extends ApiTestCase
         $client = static::createClient();
 
         // Use the PATCH method here to do a partial update
-        $client->request('PATCH', '/api/transactions/'.$transaction->getId(), [
+        $client->request('PATCH', '/api/transactions/' . $transaction->getId(), [
             'json' => [
                 'title' => 'New Title',
             ],
@@ -109,7 +114,7 @@ class TransactionTest extends ApiTestCase
         ]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            '@id' => '/api/transactions/'.$transaction->getId(),
+            '@id' => '/api/transactions/' . $transaction->getId(),
             'title' => 'New Title',
         ]);
     }
@@ -120,7 +125,7 @@ class TransactionTest extends ApiTestCase
         $transaction = ExpenseFactory::createOne();
         $id = $transaction->getId();
         $client = static::createClient();
-        $client->request('DELETE', '/api/transactions/'.$transaction->getId());
+        $client->request('DELETE', '/api/transactions/' . $transaction->getId());
         $this->assertResponseStatusCodeSame(204);
         $this->assertNull(
             static::getContainer()->get('doctrine')->getRepository(Transaction::class)->findOneBy([
