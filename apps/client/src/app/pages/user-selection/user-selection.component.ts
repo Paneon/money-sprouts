@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map, of, take } from 'rxjs';
-import { User } from '@money-sprouts/shared/domain';
-import { UserService } from '../../services/user.service';
+import { map, Observable, of } from 'rxjs';
+import { Account } from '@money-sprouts/shared/domain';
+import { AccountService } from '../../services/account.service';
 
 @Component({
     selector: 'money-sprouts-user-selection',
@@ -10,37 +10,34 @@ import { UserService } from '../../services/user.service';
     styleUrls: ['./user-selection.component.scss'],
 })
 export class UserSelectionComponent implements OnInit {
-    users$: Observable<User[]>;
+    accounts$: Observable<Account[]>;
 
     constructor(
         private router: Router,
         public readonly route: ActivatedRoute,
-        private userService: UserService
+        private accountService: AccountService
     ) {}
 
     ngOnInit(): void {
-        this.users$ = of(this.route.snapshot.data['users']).pipe(
-            map((users) =>
-                users.map((user) => ({
-                    ...user,
-                    avatar: this.userService.getAvatarForUser(user),
-                }))
-            )
+        this.accounts$ = of(this.route.snapshot.data['users']).pipe(
+            map((accounts: Account[]) => accounts)
         );
     }
 
-    proceed(username: string) {
-        if (!username) {
+    proceed(name: string) {
+        if (!name) {
             return;
         }
 
-        const users: User[] = this.route.snapshot.data['users'];
-        const selectedUser = users.find((user) => user.name === username);
+        const accounts: Account[] = this.route.snapshot.data['users'];
+        const selectedAccount = accounts.find(
+            (account) => account.name === name
+        );
 
-        if (selectedUser) {
-            this.userService.setUser(selectedUser);
+        if (selectedAccount) {
+            this.accountService.setAccount(selectedAccount);
             setTimeout(() => {
-                this.router.navigate([`user/${username}/dashboard`]);
+                this.router.navigate([`user/${name}/dashboard`]);
             });
         }
     }

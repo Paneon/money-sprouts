@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Transaction, User } from '@money-sprouts/shared/domain';
+import { Account, Transaction } from '@money-sprouts/shared/domain';
 import {
-    Observable,
-    Subject,
     combineLatest,
     map,
+    Observable,
     of,
+    Subject,
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { UserService } from '../../services/user.service';
+import { AccountService } from '../../services/account.service';
 import { TransactionService } from '../../services/transaction.service';
 import {
     debounceTime,
@@ -36,7 +36,7 @@ interface CombinedDataTransaction {
     styleUrls: ['./transaction-history.component.scss'],
 })
 export class TransactionHistoryComponent implements OnInit, OnDestroy {
-    user$: Observable<User | null>;
+    account$: Observable<Account | null>;
 
     combinedDataTransaction$: Observable<CombinedDataTransaction>;
     latestCombinedData: CombinedDataTransaction | null = null;
@@ -51,12 +51,12 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private userService: UserService,
+        private userService: AccountService,
         private transactionService: TransactionService
     ) {}
 
     ngOnInit() {
-        this.user$ = this.userService.currentUser$.pipe(
+        this.account$ = this.userService.currentUser$.pipe(
             distinctUntilChanged((prevUser, currUser) => {
                 return prevUser && currUser
                     ? prevUser.id === currUser.id
@@ -65,7 +65,7 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
             debounceTime(300) // waits 300ms between emisssions
         );
 
-        const transactions$ = this.user$.pipe(
+        const transactions$ = this.account$.pipe(
             switchMap((user) => {
                 console.log(
                     'transaction-history, ngOnInit, switchMap, user$ emitted:',

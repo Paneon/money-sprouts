@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import {
-    Resolve,
     ActivatedRouteSnapshot,
+    Resolve,
     RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { User } from '@money-sprouts/shared/domain';
-import { UserService } from './user.service';
+import { Observable } from 'rxjs';
+import { Account } from '@money-sprouts/shared/domain';
+import { AccountService } from './account.service';
 
 @Injectable({ providedIn: 'root' })
-export class UsersResolver implements Resolve<User[]> {
-    constructor(private userService: UserService) {}
+export class AccountResolver implements Resolve<Account[]> {
+    constructor(private accountService: AccountService) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<User[]> {
-        return this.userService.getUsers();
+    ): Observable<Account[]> {
+        return this.accountService.getUsers();
     }
 }

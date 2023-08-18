@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { UserService } from '../../app/services/user.service';
+import { AccountService } from '../../app/services/account.service';
 import {
-    Observable,
-    Subject,
-    debounceTime,
     distinctUntilChanged,
     filter,
     map,
+    Observable,
+    Subject,
     takeUntil,
 } from 'rxjs';
-import { User } from '@money-sprouts/shared/domain';
+import { Account } from '@money-sprouts/shared/domain';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -20,7 +19,7 @@ import { User } from '@money-sprouts/shared/domain';
 export class PageHeaderComponent implements OnInit, OnDestroy {
     childClass: string;
     username: string;
-    user$: Observable<User | null>;
+    account$: Observable<Account | null>;
     urlSegment: string;
     logout = 'Logout';
     avatar: string;
@@ -29,8 +28,8 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    constructor(private router: Router, public userService: UserService) {
-        this.userService.loading.subscribe((loading) => {
+    constructor(private router: Router, public accountService: AccountService) {
+        this.accountService.loading.subscribe((loading) => {
             this.isLoading = loading;
         });
     }
@@ -40,7 +39,9 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         this.urlSegment = urlSegments[urlSegments.length - 1];
         this.username = urlSegments[2];
 
-        this.user$ = this.userService.currentUser$.pipe(distinctUntilChanged());
+        this.account$ = this.accountService.currentUser$.pipe(
+            distinctUntilChanged()
+        );
 
         this.router.events
             .pipe(
@@ -52,7 +53,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
             .subscribe((username) => {
                 console.log(console.log('User in header: ', username));
                 this.username = username;
-                this.userService.getUserByUsername(username);
+                this.accountService.getAccountByName(username);
             });
     }
 
@@ -92,7 +93,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
     onLogout(event: Event) {
         event.preventDefault();
-        this.userService.logoutOrDeselectUser();
+        this.accountService.logoutOrDeselectUser();
         this.router.navigate(['/logout']);
     }
 

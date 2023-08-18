@@ -1,79 +1,87 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
-import { UserService } from '../../services/user.service';
-import { User } from '@money-sprouts/shared/domain';
+import {
+    debounceTime,
+    distinctUntilChanged,
+    filter,
+    map,
+    Observable,
+    Subject,
+    takeUntil,
+} from 'rxjs';
+import { AccountService } from '../../services/account.service';
+import { Account, User } from '@money-sprouts/shared/domain';
 
 interface Section {
-  name: string;
-  image: string;
+    name: string;
+    image: string;
 }
 
 @Component({
-  selector: 'money-sprouts-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+    selector: 'money-sprouts-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  username: string;
-  user$: Observable<User>;
-  users$: Observable<User[]>;
+    username: string;
+    account$: Observable<Account>;
+    users$: Observable<User[]>;
 
+    urlSegments: string;
 
-  urlSegments: string;
+    sections: Section[] = [
+        {
+            name: 'overview',
+            image: './assets/images/overview.png',
+        },
+        {
+            name: 'history',
+            image: './assets/images/history.png',
+        },
+        {
+            name: 'plan',
+            image: './assets/images/plan.png',
+        },
+    ];
 
-  sections: Section[] = [
-    {
-      name: 'overview',
-      image: './assets/images/overview.png',
-    },
-    {
-      name: 'history',
-      image: './assets/images/history.png',
-    },
-    {
-      name: 'plan',
-      image: './assets/images/plan.png',
-    },
-  ];
+    private destroy$ = new Subject<void>();
 
-  private destroy$ = new Subject<void>();
-
-
-  constructor(
-    private router: Router, 
-    private userService: UserService
+    constructor(
+        private router: Router,
+        private accountService: AccountService
     ) {}
 
-  ngOnInit() {
-    this.sections;
-    const urlSegments = this.router.url.split('/');
-    this.username = urlSegments[2];
-    this.user$ = this.userService.currentUser$.pipe(
-      debounceTime(300), // waits 300ms between emisssions
-      distinctUntilChanged((prevUser, currUser) => {
-        return prevUser && currUser ? prevUser.id === currUser.id : prevUser === currUser;
-      })
-    );  
-    
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        map(() => this.router.url.split('/')[2]),
-        distinctUntilChanged(),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(username => {
-        this.username = username;
-        this.userService.getUserByUsername(username)
-      });
-  }
+    ngOnInit() {
+        this.sections;
+        const urlSegments = this.router.url.split('/');
+        this.username = urlSegments[2];
+        this.account$ = this.accountService.currentUser$.pipe(
+            debounceTime(300), // waits 300ms between emisssions
+            distinctUntilChanged((prevUser, currUser) => {
+                return prevUser && currUser
+                    ? prevUser.id === currUser.id
+                    : prevUser === currUser;
+            })
+        );
 
-  goToSection(section: string) {
-    if (!this.username) {
-      console.error('No username available!');
-      return;
+        this.router.events
+            .pipe(
+                filter((event) => event instanceof NavigationEnd),
+                map(() => this.router.url.split('/')[2]),
+                distinctUntilChanged(),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((username) => {
+                this.username = username;
+                this.accountService.getAccountByName(username);
+            });
     }
-    this.router.navigate([`user/${this.username}/${section}`]);
-  }
+
+    goToSection(section: string) {
+        if (!this.username) {
+            console.error('No username available!');
+            return;
+        }
+        this.router.navigate([`user/${this.username}/${section}`]);
+    }
 }

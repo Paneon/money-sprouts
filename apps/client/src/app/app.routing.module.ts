@@ -9,7 +9,7 @@ import { TransactionHistoryComponent } from './pages/transaction-history/transac
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SpendingsComponent } from './pages/spendings/spendings.component';
-import { UsersResolver } from './services/users-resolver.service';
+import { AccountResolver } from './services/users-resolver.service';
 
 const routes: Routes = [
     {
@@ -28,7 +28,7 @@ const routes: Routes = [
     {
         path: 'userselection',
         component: UserSelectionComponent,
-        resolve: { users: UsersResolver },
+        resolve: { users: AccountResolver },
     },
     {
         path: 'user/:username/dashboard',
