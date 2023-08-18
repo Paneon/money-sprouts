@@ -61,7 +61,7 @@ final class EarningFactory extends ModelFactory
         return [
             'applied' => false,
             'title' => 'Pocket Money',
-            'user' => UserFactory::random(),
+            'account' => AccountFactory::random(),
             'effectiveOn' => null,
             'pocketMoney' => true,
             'category' => CategoryFactory::find(['name' => 'Pocket Money']),

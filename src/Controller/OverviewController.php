@@ -18,14 +18,14 @@ class OverviewController extends AbstractController
     public function __construct(
         private readonly LoggerInterface   $logger,
         private readonly AccountRepository $accountRepository,
-    ) {
+    )
+    {
     }
 
     #[Route(path: "/api/overview/{accountId}.{_format}")]
     public function getOverview(int $accountId, EntityManagerInterface $entityManager): Response
     {
-        $account
-            = $this->accountRepository->find($accountId);
+        $account = $this->accountRepository->find($accountId);
 
         if (!$account) {
             $this->json(null, Response::HTTP_NOT_FOUND);
