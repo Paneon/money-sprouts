@@ -56,22 +56,23 @@ class AppFixtures extends Fixture
 
     public function loadUsers(): void
     {
-        $this->loadUserWithTransactions($this->avatarMale);
-        $this->loadUserWithTransactions($this->avatarFemale);
+        $this->loadUserWithTransactions($this->avatarMale, 'Robert');
+        $this->loadUserWithTransactions($this->avatarFemale, 'Thea');
     }
 
     /**
      * @param Proxy<Avatar>|Avatar $avatar
      * @return void
      */
-    public function loadUserWithTransactions(Proxy|Avatar $avatar): void
+    public function loadUserWithTransactions(Proxy|Avatar $avatar, string $name): void
     {
         $user = UserFactory::createOne([
+            'name' => $name,
             'avatar' => $avatar,
             'tracked' => true
         ]);
 
-        EarningFactory::createMany(2, [
+        EarningFactory::createMany(4, [
             'user' => $user,
             'category' => $this->catEarn,
             'value' => 3000,
@@ -88,7 +89,8 @@ class AppFixtures extends Fixture
 
     public function loadAdmin(ObjectManager $manager): void
     {
-        $admin = UserFactory::new()->admin($_ENV['ADMIN_PASSWORD'])->create()
+        $admin = UserFactory::new()
+            ->admin($_ENV['ADMIN_PASSWORD'])->create()
             ->setEmail($_ENV['ADMIN_MAIL'])
             ->setName('Admin');
 

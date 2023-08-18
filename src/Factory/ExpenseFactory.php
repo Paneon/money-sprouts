@@ -31,7 +31,7 @@ final class ExpenseFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'applied' => false,
+            'applied' => self::faker()->boolean(),
             'title' => self::faker()->randomElement([
                 'Book', 'Comic', 'Pokemon animal', 'Sweets', 'Sticker', 'Toy', 'Toy Car'
             ]),
