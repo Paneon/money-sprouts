@@ -73,7 +73,7 @@ class AppFixtures extends Fixture
             'avatar' => $avatar,
         ]);
 
-        EarningFactory::createMany(2, [
+        EarningFactory::createMany(4, [
             'applied' => true,
             'account' => $account,
             'category' => $this->catEarn,
@@ -91,7 +91,8 @@ class AppFixtures extends Fixture
 
     public function loadAdmin(ObjectManager $manager): void
     {
-        $admin = UserFactory::new()->admin($_ENV['ADMIN_PASSWORD'])->create()
+        $admin = UserFactory::new()
+            ->admin($_ENV['ADMIN_PASSWORD'])->create()
             ->setEmail($_ENV['ADMIN_MAIL'])
             ->setName('Admin');
 

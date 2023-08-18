@@ -1,156 +1,157 @@
 @import '../../styles/abstract';
 
 .tablehead-image-wrapper {
-    text-align: center;
+  text-align: center;
 
-    img {
-        padding-bottom: 15px;
-      
-    }
+  img {
+    padding-bottom: 15px;
+  }
 }
 
 .toggle-content-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    color: $tertiary-color;
-    padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: $tertiary-color;
+  padding-top: 15px;
 
-    img {
-        width: 50px;
-        height: 50px;
-    }
+  img {
+    width: 50px;
+    height: 50px;
+  }
 
-    @media (max-width: 768px) {
-        font-size: 1rem;
-    }
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 }
 
 .custom-table-button-grid {
-    @include create-text-box(70%, 0.9, 2rem, 5rem);
-    
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    grid-template-areas: 
-      "table table"
-      "button button";
-  
-    table.transaction-table {
-        grid-area: table;
-        width: 90%;
-        margin: 0 auto;
+  @include create-text-box(70%, 0.9, 2rem, 5rem);
 
-    }
-  
-    div {
-        grid-area: button;
-        display: flex;    
-        justify-content: center;
-        align-items: center;
-    }
-  
-    @media (max-width: 1200px){
-        @include create-text-box(80%, 0.9, 2rem, 4rem);
-    }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  grid-template-areas:
+    'table table'
+    'button button';
 
-    @media (max-width: 1000px){
-        @include create-text-box(90%, 0.9, 2rem, 3rem);
-    }
-
-    @media (max-width: 768px) {
-        min-width: 380px;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
+  table.transaction-table {
+    grid-area: table;
+    width: 90%;
+    margin: 0 auto;
   }
 
-.transaction-table {
-    border-collapse: collapse;
-    width: 100%;
-  
-    thead {
-      th {
-        border-bottom: 1px solid $primary-color; 
+  div {
+    grid-area: button;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-        img {
-          width: 50px;
-          vertical-align: middle; 
+  @media (max-width: 1200px) {
+    @include create-text-box(80%, 0.9, 2rem, 4rem);
+  }
+
+  @media (max-width: 1000px) {
+    @include create-text-box(90%, 0.9, 2rem, 3rem);
+  }
+
+  @media (max-width: 768px) {
+    min-width: 380px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.transaction-table {
+  border-collapse: collapse;
+  width: 100%;
+
+  thead {
+    th {
+      border-bottom: 1px solid $primary-color;
+
+      img {
+        width: 50px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $primary-color;
+    }
+
+    td {
+      padding: 10px;
+      vertical-align: top;
+
+      .transaction-title {
+        font-size: 1.2rem;
+      }
+
+      .income-amount,
+      .expense-amount {
+        font-weight: bold;
+        margin-right: 5px;
+      }
+
+      .income-amount {
+        color: $dark-green;
+      }
+
+      .expense-amount {
+        color: $dark-red;
+      }
+
+      &.not-applied {
+        .income-amount,
+        .expense-amount {
+          color: $grey;
+        }
+      }
+
+      .income-amount + .transaction-title,
+      .expense-amount + .transaction-title {
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .transaction-table {
+    tbody {
+      td {
+        .transaction-title {
+          font-size: 1rem;
+        }
+
+        .income-amount,
+        .expense-amount {
+          font-size: 1rem;
         }
       }
     }
-  
-    tbody {
-      tr {
-        border-bottom: 1px solid $primary-color; 
-      }
-  
-      td {
-        padding: 10px;
-        vertical-align: top;
-  
-        .transaction-title {
-          font-size: 1.2rem;
-        }
-  
-        .income-amount {
-          color: $dark-green;
-          font-weight: bold;
-          margin-right: 5px;
-        }
-  
-        .expense-amount {
-          color: $dark-red;
-          font-weight: bold;
-          margin-right: 5px;
-        }
+  }
+}
 
+@media (max-width: 660px) {
+  .transaction-table {
+    tbody {
+      td {
         .income-amount + .transaction-title {
-            white-space: nowrap;
+          display: none;
         }
 
         .expense-amount + .transaction-title {
-            white-space: nowrap;
+          display: none;
         }
       }
     }
   }
-  
-  @media (max-width: 767px) {
-    .transaction-table {
-      tbody {
-    
-        td {
-            .transaction-title {
-                font-size: 1rem;
-            }
-
-            .income-amount, .expense-amount {
-                font-size: 1rem;
-            }      
-        }
-      }
-    }
-  }
-
-  @media (max-width: 660px) {
-    .transaction-table {
-      tbody {
-    
-        td {
-          .income-amount + .transaction-title {
-            display: none;
-            }
-
-            .expense-amount + .transaction-title {
-            display: none;
-            }
-          
-        }
-      }
-    }
-  }
-  
+}

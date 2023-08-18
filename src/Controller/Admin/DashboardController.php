@@ -64,6 +64,6 @@ class DashboardController extends AbstractDashboardController
             throw new Exception('Invalid User Entity');
         }
 
-        return parent::configureUserMenu($user)->setAvatarUrl($user->getAvatar()->getUrl());
+        return parent::configureUserMenu($user)->setAvatarUrl($user->getAvatar()?->getUrl());
     }
 }

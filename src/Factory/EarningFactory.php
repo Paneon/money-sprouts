@@ -59,7 +59,7 @@ final class EarningFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'applied' => false,
+            'applied' => true,
             'title' => 'Pocket Money',
             'account' => AccountFactory::random(),
             'effectiveOn' => null,
