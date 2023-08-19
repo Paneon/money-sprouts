@@ -71,7 +71,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         }
     }
 
-    goToUserselection() {
+    goToAccountSelection() {
         this.router.navigate(['userselection']);
     }
 

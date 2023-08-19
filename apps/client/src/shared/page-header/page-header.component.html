@@ -22,8 +22,8 @@
                     <button
                         *ngIf="!isLoading"
                         class="btn btn-link"
-                        (click)="goToUserselection()"
-                        title="Go to user selection"
+                        (click)="goToAccountSelection()"
+                        title="Go to account selection"
                     >
                         <img
                             [src]="
@@ -31,7 +31,7 @@
                                     account$ | async
                                 )
                             "
-                            alt="User avatar"
+                            alt="Account avatar"
                             class="image-50x50"
                         />
                     </button>
