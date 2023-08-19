@@ -2,31 +2,29 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
+use App\Entity\Account;
 use App\Factory\EarningFactory;
-use App\Repository\AccountRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 
-class OverviewController extends AbstractController
+#[AsController]
+class PocketMoneyProcessor extends AbstractController
 {
     public function __construct(
-        private readonly LoggerInterface   $logger,
-        private readonly AccountRepository $accountRepository,
+        private readonly LoggerInterface $logger,
     )
     {
     }
 
-    #[Route(path: "/api/overview/{accountId}.{_format}")]
-    public function getOverview(int $accountId, EntityManagerInterface $entityManager): Response
+    public function __invoke(?Account $account, EntityManagerInterface $entityManager): Account
     {
-        $account = $this->accountRepository->find($accountId);
-
+        $this->logger->debug(PocketMoneyProcessor::class . '::__invoke', [$account]);
         if (!$account) {
             $this->json(null, Response::HTTP_NOT_FOUND);
         }
@@ -44,12 +42,11 @@ class OverviewController extends AbstractController
             $this->logger->debug('Set Next Payday to {next}', ['next' => $next]);
 
             $pocketMoney = EarningFactory::createPocketMoney($account, $effectiveOn);
-
             $entityManager->persist($pocketMoney);
             $entityManager->persist($account);
             $entityManager->flush();
         }
 
-        return $this->json($account, Response::HTTP_OK);
+        return $account;
     }
 }
