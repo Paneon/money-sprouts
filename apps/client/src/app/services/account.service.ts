@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {
     BehaviorSubject,
     catchError,
@@ -12,7 +11,7 @@ import { Account } from '@money-sprouts/shared/domain';
 import { ApiService } from './api.service';
 
 enum LocalStorageField {
-    USER = 'selectedUser',
+    ACCOUNT = 'selectedAccount',
 }
 
 @Injectable({
@@ -21,14 +20,18 @@ enum LocalStorageField {
 export class AccountService {
     private currentAccountSubject = new BehaviorSubject<Account | null>(null);
     currentAccount$ = this.currentAccountSubject.asObservable().pipe(
-        tap((user) => console.log('Emission from currentUser$: ', user)),
+        tap((account) =>
+            console.log('Emission from currentAccount$: ', account)
+        ),
         shareReplay(1)
     );
     loading = new BehaviorSubject<boolean>(false);
 
-    // Declare users$ as an Observable using shareReplay and cache last emitted value
+    // Declare accounts$ as an Observable using shareReplay and cache last emitted value
     private accounts$ = this.api.getAccounts().pipe(
-        tap((users) => console.log('Fetched accounts: ', users)),
+        tap((accounts) =>
+            console.log('[AccountService] Fetched accounts: ', accounts)
+        ),
         catchError((err) => {
             console.error('Error fetching accounts:', err);
             return throwError(() => err);
@@ -36,15 +39,15 @@ export class AccountService {
         shareReplay(1)
     );
 
-    constructor(private http: HttpClient, private api: ApiService) {
-        const savedUser = localStorage.getItem(LocalStorageField.USER);
-        if (savedUser) {
-            this.currentAccountSubject.next(JSON.parse(savedUser));
+    constructor(private api: ApiService) {
+        const savedAccount = localStorage.getItem(LocalStorageField.ACCOUNT);
+        if (savedAccount) {
+            this.currentAccountSubject.next(JSON.parse(savedAccount));
         }
     }
 
-    // fetch all users and use tap to store them locally
-    getUsers(): Observable<Account[]> {
+    // fetch all accounts and use tap to store them locally
+    getAccounts(): Observable<Account[]> {
         return this.accounts$;
     }
 
@@ -55,7 +58,7 @@ export class AccountService {
     getAccountByName(name: string): void {
         this.accounts$.subscribe((accounts) => {
             const account = accounts.find((a: Account) => a.name === name);
-            // currentUserSubject only emits new value if user is not the same as the current one
+            // currentAccountSubject only emits new value if account is not the same as the current one
             if (
                 !this.currentAccountSubject.getValue() ||
                 (account &&
@@ -71,8 +74,11 @@ export class AccountService {
             'Storing selected account in local storage: ',
             JSON.stringify(account)
         );
-        localStorage.setItem(LocalStorageField.USER, JSON.stringify(account));
-        console.log('Setting user:', account);
+        localStorage.setItem(
+            LocalStorageField.ACCOUNT,
+            JSON.stringify(account)
+        );
+        console.log('Setting account:', account);
         this.currentAccountSubject.next(account);
     }
 
@@ -80,9 +86,9 @@ export class AccountService {
         return account?.avatar?.url ?? '';
     }
 
-    logoutOrDeselectUser() {
+    logoutOrDeselectAccount() {
         this.loading.next(true);
-        localStorage.removeItem(LocalStorageField.USER);
+        localStorage.removeItem(LocalStorageField.ACCOUNT);
         this.currentAccountSubject.next(null);
         this.loading.next(false);
     }

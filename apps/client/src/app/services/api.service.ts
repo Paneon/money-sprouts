@@ -5,7 +5,6 @@ import {
     Account,
     PagedCollection,
     Transaction,
-    User,
 } from '@money-sprouts/shared/domain';
 import { environment } from '../../environments/environments';
 
@@ -33,11 +32,6 @@ export class ApiService {
             })
         );
     }
-
-    getUserById(id: number): Observable<User> {
-        return this.http.get<User>(`${this.baseUrl}/users/${id}.json`);
-    }
-
     getAccountById(id: number): Observable<Account> {
         console.log('refresh account ', id);
         return this.http.get<Account>(`${this.baseUrl}/accounts/${id}.json`);

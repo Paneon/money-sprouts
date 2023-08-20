@@ -9,13 +9,13 @@ import { Account } from '@money-sprouts/shared/domain';
 import { AccountService } from './account.service';
 
 @Injectable({ providedIn: 'root' })
-export class AccountResolver implements Resolve<Account[]> {
+export class AccountsResolver implements Resolve<Account[]> {
     constructor(private accountService: AccountService) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<Account[]> {
-        return this.accountService.getUsers();
+        return this.accountService.getAccounts();
     }
 }

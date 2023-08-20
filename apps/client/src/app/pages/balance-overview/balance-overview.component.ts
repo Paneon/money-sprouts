@@ -11,7 +11,7 @@ import { AccountService } from '../../services/account.service';
 import { DatePipe } from '@angular/common';
 
 interface CombinedDataOverview {
-    account: Account | null; // Replace 'any' with your User type
+    account: Account | null; // Replace 'any' with your Account type
     nextPayday: Date | null;
     formatedNextPayday: string;
     daysUntilNextPayday: string;
@@ -35,17 +35,20 @@ export class BalanceOverviewComponent implements OnInit {
     ngOnInit() {
         this.account$ = this.accountService.currentAccount$.pipe(
             debounceTime(300), // waits 300ms between emisssions
-            distinctUntilChanged((prevUser, currUser) => {
-                return prevUser && currUser
-                    ? prevUser.id === currUser.id
-                    : prevUser === currUser;
+            distinctUntilChanged((prev, current) => {
+                return prev && current
+                    ? prev.id === current.id
+                    : prev === current;
             })
         );
 
         this.nextPayday$ = this.account$.pipe(
-            map((user) => {
-                console.log('next payday of this user: ', user?.nextPayday);
-                return user ? user.nextPayday : null;
+            map((account) => {
+                console.log(
+                    'next payday of this account: ',
+                    account?.nextPayday
+                );
+                return account ? account.nextPayday : null;
             })
         );
 

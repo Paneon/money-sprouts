@@ -2,7 +2,7 @@
     <div
         class="container-fluid d-flex justify-content-between align-items-center"
     >
-        <div *ngIf="urlSegment !== 'userselection'">
+        <div *ngIf="!isOnAccountSelectionPage()">
             <button
                 class="btn btn-link"
                 (click)="goBack()"
@@ -17,7 +17,7 @@
         </div>
 
         <div class="d-flex justify-content-center">
-            <div *ngIf="urlSegment !== 'userselection'">
+            <div *ngIf="!isOnAccountSelectionPage()">
                 <div class="d-flex align-items-center">
                     <button
                         *ngIf="!isLoading"

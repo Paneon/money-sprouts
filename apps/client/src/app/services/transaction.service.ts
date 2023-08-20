@@ -16,7 +16,7 @@ import { ApiService } from './api.service';
     providedIn: 'root',
 })
 export class TransactionService {
-    private transactionCache: { [userId: number]: Transaction[] } = {};
+    private transactionCache: { [accountId: number]: Transaction[] } = {};
 
     private transactions$ = this.api.getTransactions().pipe(
         tap((transactions) =>
@@ -37,15 +37,15 @@ export class TransactionService {
         return this.transactions$;
     }
 
-    getTransactionsByUserId(userId: number): Observable<Transaction[]> {
-        if (this.transactionCache[userId]) {
-            return of(this.transactionCache[userId]);
+    getTransactionsByAccountId(accountId: number): Observable<Transaction[]> {
+        if (this.transactionCache[accountId]) {
+            return of(this.transactionCache[accountId]);
         }
 
-        return this.api.getTransactionsByAccountId(userId).pipe(
+        return this.api.getTransactionsByAccountId(accountId).pipe(
             tap((transactions) => {
                 console.log('Fetched transactions:', transactions);
-                this.transactionCache[userId] = transactions;
+                this.transactionCache[accountId] = transactions;
             }),
             catchError((err) => {
                 console.error('Error fetching transactions: ', err);

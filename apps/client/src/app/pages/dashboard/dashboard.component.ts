@@ -9,8 +9,13 @@ import {
     Subject,
     takeUntil,
 } from 'rxjs';
+import { Account } from '@money-sprouts/shared/domain';
 import { AccountService } from '../../services/account.service';
-import { Account, User } from '@money-sprouts/shared/domain';
+import {
+    routeToHistory,
+    routeToOverview,
+    routeToPlan,
+} from '../../app.routing.module';
 
 interface Section {
     name: string;
@@ -23,23 +28,22 @@ interface Section {
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-    username: string;
+    name: string;
     account$: Observable<Account>;
-    users$: Observable<User[]>;
 
     urlSegments: string;
 
     sections: Section[] = [
         {
-            name: 'overview',
+            name: 'Overview',
             image: './assets/images/overview.png',
         },
         {
-            name: 'history',
+            name: 'History',
             image: './assets/images/history.png',
         },
         {
-            name: 'plan',
+            name: 'Plan',
             image: './assets/images/plan.png',
         },
     ];
@@ -54,13 +58,11 @@ export class DashboardComponent implements OnInit {
     ngOnInit() {
         this.sections;
         const urlSegments = this.router.url.split('/');
-        this.username = urlSegments[2];
+        this.name = urlSegments[2];
         this.account$ = this.accountService.currentAccount$.pipe(
             debounceTime(300), // waits 300ms between emisssions
-            distinctUntilChanged((prevUser, currUser) => {
-                return prevUser && currUser
-                    ? prevUser.id === currUser.id
-                    : prevUser === currUser;
+            distinctUntilChanged((prev, curr) => {
+                return prev && curr ? prev.id === curr.id : prev === curr;
             })
         );
 
@@ -79,17 +81,28 @@ export class DashboardComponent implements OnInit {
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
-            .subscribe((username) => {
-                this.username = username;
-                this.accountService.getAccountByName(username);
+            .subscribe((name) => {
+                this.name = decodeURI(name);
+                this.accountService.getAccountByName(name);
             });
     }
 
     goToSection(section: string) {
-        if (!this.username) {
-            console.error('No username available!');
+        if (!this.name) {
+            console.error('No account name available!');
             return;
         }
-        this.router.navigate([`user/${this.username}/${section}`]);
+
+        switch (section) {
+            case 'Overview':
+                this.router.navigate([routeToOverview(this.name)]);
+                break;
+            case 'History':
+                this.router.navigate([routeToHistory(this.name)]);
+                break;
+            case 'Plan':
+                this.router.navigate([routeToPlan(this.name)]);
+                break;
+        }
     }
 }
