@@ -16,6 +16,6 @@ export class AccountResolver implements Resolve<Account[]> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<Account[]> {
-        return this.accountService.getUsers();
+        return this.accountService.getAccounts();
     }
 }
