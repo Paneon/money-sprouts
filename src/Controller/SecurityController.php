@@ -8,6 +8,7 @@ use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -17,6 +18,10 @@ class SecurityController extends AbstractController
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
+
+        if ($this->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)) {
+            return $this->redirect('/accountselection');
+        }
 
         return $this->render('@EasyAdmin/page/login.html.twig', [
             // parameters usually defined in Symfony login forms
@@ -47,7 +52,7 @@ class SecurityController extends AbstractController
             'csrf_token_intention' => 'authenticate',
 
             // the URL users are redirected to after the login (default: '/admin')
-            'target_path' => '/userselection',
+            'target_path' => '/accountselection',
 
             // the label displayed for the username form field (the |trans filter is applied to it)
             'username_label' => 'Your username',

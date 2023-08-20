@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Factory\EarningFactory;
-use App\Repository\UserRepository;
+use App\Repository\AccountRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -16,44 +16,40 @@ use Symfony\Component\Routing\Annotation\Route;
 class OverviewController extends AbstractController
 {
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly UserRepository  $userRepository,
+        private readonly LoggerInterface   $logger,
+        private readonly AccountRepository $accountRepository,
     )
     {
     }
 
-    #[Route(path: "/api/overview/{userId}.{_format}")]
-    public function getOverview(int $userId, EntityManagerInterface $entityManager): Response
+    #[Route(path: "/api/overview/{accountId}.{_format}")]
+    public function getOverview(int $accountId, EntityManagerInterface $entityManager): Response
     {
-        $user = $this->userRepository->find($userId);
+        $account = $this->accountRepository->find($accountId);
 
-        if (!$user) {
+        if (!$account) {
             $this->json(null, Response::HTTP_NOT_FOUND);
-        }
-
-        if (!$user->isTracked()) {
-            return $this->json(null, Response::HTTP_BAD_REQUEST);
         }
 
         $now = new DateTime();
 
-        while ($now >= $user->getNextPayday()) {
+        while ($now >= $account->getNextPayday()) {
             // Update balance and nextPayday
-            $next = clone $user->getNextPayday();
+            $next = clone $account->getNextPayday();
             $next->modify('+1 week');
 
-            $effectiveOn = clone $user->getNextPayday();
+            $effectiveOn = clone $account->getNextPayday();
 
-            $user->setNextPayday($next);
+            $account->setNextPayday($next);
             $this->logger->debug('Set Next Payday to {next}', ['next' => $next]);
 
-            $pocketMoney = EarningFactory::createPocketMoney($user, $effectiveOn);
+            $pocketMoney = EarningFactory::createPocketMoney($account, $effectiveOn);
 
             $entityManager->persist($pocketMoney);
-            $entityManager->persist($user);
+            $entityManager->persist($account);
             $entityManager->flush();
         }
 
-        return $this->json($user, Response::HTTP_OK);
+        return $this->json($account, Response::HTTP_OK);
     }
 }

@@ -13,7 +13,6 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -56,30 +55,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private int $allowance = 0;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTime $nextPayday = null;
-
     #[ORM\ManyToOne(targetEntity: Avatar::class)]
     private ?Avatar $avatar = null;
 
-    /**
-     * @var Collection<int, Transaction> $transactions
-     */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transaction::class, orphanRemoval: true)]
-    private Collection $transactions;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $balance = 0;
-
-    #[ORM\Column]
-    private ?bool $tracked = false;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class)]
+    private Collection $accounts;
 
     public function __construct()
     {
-        $this->transactions = new ArrayCollection();
+        $this->accounts = new ArrayCollection();
     }
 
     public function __toString()
@@ -152,28 +136,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getAllowance(): int
-    {
-        return $this->allowance;
-    }
-
-    public function setAllowance(int $allowance): User
-    {
-        $this->allowance = $allowance;
-        return $this;
-    }
-
-    public function getNextPayday(): ?DateTime
-    {
-        return $this->nextPayday;
-    }
-
-    public function setNextPayday(?DateTime $dateTime): User
-    {
-        $this->nextPayday = $dateTime;
-        return $this;
-    }
-
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
@@ -191,35 +153,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Transaction>
-     */
-    public function getTransactions(): Collection
-    {
-        return $this->transactions;
-    }
-
-    public function addTransaction(Transaction $transaction): static
-    {
-        if (!$this->transactions->contains($transaction)) {
-            $this->transactions->add($transaction);
-            $transaction->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTransaction(Transaction $transaction): static
-    {
-        if ($this->transactions->removeElement($transaction)) {
-            // set the owning side to null (unless already changed)
-            if ($transaction->getUser() === $this) {
-                $transaction->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getName(): ?string
     {
@@ -232,26 +165,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBalance(): int
+    /**
+     * @return Collection<int, Account>
+     */
+    public function getAccounts(): Collection
     {
-        return $this->balance === null ? 0 : $this->balance;
+        return $this->accounts;
     }
 
-    public function setBalance(int $balance): static
+    public function addAccount(Account $account): static
     {
-        $this->balance = $balance;
+        if (!$this->accounts->contains($account)) {
+            $this->accounts->add($account);
+            $account->setUser($this);
+        }
 
         return $this;
     }
 
-    public function isTracked(): ?bool
+    public function removeAccount(Account $account): static
     {
-        return $this->tracked;
-    }
-
-    public function setTracked(bool $tracked): static
-    {
-        $this->tracked = $tracked;
+        if ($this->accounts->removeElement($account)) {
+            // set the owning side to null (unless already changed)
+            if ($account->getUser() === $this) {
+                $account->setUser(null);
+            }
+        }
 
         return $this;
     }

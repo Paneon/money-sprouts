@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Factory;
 
+use App\Entity\Account;
 use App\Entity\Transaction;
-use App\Entity\User;
 use DateTime;
 use Zenstruck\Foundry\ModelFactory;
 
@@ -27,20 +27,20 @@ final class EarningFactory extends ModelFactory
         return Transaction::class;
     }
 
-    public static function createPocketMoney(User $user, ?DateTime $effectiveOn = null): Transaction
+    public static function createPocketMoney(Account $account, ?DateTime $effectiveOn = null): Transaction
     {
         $pocketMoney = new Transaction();
         $pocketMoney
             ->setPocketMoney(true)
-            ->setUser($user)
+            ->setAccount($account)
             ->setEffectiveOn($effectiveOn)
             ->setTitle('Pocket Money')
             ->setApplied(true)
-            ->setValue($user->getAllowance());
+            ->setValue($account->getAllowance());
         return $pocketMoney;
     }
 
-    public function pocketMoney(User $user, ?DateTime $effectiveOn): self
+    public function pocketMoney(Account $account, ?DateTime $effectiveOn): self
     {
         return $this->addState([
             'title' => 'Pocket Money',
@@ -48,8 +48,8 @@ final class EarningFactory extends ModelFactory
             'effectiveOn' => $effectiveOn,
             'category' => CategoryFactory::find(['name' => 'Pocket Money']),
             'applied' => true,
-            'user' => $user,
-            'value' => $user->getAllowance(),
+            'account' => $account,
+            'value' => $account->getAllowance(),
         ]);
     }
 
@@ -61,7 +61,7 @@ final class EarningFactory extends ModelFactory
         return [
             'applied' => true,
             'title' => 'Pocket Money',
-            'user' => UserFactory::random(),
+            'account' => AccountFactory::random(),
             'effectiveOn' => null,
             'pocketMoney' => true,
             'category' => CategoryFactory::find(['name' => 'Pocket Money']),

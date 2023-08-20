@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Story;
 
 use App\Entity\User;
+use App\Factory\AccountFactory;
+use App\Factory\AvatarFactory;
 use App\Factory\UserFactory;
 use Zenstruck\Foundry\Story;
 
@@ -15,12 +17,8 @@ final class UserWithOutstandingPocketMoneyStory extends Story
 {
     public function build(): void
     {
-        $this->addState(
-            'user',
-            UserFactory::new()
-                ->tracked()
-                ->withAllowance(1000)
-                ->nextPaydayYesterday()
-        );
+        AvatarFactory::createOne();
+        UserFactory::createOne();
+        AccountFactory::createOne();
     }
 }

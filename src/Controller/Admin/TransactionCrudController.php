@@ -28,7 +28,7 @@ class TransactionCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('title');
-        yield AssociationField::new('user');
+        yield AssociationField::new('account');
         yield AssociationField::new('category');
         yield ChoiceField::new('type')
             ->setChoices([

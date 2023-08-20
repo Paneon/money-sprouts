@@ -4,7 +4,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { CommonModule } from '@angular/common';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { FormatUrlPipe } from '../app/pipes/format-url.pipe';
-import { UserService } from '../app/services/user.service';
+import { AccountService } from '../app/services/account.service';
 
 @NgModule({
     imports: [CommonModule],
@@ -22,6 +22,6 @@ import { UserService } from '../app/services/user.service';
         CommonModule,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    providers: [UserService],
+    providers: [AccountService],
 })
 export class SharedModule {}

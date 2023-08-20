@@ -42,17 +42,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @return User[]
-     */
-    public function findTrackedUsers(): array
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.tracked = 1')
-            ->getQuery()
-            ->getResult();
-    }
-
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

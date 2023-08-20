@@ -83,6 +83,7 @@
       "@php vendor/bin/phpstan analyze src --level=5 --configuration=extension.neon",
       "@php bin/console cache:clear --env=dev"
     ],
+    "php:test": "@composer run php:tests",
     "php:tests": [
       "@php bin/phpunit"
     ],

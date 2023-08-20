@@ -1,32 +1,61 @@
 <nav class="navbar navbar-light bg-light">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <div *ngIf="urlSegment !== 'userselection'">
-            <button 
-                class="btn btn-link" 
+    <div
+        class="container-fluid d-flex justify-content-between align-items-center"
+    >
+        <div *ngIf="!isOnAccountSelectionPage()">
+            <button
+                class="btn btn-link"
                 (click)="goBack()"
-                title="Go back to previous page">
-                <img src="assets/images/go-back-arrow_small.png" alt="Go back arrow" class="image-50x50" />
+                title="Go back to previous page"
+            >
+                <img
+                    src="assets/images/go-back-arrow_small.png"
+                    alt="Go back arrow"
+                    class="image-50x50"
+                />
             </button>
         </div>
 
         <div class="d-flex justify-content-center">
-            <div *ngIf="urlSegment !== 'userselection'">
-                <div class="d-flex align-items-center"> 
-                    <button *ngIf="!isLoading" class="btn btn-link" (click)="goToUserselection()" title="Go to user selection">
-                        <img [src]="userService.getAvatarForUser(user$ | async)"  alt="User avatar" class="image-50x50" />
+            <div *ngIf="!isOnAccountSelectionPage()">
+                <div class="d-flex align-items-center">
+                    <button
+                        *ngIf="!isLoading"
+                        class="btn btn-link"
+                        (click)="goToAccountSelection()"
+                        title="Go to account selection"
+                    >
+                        <img
+                            [src]="
+                                accountService.getAvatarForAccount(
+                                    account$ | async
+                                )
+                            "
+                            alt="Account avatar"
+                            class="image-50x50"
+                        />
                     </button>
-              
+
                     <div class="navbar-text page-title">
                         {{ pageTitle }}
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="d-flex justify-content-end align-items-center">
-            <a href="/logout" (click)="onLogout($event)" class="btn btn-link" title="Logout">
-                <img src="assets/images/logout-round-grey_small.png" alt="logout button" class="image-50x50" />
+            <a
+                href="/logout"
+                (click)="onLogout($event)"
+                class="btn btn-link"
+                title="Logout"
+            >
+                <img
+                    src="assets/images/logout-round-grey_small.png"
+                    alt="logout button"
+                    class="image-50x50"
+                />
             </a>
         </div>
-    </div> 
+    </div>
 </nav>
