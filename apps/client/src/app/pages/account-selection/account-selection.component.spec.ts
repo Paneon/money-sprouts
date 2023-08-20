@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserSelectionComponent } from './user-selection.component';
+import { AccountSelectionComponent } from './account-selection.component';
 
-describe('UserSelectionComponent', () => {
-  let component: UserSelectionComponent;
-  let fixture: ComponentFixture<UserSelectionComponent>;
+describe('AccountSelectionComponent', () => {
+    let component: AccountSelectionComponent;
+    let fixture: ComponentFixture<AccountSelectionComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [UserSelectionComponent],
-    }).compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [AccountSelectionComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(UserSelectionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(AccountSelectionComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

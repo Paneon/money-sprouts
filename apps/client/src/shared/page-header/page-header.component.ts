@@ -10,6 +10,7 @@ import {
     takeUntil,
 } from 'rxjs';
 import { Account } from '@money-sprouts/shared/domain';
+import { RoutePath, routeToDashboard } from '../../app/app.routing.module';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -18,7 +19,7 @@ import { Account } from '@money-sprouts/shared/domain';
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {
     childClass: string;
-    username: string;
+    name: string;
     account$: Observable<Account | null>;
     urlSegment: string;
     logout = 'Logout';
@@ -37,9 +38,9 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         const urlSegments = this.router.url.split('/');
         this.urlSegment = urlSegments[urlSegments.length - 1];
-        this.username = urlSegments[2];
+        this.name = urlSegments[2];
 
-        this.account$ = this.accountService.currentUser$.pipe(
+        this.account$ = this.accountService.currentAccount$.pipe(
             distinctUntilChanged()
         );
 
@@ -50,29 +51,33 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
-            .subscribe((username) => {
-                console.log(console.log('User in header: ', username));
-                this.username = username;
-                this.accountService.getAccountByName(username);
+            .subscribe((name) => {
+                console.log('Account in header: ', name);
+                this.name = name;
+                this.accountService.getAccountByName(name);
             });
     }
 
     goBack() {
         if (this.urlSegment === 'dashboard') {
-            this.router.navigate(['userselection']);
+            this.router.navigate([RoutePath.AccountSelection]);
         } else if (
             this.urlSegment === 'history' ||
             this.urlSegment === 'plan' ||
             this.urlSegment === 'overview'
         ) {
-            this.router.navigate([`user/${this.username}/dashboard`]);
+            this.router.navigate([routeToDashboard(this.name)]);
         } else {
             return;
         }
     }
 
+    isOnAccountSelectionPage(): boolean {
+        return this.urlSegment === RoutePath.AccountSelection;
+    }
+
     goToAccountSelection() {
-        this.router.navigate(['userselection']);
+        this.router.navigate([RoutePath.AccountSelection]);
     }
 
     get pageTitle(): string {
@@ -93,7 +98,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
     onLogout(event: Event) {
         event.preventDefault();
-        this.accountService.logoutOrDeselectUser();
+        this.accountService.logoutOrDeselectAccount();
         this.router.navigate(['/logout']);
     }
 

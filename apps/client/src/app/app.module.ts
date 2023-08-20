@@ -16,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AccountResolver } from './services/users-resolver.service';
+import { AccountsResolver } from './services/accounts-resolver.service';
 
 registerLocaleData(localeDe);
 
@@ -35,7 +35,7 @@ registerLocaleData(localeDe);
     providers: [
         { provide: LOCALE_ID, useValue: 'de' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
-        AccountResolver,
+        AccountsResolver,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Account } from '@money-sprouts/shared/domain';
 import { AccountService } from '../../services/account.service';
+import { routeToDashboard } from '../../app.routing.module';
 
 @Component({
-    selector: 'money-sprouts-user-selection',
-    templateUrl: './user-selection.component.html',
-    styleUrls: ['./user-selection.component.scss'],
+    selector: 'money-sprouts-account-selection',
+    templateUrl: './account-selection.component.html',
+    styleUrls: ['./account-selection.component.scss'],
 })
-export class UserSelectionComponent implements OnInit {
+export class AccountSelectionComponent implements OnInit {
     accounts$: Observable<Account[]>;
 
     constructor(
@@ -19,9 +20,7 @@ export class UserSelectionComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.accounts$ = of(this.route.snapshot.data['users']).pipe(
-            map((accounts: Account[]) => accounts)
-        );
+        this.accounts$ = of(this.route.snapshot.data['accounts']);
     }
 
     proceed(name: string) {
@@ -29,7 +28,7 @@ export class UserSelectionComponent implements OnInit {
             return;
         }
 
-        const accounts: Account[] = this.route.snapshot.data['users'];
+        const accounts: Account[] = this.route.snapshot.data['accounts'];
         const selectedAccount = accounts.find(
             (account) => account.name === name
         );
@@ -37,7 +36,7 @@ export class UserSelectionComponent implements OnInit {
         if (selectedAccount) {
             this.accountService.setAccount(selectedAccount);
             setTimeout(() => {
-                this.router.navigate([`user/${name}/dashboard`]);
+                this.router.navigate([routeToDashboard(name)]);
             });
         }
     }

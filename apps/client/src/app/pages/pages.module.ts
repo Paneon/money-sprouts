@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserSelectionComponent } from './user-selection/user-selection.component';
+import { AccountSelectionComponent } from './account-selection/account-selection.component';
 import { SharedModule } from '../../shared/shared.module';
 import { StartComponent } from './start/start.component';
 import { BalanceOverviewComponent } from './balance-overview/balance-overview.component';
@@ -13,23 +13,21 @@ import { AccountService } from '../services/account.service';
 @NgModule({
     imports: [CommonModule, SharedModule],
     declarations: [
-        UserSelectionComponent,
+        AccountSelectionComponent,
         StartComponent,
         BalanceOverviewComponent,
         TransactionHistoryComponent,
         DashboardComponent,
         LoginComponent,
-        UserSelectionComponent,
         SpendingsComponent,
     ],
     exports: [
-        UserSelectionComponent,
+        AccountSelectionComponent,
         StartComponent,
         BalanceOverviewComponent,
         TransactionHistoryComponent,
         DashboardComponent,
         LoginComponent,
-        UserSelectionComponent,
         SpendingsComponent,
         CommonModule,
     ],

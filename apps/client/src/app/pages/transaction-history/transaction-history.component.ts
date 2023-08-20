@@ -51,30 +51,28 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private userService: AccountService,
+        private accountService: AccountService,
         private transactionService: TransactionService
     ) {}
 
     ngOnInit() {
-        this.account$ = this.userService.currentUser$.pipe(
-            distinctUntilChanged((prevUser, currUser) => {
-                return prevUser && currUser
-                    ? prevUser.id === currUser.id
-                    : prevUser === currUser;
+        this.account$ = this.accountService.currentAccount$.pipe(
+            distinctUntilChanged((prev, curr) => {
+                return prev && curr ? prev.id === curr.id : prev === curr;
             }),
             debounceTime(300) // waits 300ms between emisssions
         );
 
         const transactions$ = this.account$.pipe(
-            switchMap((user) => {
+            switchMap((account) => {
                 console.log(
-                    'transaction-history, ngOnInit, switchMap, user$ emitted:',
-                    user
+                    'transaction-history, ngOnInit, switchMap, account$ emitted:',
+                    account
                 );
 
-                if (user && user.id) {
-                    return this.transactionService.getTransactionsByUserId(
-                        user.id
+                if (account && account.id) {
+                    return this.transactionService.getTransactionsByAccountId(
+                        account.id
                     );
                 } else {
                     return of([]);
@@ -82,7 +80,7 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
             }),
             map((transactions) => {
                 console.log(
-                    'Loaded transactions in ngOnInit via user$:',
+                    'Loaded transactions in ngOnInit via account$:',
                     transactions
                 );
                 const incomes = transactions.filter(
