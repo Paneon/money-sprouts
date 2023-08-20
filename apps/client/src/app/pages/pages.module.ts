@@ -7,33 +7,33 @@ import { BalanceOverviewComponent } from './balance-overview/balance-overview.co
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
-import { SpendingsComponent } from './spendings/spendings.component';
+import { PlanComponent } from './plan/plan.component';
 import { UserService } from '../services/user.service';
 
 @NgModule({
-  imports: [CommonModule, SharedModule],
-  declarations: [
-    UserSelectionComponent,
-    StartComponent,
-    BalanceOverviewComponent,
-    TransactionHistoryComponent,
-    DashboardComponent,
-    LoginComponent,
-    UserSelectionComponent,
-    SpendingsComponent,
-  ],
-  exports: [
-    UserSelectionComponent,
-    StartComponent,
-    BalanceOverviewComponent,
-    TransactionHistoryComponent,
-    DashboardComponent,
-    LoginComponent,
-    UserSelectionComponent,
-    SpendingsComponent,
-    CommonModule,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [UserService],
+    imports: [CommonModule, SharedModule],
+    declarations: [
+        UserSelectionComponent,
+        StartComponent,
+        BalanceOverviewComponent,
+        TransactionHistoryComponent,
+        DashboardComponent,
+        LoginComponent,
+        UserSelectionComponent,
+        PlanComponent,
+    ],
+    exports: [
+        UserSelectionComponent,
+        StartComponent,
+        BalanceOverviewComponent,
+        TransactionHistoryComponent,
+        DashboardComponent,
+        LoginComponent,
+        UserSelectionComponent,
+        PlanComponent,
+        CommonModule,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    providers: [UserService],
 })
 export class PagesModule {}

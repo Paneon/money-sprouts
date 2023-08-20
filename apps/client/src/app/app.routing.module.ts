@@ -8,7 +8,7 @@ import { BalanceOverviewComponent } from './pages/balance-overview/balance-overv
 import { TransactionHistoryComponent } from './pages/transaction-history/transaction-history.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
-import { SpendingsComponent } from './pages/spendings/spendings.component';
+import { PlanComponent } from './pages/plan/plan.component';
 import { UsersResolver } from './services/users-resolver.service';
 
 const routes: Routes = [
@@ -44,7 +44,7 @@ const routes: Routes = [
     },
     {
         path: 'user/:username/plan',
-        component: SpendingsComponent,
+        component: PlanComponent,
     },
     {
         path: '**',
