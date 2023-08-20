@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserSelectionComponent } from './pages/user-selection/user-selection.component';
+import { AccountSelectionComponent } from './pages/account-selection/account-selection.component';
 import { StartComponent } from './pages/start/start.component';
 
 import { CommonModule } from '@angular/common';
@@ -9,41 +9,72 @@ import { TransactionHistoryComponent } from './pages/transaction-history/transac
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SpendingsComponent } from './pages/spendings/spendings.component';
-import { UsersResolver } from './services/users-resolver.service';
+import { AccountsResolver } from './services/accounts-resolver.service';
+
+export enum RoutePath {
+    Home = 'home',
+    Login = 'login',
+    AccountSelection = 'accountselection',
+    Dashboard = 'account/:name/dashboard',
+    Overview = 'account/:name/overview',
+    History = 'account/:name/history',
+    Plan = 'account/:name/plan',
+}
+
+export function routeToDashboard(name: string) {
+    name = decodeURI(name);
+    return RoutePath.Dashboard.replace(':name', name);
+}
+
+export function routeToOverview(name: string) {
+    console.log({ name });
+    name = decodeURI(name);
+    return RoutePath.Overview.replace(':name', name);
+}
+
+export function routeToHistory(name: string) {
+    name = decodeURI(name);
+    return RoutePath.History.replace(':name', name);
+}
+
+export function routeToPlan(name: string) {
+    name = decodeURI(name);
+    return RoutePath.Plan.replace(':name', name);
+}
 
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'home',
+        redirectTo: RoutePath.Home,
         pathMatch: 'full',
     },
     {
-        path: 'home',
+        path: RoutePath.Home,
         component: StartComponent,
     },
     {
-        path: 'login',
+        path: RoutePath.Login,
         component: LoginComponent,
     },
     {
-        path: 'userselection',
-        component: UserSelectionComponent,
-        resolve: { users: UsersResolver },
+        path: RoutePath.AccountSelection,
+        component: AccountSelectionComponent,
+        resolve: { accounts: AccountsResolver },
     },
     {
-        path: 'user/:username/dashboard',
+        path: RoutePath.Dashboard,
         component: DashboardComponent,
     },
     {
-        path: 'user/:username/overview',
+        path: RoutePath.Overview,
         component: BalanceOverviewComponent,
     },
     {
-        path: 'user/:username/history',
+        path: RoutePath.History,
         component: TransactionHistoryComponent,
     },
     {
-        path: 'user/:username/plan',
+        path: RoutePath.Plan,
         component: SpendingsComponent,
     },
     {

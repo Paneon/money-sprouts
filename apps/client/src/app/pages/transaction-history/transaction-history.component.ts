@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Transaction, User } from '@money-sprouts/shared/domain';
+import { Account, Transaction } from '@money-sprouts/shared/domain';
 import {
-    Observable,
-    Subject,
     combineLatest,
     map,
+    Observable,
     of,
+    Subject,
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { UserService } from '../../services/user.service';
+import { AccountService } from '../../services/account.service';
 import { TransactionService } from '../../services/transaction.service';
 import {
     debounceTime,
@@ -36,7 +36,7 @@ interface CombinedDataTransaction {
     styleUrls: ['./transaction-history.component.scss'],
 })
 export class TransactionHistoryComponent implements OnInit, OnDestroy {
-    user$: Observable<User | null>;
+    account$: Observable<Account | null>;
 
     combinedDataTransaction$: Observable<CombinedDataTransaction>;
     latestCombinedData: CombinedDataTransaction | null = null;
@@ -51,30 +51,28 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private userService: UserService,
+        private accountService: AccountService,
         private transactionService: TransactionService
     ) {}
 
     ngOnInit() {
-        this.user$ = this.userService.currentUser$.pipe(
-            distinctUntilChanged((prevUser, currUser) => {
-                return prevUser && currUser
-                    ? prevUser.id === currUser.id
-                    : prevUser === currUser;
+        this.account$ = this.accountService.currentAccount$.pipe(
+            distinctUntilChanged((prev, curr) => {
+                return prev && curr ? prev.id === curr.id : prev === curr;
             }),
             debounceTime(300) // waits 300ms between emisssions
         );
 
-        const transactions$ = this.user$.pipe(
-            switchMap((user) => {
+        const transactions$ = this.account$.pipe(
+            switchMap((account) => {
                 console.log(
-                    'transaction-history, ngOnInit, switchMap, user$ emitted:',
-                    user
+                    'transaction-history, ngOnInit, switchMap, account$ emitted:',
+                    account
                 );
 
-                if (user && user.id) {
-                    return this.transactionService.getTransactionsByUserId(
-                        user.id
+                if (account && account.id) {
+                    return this.transactionService.getTransactionsByAccountId(
+                        account.id
                     );
                 } else {
                     return of([]);
@@ -82,7 +80,7 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
             }),
             map((transactions) => {
                 console.log(
-                    'Loaded transactions in ngOnInit via user$:',
+                    'Loaded transactions in ngOnInit via account$:',
                     transactions
                 );
                 const incomes = transactions.filter(
