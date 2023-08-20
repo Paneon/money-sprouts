@@ -33,7 +33,7 @@ export class BalanceOverviewComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.account$ = this.accountService.currentUser$.pipe(
+        this.account$ = this.accountService.currentAccount$.pipe(
             debounceTime(300), // waits 300ms between emisssions
             distinctUntilChanged((prevUser, currUser) => {
                 return prevUser && currUser

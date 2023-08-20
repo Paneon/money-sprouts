@@ -29,6 +29,11 @@ class PocketMoneyProcessor extends AbstractController
             $this->json(null, Response::HTTP_NOT_FOUND);
         }
 
+        if ($account->getNextPayday() === null) {
+            $this->logger->warning('Please ask Guardian to enter a first payday to this account.');
+            return $account;
+        }
+
         $now = new DateTime();
 
         while ($now >= $account->getNextPayday()) {

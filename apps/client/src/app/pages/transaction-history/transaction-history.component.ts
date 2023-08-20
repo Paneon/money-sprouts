@@ -56,7 +56,7 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.account$ = this.userService.currentUser$.pipe(
+        this.account$ = this.userService.currentAccount$.pipe(
             distinctUntilChanged((prevUser, currUser) => {
                 return prevUser && currUser
                     ? prevUser.id === currUser.id

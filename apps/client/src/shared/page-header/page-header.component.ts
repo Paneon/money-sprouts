@@ -39,7 +39,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         this.urlSegment = urlSegments[urlSegments.length - 1];
         this.username = urlSegments[2];
 
-        this.account$ = this.accountService.currentUser$.pipe(
+        this.account$ = this.accountService.currentAccount$.pipe(
             distinctUntilChanged()
         );
 

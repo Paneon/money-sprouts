@@ -39,6 +39,7 @@ export class ApiService {
     }
 
     getAccountById(id: number): Observable<Account> {
+        console.log('refresh account ', id);
         return this.http.get<Account>(`${this.baseUrl}/accounts/${id}.json`);
     }
 

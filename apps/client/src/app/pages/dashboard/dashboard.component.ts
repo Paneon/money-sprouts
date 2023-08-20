@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
         this.sections;
         const urlSegments = this.router.url.split('/');
         this.username = urlSegments[2];
-        this.account$ = this.accountService.currentUser$.pipe(
+        this.account$ = this.accountService.currentAccount$.pipe(
             debounceTime(300), // waits 300ms between emisssions
             distinctUntilChanged((prevUser, currUser) => {
                 return prevUser && currUser
@@ -63,6 +63,14 @@ export class DashboardComponent implements OnInit {
                     : prevUser === currUser;
             })
         );
+
+        this.account$.subscribe((value) => {
+            console.log('Account subscriber', value);
+            this.accountService.getAccount(value.id).subscribe((response) => {
+                console.log('account by id ', response);
+                return response;
+            });
+        });
 
         this.router.events
             .pipe(

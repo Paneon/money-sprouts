@@ -20,7 +20,7 @@ enum LocalStorageField {
 })
 export class AccountService {
     private currentAccountSubject = new BehaviorSubject<Account | null>(null);
-    currentUser$ = this.currentAccountSubject.asObservable().pipe(
+    currentAccount$ = this.currentAccountSubject.asObservable().pipe(
         tap((user) => console.log('Emission from currentUser$: ', user)),
         shareReplay(1)
     );
@@ -46,6 +46,10 @@ export class AccountService {
     // fetch all users and use tap to store them locally
     getUsers(): Observable<Account[]> {
         return this.accounts$;
+    }
+
+    getAccount(id: number): Observable<Account> {
+        return this.api.getAccountById(id);
     }
 
     getAccountByName(name: string): void {
