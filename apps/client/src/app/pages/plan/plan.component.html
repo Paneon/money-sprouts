@@ -34,10 +34,14 @@
         <!-- Display content based on the active tab -->
         <div class="tab-content">
             <div *ngIf="activeTab === 'spend'">
-                <div class="spend-calculator">This is the spend calculator</div>
+                <money-sprouts-plan-expenses
+                    (calculateAmount)="onCalculateAmount($event)"
+                    (applyChanges)="onApplyChanges()"
+                    (resetBalance)="onResetBalance()"
+                ></money-sprouts-plan-expenses>
             </div>
             <div *ngIf="activeTab === 'earn'">
-                <div class="earn-calculator">This is the earn calculator</div>
+                <money-sprouts-plan-earnings></money-sprouts-plan-earnings>
             </div>
         </div>
     </div>

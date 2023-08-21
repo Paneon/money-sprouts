@@ -32,6 +32,17 @@ export class UserService {
         shareReplay(1)
     );
 
+    private originalBalance: number | null = null;
+    private currentBalance: number | null = null;
+
+    setInitialBalance(balance: number): void {
+        this.originalBalance = balance;
+        this.currentBalance = balance;
+    }
+
+    private balanceUpdateStatus = new BehaviorSubject<string>('');
+    public balanceUpdateStatus$ = this.balanceUpdateStatus.asObservable();
+
     constructor(private http: HttpClient, private api: ApiService) {
         const savedUser = localStorage.getItem('selectedUser');
         if (savedUser) {
@@ -65,6 +76,8 @@ export class UserService {
         localStorage.setItem('selectedUser', JSON.stringify(user));
         console.log('Setting user:', user);
         this.currentUserSubject.next(user);
+
+        this.setInitialBalance(user.balance);
     }
 
     getAvatarForUser(user: User | null): string {
@@ -77,6 +90,69 @@ export class UserService {
                 return 'assets/images/avatar_male.png';
             default:
                 return '';
+        }
+    }
+
+    // Method to get the current balance
+    getCurrentBalance(): number | null {
+        const currentUser = this.currentUserSubject.getValue();
+        return currentUser?.balance || null;
+    }
+
+    // Method to update the balance temporarily
+    updateBalanceTemporarily(amount: number): void {
+        const currentUser = this.currentUserSubject.getValue();
+        if (currentUser && typeof currentUser.balance === 'number') {
+            currentUser.balance -= amount;
+            this.currentUserSubject.next(currentUser);
+        }
+    }
+
+    // Method to reset the balance to the original value
+    resetBalanceToOriginal(): void {
+        console.log('resetBalanceToOriginal triggered');
+        const currentUser = this.currentUserSubject.getValue();
+        this.originalBalance = currentUser.balance;
+
+        // Log the values and conditions
+        console.log('currentUser:', currentUser);
+        console.log('typeof currentUser.balance:', typeof currentUser.balance);
+        console.log('this.originalBalance:', this.originalBalance);
+
+        if (
+            currentUser &&
+            typeof currentUser.balance === 'number' &&
+            this.originalBalance !== null
+        ) {
+            currentUser.balance = this.originalBalance;
+            console.log('resetBalance: ', currentUser.balance);
+            this.currentUserSubject.next(currentUser);
+        }
+    }
+
+    applyBalanceChange(): void {
+        const currentUserBalance = this.getCurrentBalance();
+        if (currentUserBalance !== null) {
+            this.http
+                .patch('/api/transactions/:userId', {
+                    newBalance: currentUserBalance,
+                })
+                .subscribe({
+                    next: () => {
+                        this.balanceUpdateStatus.next('success');
+                        this.originalBalance = this.currentBalance;
+                    },
+                    error: (error) => {
+                        console.error('Error updating balance: ', error);
+                        this.balanceUpdateStatus.next('error');
+                        const currentBalance = this.getCurrentBalance();
+                        if (currentBalance !== null) {
+                            this.updateBalanceTemporarily(
+                                this.originalBalance - currentBalance
+                            );
+                        }
+                    },
+                });
         }
     }
 

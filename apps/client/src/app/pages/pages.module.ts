@@ -9,9 +9,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { PlanComponent } from './plan/plan.component';
 import { UserService } from '../services/user.service';
+import { PlanExpensesComponent } from './plan/plan-expenses/plan-expenses.component';
+import { PlanEarningsComponent } from './plan/plan-earnings/plan-earnings.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    imports: [CommonModule, SharedModule],
+    imports: [CommonModule, SharedModule, FormsModule],
     declarations: [
         UserSelectionComponent,
         StartComponent,
@@ -21,6 +24,8 @@ import { UserService } from '../services/user.service';
         LoginComponent,
         UserSelectionComponent,
         PlanComponent,
+        PlanExpensesComponent,
+        PlanEarningsComponent,
     ],
     exports: [
         UserSelectionComponent,

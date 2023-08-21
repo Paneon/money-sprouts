@@ -18,8 +18,6 @@ import localeDe from '@angular/common/locales/de';
 import { LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsersResolver } from './services/users-resolver.service';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatIconModule } from '@angular/material/icon';
 
 registerLocaleData(localeDe);
 
@@ -33,9 +31,7 @@ registerLocaleData(localeDe);
         PagesModule,
         HttpClientModule,
         CommonModule,
-        BrowserAnimationsModule,
-        MatTabsModule,
-        MatIconModule,
+        BrowserAnimationsModule
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'de' },
