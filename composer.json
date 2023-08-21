@@ -117,8 +117,8 @@
     "dama/doctrine-test-bundle": "^7.2",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
     "justinrainbow/json-schema": "^5.2",
-    "paneon/php-to-typescript": "dev-main",
-    "paneon/php-to-typescript-bundle": "dev-main",
+    "paneon/php-to-typescript": "dev-feature/support-php8",
+    "paneon/php-to-typescript-bundle": "dev-feature/symfony-6",
     "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "^9.5",
     "slevomat/coding-standard": "^8.13",
@@ -131,15 +131,5 @@
     "symfony/stopwatch": "6.3.*",
     "symfony/web-profiler-bundle": "6.3.*",
     "zenstruck/foundry": "^1.34"
-  },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "/Users/alexander.pape/Sites/macavity/php-to-typescript/"
-    },
-    {
-      "type": "path",
-      "url": "/Users/alexander.pape/Sites/macavity/php-to-typescript-bundle/"
-    }
-  ]
+  }
 }
