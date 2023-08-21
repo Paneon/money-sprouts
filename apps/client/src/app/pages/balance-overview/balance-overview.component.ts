@@ -9,6 +9,7 @@ import {
 } from 'rxjs';
 import { AccountService } from '../../services/account.service';
 import { DatePipe } from '@angular/common';
+import { Loggable } from '../../services/loggable';
 
 interface CombinedDataOverview {
     account: Account | null; // Replace 'any' with your Account type
@@ -22,7 +23,7 @@ interface CombinedDataOverview {
     templateUrl: './balance-overview.component.html',
     styleUrls: ['./balance-overview.component.scss'],
 })
-export class BalanceOverviewComponent implements OnInit {
+export class BalanceOverviewComponent extends Loggable implements OnInit {
     account$: Observable<Account | null>;
     nextPayday$: Observable<Date | null>;
     combinedDataOverview$: Observable<CombinedDataOverview>;
@@ -30,7 +31,9 @@ export class BalanceOverviewComponent implements OnInit {
     constructor(
         private accountService: AccountService,
         private datePipe: DatePipe
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.account$ = this.accountService.currentAccount$.pipe(
@@ -42,12 +45,13 @@ export class BalanceOverviewComponent implements OnInit {
             })
         );
 
+        this.account$.subscribe((account) => {
+            this.accountService.refreshAccount(account.id);
+        });
+
         this.nextPayday$ = this.account$.pipe(
             map((account) => {
-                console.log(
-                    'next payday of this account: ',
-                    account?.nextPayday
-                );
+                this.log('next payday of this account: ', account?.nextPayday);
                 return account ? account.nextPayday : null;
             })
         );
@@ -116,7 +120,7 @@ export class BalanceOverviewComponent implements OnInit {
 
     private calculateDaysUntilNextPayday(nextPayday: Date): number {
         if (!nextPayday) {
-            console.log('nextPayday is: ', nextPayday);
+            this.log('nextPayday is: ', nextPayday);
             return 0;
         }
 

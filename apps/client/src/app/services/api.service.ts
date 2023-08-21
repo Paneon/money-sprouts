@@ -7,17 +7,20 @@ import {
     Transaction,
 } from '@money-sprouts/shared/domain';
 import { environment } from '../../environments/environments';
+import { Loggable } from './loggable';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ApiService {
+export class ApiService extends Loggable {
     private baseUrl = environment.apiUrl;
 
     private accountsCache: Account[] = [];
     private transactionCache: Transaction[] = [];
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+        super();
+    }
 
     getAccounts(forceRefresh = false): Observable<Account[]> {
         if (this.accountsCache.length && !forceRefresh) {
@@ -26,14 +29,14 @@ export class ApiService {
 
         return this.http.get<Account[]>(`${this.baseUrl}/accounts.json`).pipe(
             map((response) => {
-                console.log({ response });
+                this.log({ response });
                 this.accountsCache = response;
                 return this.accountsCache;
             })
         );
     }
     getAccountById(id: number): Observable<Account> {
-        console.log('refresh account ', id);
+        this.log('refresh account ', id);
         return this.http.get<Account>(`${this.baseUrl}/accounts/${id}.json`);
     }
 

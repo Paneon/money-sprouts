@@ -66,12 +66,8 @@ export class DashboardComponent implements OnInit {
             })
         );
 
-        this.account$.subscribe((value) => {
-            console.log('Account subscriber', value);
-            this.accountService.getAccount(value.id).subscribe((response) => {
-                console.log('account by id ', response);
-                return response;
-            });
+        this.account$.subscribe((account) => {
+            this.accountService.refreshAccount(account.id);
         });
 
         this.router.events
