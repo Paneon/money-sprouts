@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use _PHPStan_d55c4f2c2\Nette\Neon\Exception;
 use App\Entity\Account;
 use App\Entity\Avatar;
 use App\Entity\Category;
@@ -16,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -56,12 +56,12 @@ class DashboardController extends AbstractDashboardController
     }
 
     /**
-     * @throws Exception
+     * @throws HttpException
      */
     public function configureUserMenu(UserInterface $user): UserMenu
     {
         if (!$user instanceof User) {
-            throw new Exception('Invalid User Entity');
+            throw new HttpException(Response::HTTP_BAD_REQUEST);
         }
 
         return parent::configureUserMenu($user)->setAvatarUrl($user->getAvatar()?->getUrl());

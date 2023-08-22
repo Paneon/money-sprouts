@@ -203,16 +203,4 @@ class Account
     {
         return $this->name;
     }
-
-    public function getStartingBalance(): ?int
-    {
-        return $this->startingBalance;
-    }
-
-    public function setStartingBalance(int $startingBalance): static
-    {
-        $this->startingBalance = $startingBalance;
-
-        return $this;
-    }
 }
