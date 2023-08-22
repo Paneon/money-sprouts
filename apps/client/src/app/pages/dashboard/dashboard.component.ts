@@ -66,6 +66,10 @@ export class DashboardComponent implements OnInit {
             })
         );
 
+        this.account$.subscribe((account) => {
+            this.accountService.refreshAccount(account.id);
+        });
+
         this.router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),

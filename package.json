@@ -7,6 +7,7 @@
     "start-client": "nx serve client",
     "start-server": "nx serve server",
     "build:dev": "nx run client:build:development --watch",
+    "cypress:open": "cypress open",
     "generate:interfaces": "npm init @api-platform/client http://localhost:8101/api/ libs/shared/domain/src/ -- --generator typescript"
   },
   "private": true,
@@ -57,7 +58,7 @@
     "@types/node": "~18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
-    "cypress": "^12.16.0",
+    "cypress": "^12.17.3",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",

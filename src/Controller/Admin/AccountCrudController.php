@@ -31,13 +31,13 @@ class AccountCrudController extends AbstractCrudController
         yield AssociationField::new('avatar')->hideOnIndex();
         yield DateField::new('firstPayday');
         yield DateField::new('nextPayday');
-        yield NumberField::new('allowance')
+        yield NumberField::new('allowance', label: 'Allowance (in cent)')
             ->addCssClass('text-success')
             ->formatValue(function ($value) {
                 return $this->formatCurrency($value);
             });
-        yield NumberField::new('balance')->addCssClass('text-bg-primary text-white')
-            ->hideOnForm()
+        yield NumberField::new('balance', 'Balance (in cent)')
+            ->addCssClass('text-bg-primary text-white')
             ->formatValue(function ($value) {
                 return $this->formatCurrency($value);
             });

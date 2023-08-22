@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\Api\PocketMoneyProcessor;
 use App\Repository\AccountRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +20,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-#[ApiResource(normalizationContext: ['groups' => ['account']])]
+#[ApiResource(
+    operations: [
+        new Get(
+            controller: PocketMoneyProcessor::class,
+            description: 'Process due pocket money and returns the account.',
+        ),
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Patch(),
+    ],
+    normalizationContext: ['groups' => ['account']]
+)]
 class Account
 {
     #[ORM\Id]
@@ -36,7 +54,7 @@ class Account
     #[Groups(['account'])]
     private ?Avatar $avatar = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ['comment' => 'Balance of the account (in cent)'])]
     #[Groups(['account'])]
     private ?int $balance = 0;
 
@@ -55,6 +73,7 @@ class Account
 
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Transaction::class, orphanRemoval: true)]
     private Collection $transactions;
+
 
     public function __construct()
     {

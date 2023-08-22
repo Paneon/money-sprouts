@@ -13,6 +13,7 @@ use App\Factory\ExpenseFactory;
 use App\Factory\UserFactory;
 use App\Story\DefaultCategoriesStory;
 use App\Story\DefaultTransactionStory;
+use Symfony\Component\HttpFoundation\Response;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
@@ -68,7 +69,7 @@ class TransactionTest extends ApiTestCase
             'type' => TransactionType::EARNING,
             'value' => 1000,
         ]]);
-        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context' => '/api/contexts/Transaction',
@@ -87,7 +88,7 @@ class TransactionTest extends ApiTestCase
             'user' => $userIri,
             'title' => 'Some Transaction',
         ]]);
-        $this->assertResponseStatusCodeSame(500);
+        $this->assertResponseStatusCodeSame(Response::HTTP_INTERNAL_SERVER_ERROR);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context' => '/api/contexts/Error',
@@ -119,18 +120,13 @@ class TransactionTest extends ApiTestCase
         ]);
     }
 
-    public function testDeleteTransaction(): void
+    public function testDeleteTransactionNotAllowed(): void
     {
         DefaultCategoriesStory::load();
         $transaction = ExpenseFactory::createOne();
         $id = $transaction->getId();
         $client = static::createClient();
         $client->request('DELETE', '/api/transactions/' . $transaction->getId());
-        $this->assertResponseStatusCodeSame(204);
-        $this->assertNull(
-            static::getContainer()->get('doctrine')->getRepository(Transaction::class)->findOneBy([
-                'id' => $id,
-            ])
-        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_METHOD_NOT_ALLOWED);
     }
 }

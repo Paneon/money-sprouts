@@ -9,46 +9,57 @@ import {
 } from 'rxjs';
 import { Account } from '@money-sprouts/shared/domain';
 import { ApiService } from './api.service';
-
-enum LocalStorageField {
-    ACCOUNT = 'selectedAccount',
-}
+import { AccountStorageService } from './account-storage.service';
+import { Loggable } from './loggable';
 
 @Injectable({
     providedIn: 'root',
 })
-export class AccountService {
+export class AccountService extends Loggable {
     private currentAccountSubject = new BehaviorSubject<Account | null>(null);
     currentAccount$ = this.currentAccountSubject.asObservable().pipe(
-        tap((account) =>
-            console.log('Emission from currentAccount$: ', account)
-        ),
+        tap((account) => this.log('Emission from currentAccount$: ', account)),
         shareReplay(1)
     );
     loading = new BehaviorSubject<boolean>(false);
 
     // Declare accounts$ as an Observable using shareReplay and cache last emitted value
     private accounts$ = this.api.getAccounts().pipe(
-        tap((accounts) =>
-            console.log('[AccountService] Fetched accounts: ', accounts)
-        ),
+        tap((accounts) => this.log('Fetched accounts: ', accounts)),
         catchError((err) => {
-            console.error('Error fetching accounts:', err);
+            this.error('Error fetching accounts:', err);
             return throwError(() => err);
         }),
         shareReplay(1)
     );
 
-    constructor(private api: ApiService) {
-        const savedAccount = localStorage.getItem(LocalStorageField.ACCOUNT);
+    constructor(
+        private api: ApiService,
+        private storage: AccountStorageService
+    ) {
+        super();
+        const savedAccount = this.storage.getCurrentAccount();
         if (savedAccount) {
-            this.currentAccountSubject.next(JSON.parse(savedAccount));
+            this.currentAccountSubject.next(savedAccount);
         }
     }
 
     // fetch all accounts and use tap to store them locally
     getAccounts(): Observable<Account[]> {
         return this.accounts$;
+    }
+
+    getAccount(id: number): Observable<Account> {
+        return this.api.getAccountById(id);
+    }
+
+    /**
+     * Refreshes data of a single account
+     */
+    refreshAccount(id: number) {
+        this.getAccount(id).subscribe((account) => {
+            this.setAccount(account);
+        });
     }
 
     getAccountByName(name: string): void {
@@ -66,15 +77,7 @@ export class AccountService {
     }
 
     setAccount(account: Account) {
-        console.log(
-            'Storing selected account in local storage: ',
-            JSON.stringify(account)
-        );
-        localStorage.setItem(
-            LocalStorageField.ACCOUNT,
-            JSON.stringify(account)
-        );
-        console.log('Setting account:', account);
+        this.storage.saveSelectedAccount(account);
         this.currentAccountSubject.next(account);
     }
 
@@ -84,7 +87,7 @@ export class AccountService {
 
     logoutOrDeselectAccount() {
         this.loading.next(true);
-        localStorage.removeItem(LocalStorageField.ACCOUNT);
+        this.storage.clearSelectedAccount();
         this.currentAccountSubject.next(null);
         this.loading.next(false);
     }
