@@ -117,8 +117,6 @@
     "dama/doctrine-test-bundle": "^7.2",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
     "justinrainbow/json-schema": "^5.2",
-    "paneon/php-to-typescript": "dev-feature/support-php8",
-    "paneon/php-to-typescript-bundle": "dev-feature/symfony-6",
     "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "^9.5",
     "slevomat/coding-standard": "^8.13",

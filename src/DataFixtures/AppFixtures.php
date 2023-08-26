@@ -31,7 +31,11 @@ class AppFixtures extends Fixture
     {
         $this->loadAvatars();
         $this->loadCategories();
-        $this->loadUsers();
+
+        if ($_ENV['APP_ENV'] !== 'prod') {
+            $this->loadUsers();
+        }
+        
         $this->loadAdmin($manager);
     }
 
