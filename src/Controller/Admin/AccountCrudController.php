@@ -27,6 +27,7 @@ class AccountCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('name');
+        yield AssociationField::new('user');
         yield AvatarField::new('avatar.url')->hideOnForm();
         yield AssociationField::new('avatar')->hideOnIndex();
         yield DateField::new('firstPayday');
