@@ -14,7 +14,7 @@ class HomeController extends AbstractController
     #[Route(
         '/{page}',
         name: 'app_frontend',
-        condition: "params['page'] not in ['admin','login','logout', 'api']"
+        condition: "params['page'] not in ['admin','login','logout', 'api', '_profiler']"
     )]
     #[Route(
         '/account/{user}/{page}',
