@@ -46,10 +46,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl('App', 'fas fa-home', $this->generateUrl('app_home'));
         yield MenuItem::linkToUrl('API Docs', 'fas fa-book', $this->generateUrl('api_doc'));
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
+
         yield MenuItem::section('User');
         yield MenuItem::linkToCrud('User', 'fa-solid fa-user', User::class);
         yield MenuItem::linkToCrud('Account', 'fa-solid fa-piggy-bank', Account::class);
-        yield MenuItem::linkToCrud('Transaction', 'fa-solid fa-money-bill-transfer', Transaction::class);
+        yield MenuItem::linkToCrud('Transaction', 'fa-solid fa-money-bill-transfer', Transaction::class)
+            ->setController(TransactionCrudController::class);
+        yield MenuItem::linkToCrud('Pending Transaction', 'fa-solid fa-stamp', Transaction::class)
+            ->setController(TransactionPendingCrudController::class);
+
         yield MenuItem::section('General');
         yield MenuItem::linkToCrud('Avatar', 'fa-solid fa-image', Avatar::class);
         yield MenuItem::linkToCrud('Category', 'fa-solid fa-list', Category::class);

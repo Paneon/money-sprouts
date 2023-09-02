@@ -63,7 +63,7 @@ export class ApiService extends Loggable {
 
     getTransactionsByAccountId(accountId: number): Observable<Transaction[]> {
         return this.http.get<Transaction[]>(
-            `${this.baseUrl}/transactions.json?account.id=${accountId}`
+            `${this.baseUrl}/transactions.json?account.id=${accountId}&order[effectiveOn]=desc`
         );
     }
 }

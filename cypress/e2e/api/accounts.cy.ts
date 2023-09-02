@@ -18,16 +18,11 @@ describe('API - Account', () => {
 
     beforeEach(function () {
         cy.task('db:seed');
-
-        cy.database('filter', 'users').then((users: User[]) => {
-            ctx.authenticatedUser = users[0];
-            ctx.searchUser = users[1];
-
-            return cy.loginByApi(ctx.authenticatedUser.username);
-        });
     });
 
     context('GET /accounts', () => {
+        cy.request('/api/accounts/', HttpMethod)
+
         it('should return JSON', () => {
             cy.request('/api/accounts.json')
                 .its('headers')
