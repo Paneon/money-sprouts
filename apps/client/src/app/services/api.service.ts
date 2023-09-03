@@ -2,65 +2,68 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import {
-  PagedCollection,
-  Transaction,
-  User,
+    Account,
+    PagedCollection,
+    Transaction,
 } from '@money-sprouts/shared/domain';
 import { environment } from '../../environments/environments';
+import { Loggable } from './loggable';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
-export class ApiService {
-  private baseUrl = environment.apiUrl;
+export class ApiService extends Loggable {
+    private baseUrl = environment.apiUrl;
 
-  private usersCache: User[] = [];
-  private transactionCache: Transaction[] = [];
+    private accountsCache: Account[] = [];
+    private transactionCache: Transaction[] = [];
 
-  constructor(private http: HttpClient) {}
-
-  getUsers(forceRefresh = false): Observable<User[]> {
-    if (this.usersCache.length && !forceRefresh) {
-      return of(this.usersCache);
+    constructor(private http: HttpClient) {
+        super();
     }
 
-    return this.http
-      .get<User[]>(`${this.baseUrl}/users.json?tracked=true`)
-      .pipe(
-        map((response) => {
-          console.log({ response });
-          this.usersCache = response;
-          return this.usersCache;
-        })
-      );
-  }
+    getAccounts(forceRefresh = false): Observable<Account[]> {
+        if (this.accountsCache.length && !forceRefresh) {
+            return of(this.accountsCache);
+        }
 
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/users/${id}.json`);
-  }
-
-  getTransactions(forceRefresh = false): Observable<Transaction[]> {
-    if (this.transactionCache.length && !forceRefresh) {
-      return of(this.transactionCache);
+        return this.http.get<Account[]>(`${this.baseUrl}/accounts.json`).pipe(
+            map((response) => {
+                this.log({ response });
+                this.accountsCache = response;
+                return this.accountsCache;
+            })
+        );
+    }
+    getAccountById(id: number): Observable<Account> {
+        this.log('refresh account ', id);
+        return this.http.get<Account>(`${this.baseUrl}/accounts/${id}.json`);
     }
 
-    return this.http
-      .get<PagedCollection<Transaction>>(`${this.baseUrl}/transactions/`)
-      .pipe(
-        map((response) => {
-          this.transactionCache = response['hydra:member'];
-          return this.transactionCache;
-        })
-      );
-  }
+    getTransactions(forceRefresh = false): Observable<Transaction[]> {
+        if (this.transactionCache.length && !forceRefresh) {
+            return of(this.transactionCache);
+        }
 
-  getTransactionById(id: number): Observable<Transaction> {
-    return this.http.get<Transaction>(`${this.baseUrl}/transactions/${id}.json`);
-  }
+        return this.http
+            .get<PagedCollection<Transaction>>(`${this.baseUrl}/transactions/`)
+            .pipe(
+                map((response) => {
+                    this.transactionCache = response['hydra:member'];
+                    return this.transactionCache;
+                })
+            );
+    }
 
-  getTransactionsByUserId(userId: number): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(
-      `${this.baseUrl}/transactions.json?user.id=${userId}`
-    );
-  }
+    getTransactionById(id: number): Observable<Transaction> {
+        return this.http.get<Transaction>(
+            `${this.baseUrl}/transactions/${id}.json`
+        );
+    }
+
+    getTransactionsByAccountId(accountId: number): Observable<Transaction[]> {
+        return this.http.get<Transaction[]>(
+            `${this.baseUrl}/transactions.json?account.id=${accountId}`
+        );
+    }
 }

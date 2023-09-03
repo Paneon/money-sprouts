@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Avatar;
 use App\Entity\Category;
+use App\Factory\AccountFactory;
 use App\Factory\AvatarFactory;
 use App\Factory\CategoryFactory;
 use App\Factory\EarningFactory;
@@ -56,24 +57,25 @@ class AppFixtures extends Fixture
 
     public function loadUsers(): void
     {
-        $this->loadUserWithTransactions($this->avatarMale, 'Robert');
-        $this->loadUserWithTransactions($this->avatarFemale, 'Thea');
+        $this->generateAccountWithAvatar($this->avatarMale);
+        $this->generateAccountWithAvatar($this->avatarFemale);
     }
 
     /**
      * @param Proxy<Avatar>|Avatar $avatar
      * @return void
      */
-    public function loadUserWithTransactions(Proxy|Avatar $avatar, string $name): void
+    public function generateAccountWithAvatar(Proxy|Avatar $avatar): void
     {
-        $user = UserFactory::createOne([
-            'name' => $name,
+        $user = UserFactory::createOne();
+        $account = AccountFactory::createOne([
+            'user' => $user,
             'avatar' => $avatar,
-            'tracked' => true
         ]);
 
         EarningFactory::createMany(4, [
-            'user' => $user,
+            'applied' => true,
+            'account' => $account,
             'category' => $this->catEarn,
             'value' => 3000,
         ]);
@@ -81,7 +83,7 @@ class AppFixtures extends Fixture
         ExpenseFactory::createMany(
             30,
             [
-                'user' => $user,
+                'account' => $account,
                 'category' => $this->catSpent,
             ]
         );

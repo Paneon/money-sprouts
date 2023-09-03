@@ -28,14 +28,14 @@ class UpdateBalanceSubscriber implements EventSubscriber
         $transactions = $this->transactionListener->getUpdatedTransactions();
 
         foreach ($transactions as $transaction) {
-            $user = $transaction->getUser();
+            $account = $transaction->getAccount();
             if ($transaction->isApplied()) {
-                $balance = $user->getBalance() + $transaction->getValue();
+                $balance = $account->getBalance() + $transaction->getValue();
             } else {
-                $balance = $user->getBalance() - $transaction->getValue();
+                $balance = $account->getBalance() - $transaction->getValue();
             }
-            $user->setBalance($balance);
-            $objectManager->persist($user);
+            $account->setBalance($balance);
+            $objectManager->persist($account);
         }
 
         if (!empty($transactions)) {

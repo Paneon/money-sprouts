@@ -66,3 +66,4 @@ Thumbs.db
 ###< squizlabs/php_codesniffer ###
 public/build
 .fleet
+.env.prod

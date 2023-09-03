@@ -1,14 +1,14 @@
+import { Account } from './account';
+
 export interface User {
-  readonly id: number;
-  email?: string;
-  name: string;
-  roles: string[];
-  password?: string;
-  allowance?: number;
-  nextPayday?: Date;
-  avatar?: string;
-  transactions?: string[];
-  balance?: number;
-  tracked: boolean;
-  readonly userIdentifier?: string;
+    readonly id: number;
+    email?: string;
+    name: string;
+    roles: string[];
+    password?: string;
+    avatar?: string;
+    avatarUrl?: string;
+    accounts: Account[];
+    balance: number;
+    readonly userIdentifier?: string;
 }

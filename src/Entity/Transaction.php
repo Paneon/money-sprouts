@@ -8,6 +8,11 @@ use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Enum\TransactionType;
 use App\Repository\TransactionRepository;
 use DateTime;
@@ -16,7 +21,15 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Patch(),
+    ]
+)]
 #[ApiFilter(NumericFilter::class, properties: ['user.id'])]
 class Transaction
 {
@@ -40,10 +53,6 @@ class Transaction
 
     private ?DateTime $appliedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
     #[ORM\ManyToOne]
     private ?Category $category = null;
 
@@ -52,6 +61,10 @@ class Transaction
 
     #[ORM\Column(type: "datetime", nullable: true)]
     private ?DateTime $effectiveOn = null;
+
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Account $account = null;
 
     public function getId(): ?int
     {
@@ -118,18 +131,6 @@ class Transaction
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -168,6 +169,18 @@ class Transaction
     public function setEffectiveOn(?DateTime $effectiveOn): static
     {
         $this->effectiveOn = $effectiveOn;
+
+        return $this;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): static
+    {
+        $this->account = $account;
 
         return $this;
     }

@@ -35,7 +35,7 @@ final class ExpenseFactory extends ModelFactory
             'title' => self::faker()->randomElement([
                 'Book', 'Comic', 'Pokemon animal', 'Sweets', 'Sticker', 'Toy', 'Toy Car'
             ]),
-            'user' => UserFactory::random(),
+            'account' => AccountFactory::random(),
             'category' => CategoryFactory::find(['name' => 'Expense']),
             'value' => self::faker()->numberBetween(-1500, -49),
         ];

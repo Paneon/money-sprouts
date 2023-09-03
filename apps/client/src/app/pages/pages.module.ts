@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserSelectionComponent } from './user-selection/user-selection.component';
+import { AccountSelectionComponent } from './account-selection/account-selection.component';
 import { SharedModule } from '../../shared/shared.module';
 import { StartComponent } from './start/start.component';
 import { BalanceOverviewComponent } from './balance-overview/balance-overview.component';
@@ -8,7 +8,7 @@ import { TransactionHistoryComponent } from './transaction-history/transaction-h
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { PlanComponent } from './plan/plan.component';
-import { UserService } from '../services/user.service';
+import { AccountService } from '../services/account.service';
 import { PlanExpensesComponent } from './plan/plan-expenses/plan-expenses.component';
 import { PlanEarningsComponent } from './plan/plan-earnings/plan-earnings.component';
 import { FormsModule } from '@angular/forms';
@@ -16,29 +16,27 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
     imports: [CommonModule, SharedModule, FormsModule],
     declarations: [
-        UserSelectionComponent,
+        AccountSelectionComponent,
         StartComponent,
         BalanceOverviewComponent,
         TransactionHistoryComponent,
         DashboardComponent,
         LoginComponent,
-        UserSelectionComponent,
         PlanComponent,
         PlanExpensesComponent,
         PlanEarningsComponent,
     ],
     exports: [
-        UserSelectionComponent,
+        AccountSelectionComponent,
         StartComponent,
         BalanceOverviewComponent,
         TransactionHistoryComponent,
         DashboardComponent,
         LoginComponent,
-        UserSelectionComponent,
         PlanComponent,
         CommonModule,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    providers: [UserService],
+    providers: [AccountService],
 })
 export class PagesModule {}

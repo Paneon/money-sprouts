@@ -2,31 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
     BehaviorSubject,
-    Observable,
     catchError,
+    Observable,
     shareReplay,
     tap,
     throwError,
 } from 'rxjs';
-import { User } from '@money-sprouts/shared/domain';
+import { Account } from '@money-sprouts/shared/domain';
 import { ApiService } from './api.service';
+import { AccountStorageService } from './account-storage.service';
+import { Loggable } from './loggable';
 
 @Injectable({
     providedIn: 'root',
 })
-export class UserService {
-    private currentUserSubject = new BehaviorSubject<User | null>(null);
-    currentUser$ = this.currentUserSubject.asObservable().pipe(
-        tap((user) => console.log('Emission from currentUser$: ', user)),
+export class AccountService extends Loggable {
+    private currentAccountSubject = new BehaviorSubject<Account | null>(null);
+    currentAccount$ = this.currentAccountSubject.asObservable().pipe(
+        tap((account) => this.log('Emission from currentAccount$: ', account)),
         shareReplay(1)
     );
     loading = new BehaviorSubject<boolean>(false);
 
-    // Declare users$ as an Observable using shareReplay and cache last emitted value
-    private users$ = this.api.getUsers().pipe(
-        tap((users) => console.log('Fetched users: ', users)),
+    // Declare accounts$ as an Observable using shareReplay and cache last emitted value
+    private accounts$ = this.api.getAccounts().pipe(
+        tap((accounts) => this.log('Fetched accounts: ', accounts)),
         catchError((err) => {
-            console.error('Error fetching users:', err);
+            this.error('Error fetching accounts:', err);
             return throwError(() => err);
         }),
         shareReplay(1)
@@ -43,75 +45,83 @@ export class UserService {
     private balanceUpdateStatus = new BehaviorSubject<string>('');
     public balanceUpdateStatus$ = this.balanceUpdateStatus.asObservable();
 
-    constructor(private http: HttpClient, private api: ApiService) {
-        const savedUser = localStorage.getItem('selectedUser');
-        if (savedUser) {
-            this.currentUserSubject.next(JSON.parse(savedUser));
+    constructor(
+        private http: HttpClient,
+        private api: ApiService,
+        private storage: AccountStorageService
+    ) {
+        super();
+        const savedAccount = this.storage.getCurrentAccount();
+        if (savedAccount) {
+            this.currentAccountSubject.next(savedAccount);
         }
     }
 
-    // fetch all users and use tap to store them locally
-    getUsers(): Observable<User[]> {
-        return this.users$;
+    // fetch all accounts and use tap to store them locally
+    getAccounts(): Observable<Account[]> {
+        return this.accounts$;
     }
 
-    getUserByUsername(username: string): void {
-        this.users$.subscribe((users) => {
-            const user = users.find((user) => user.name === username);
-            // currentUserSubject only emits new value if user is not the same as the current one
+    getAccount(id: number): Observable<Account> {
+        return this.api.getAccountById(id);
+    }
+
+    /**
+     * Refreshes data of a single account
+     */
+    refreshAccount(id: number) {
+        this.getAccount(id).subscribe((account) => {
+            this.setAccount(account);
+        });
+    }
+
+    getAccountByName(name: string): void {
+        this.accounts$.subscribe((accounts) => {
+            const account = accounts.find((a: Account) => a.name === name);
+            // currentAccountSubject only emits new value if account is not the same as the current one
             if (
-                !this.currentUserSubject.getValue() ||
-                (user && user.id !== this.currentUserSubject.getValue().id)
+                !this.currentAccountSubject.getValue() ||
+                (account &&
+                    account.id !== this.currentAccountSubject.getValue().id)
             ) {
-                this.currentUserSubject.next(user);
+                this.currentAccountSubject.next(account);
             }
         });
     }
 
-    setUser(user: User) {
-        console.log(
-            'Storing selected user in local storage: ',
-            JSON.stringify(user)
-        );
-        localStorage.setItem('selectedUser', JSON.stringify(user));
-        console.log('Setting user:', user);
-        this.currentUserSubject.next(user);
+    setAccount(account: Account) {
+        this.storage.saveSelectedAccount(account);
+        this.currentAccountSubject.next(account);
 
-        this.setInitialBalance(user.balance);
+        this.setInitialBalance(account.balance);
     }
 
-    getAvatarForUser(user: User | null): string {
-        if (!user) return '';
-
-        switch (user.name) {
-            case 'Thea':
-                return 'assets/images/avatar_female.png';
-            case 'Robert':
-                return 'assets/images/avatar_male.png';
-            default:
-                return '';
-        }
+    getAvatarForAccount(account: Account | null): string {
+        return account?.avatar?.url ?? '';
     }
 
     // Method to get the current balance
     getCurrentBalance(): number | null {
-        const currentUser = this.currentUserSubject.getValue();
+        // TODO rename
+        const currentUser = this.currentAccountSubject.getValue();
         return currentUser?.balance || null;
     }
 
     // Method to update the balance temporarily
     updateBalanceTemporarily(amount: number): void {
-        const currentUser = this.currentUserSubject.getValue();
+        // TODO rename
+        const currentUser = this.currentAccountSubject.getValue();
         if (currentUser && typeof currentUser.balance === 'number') {
             currentUser.balance -= amount;
-            this.currentUserSubject.next(currentUser);
+            this.currentAccountSubject.next(currentUser);
         }
     }
 
     // Method to reset the balance to the original value
     resetBalanceToOriginal(): void {
         console.log('resetBalanceToOriginal triggered');
-        const currentUser = this.currentUserSubject.getValue();
+        // TODO rename
+        const currentUser = this.currentAccountSubject.getValue();
         this.originalBalance = currentUser.balance;
 
         // Log the values and conditions
@@ -126,7 +136,7 @@ export class UserService {
         ) {
             currentUser.balance = this.originalBalance;
             console.log('resetBalance: ', currentUser.balance);
-            this.currentUserSubject.next(currentUser);
+            this.currentAccountSubject.next(currentUser);
         }
     }
 
@@ -156,10 +166,10 @@ export class UserService {
         }
     }
 
-    logoutOrDeselectUser() {
+    logoutOrDeselectAccount() {
         this.loading.next(true);
-        localStorage.removeItem('selectedUser');
-        this.currentUserSubject.next(null);
+        this.storage.clearSelectedAccount();
+        this.currentAccountSubject.next(null);
         this.loading.next(false);
     }
 }

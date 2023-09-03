@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { UserService } from '../../app/services/user.service';
+import { AccountService } from '../../app/services/account.service';
 import {
-    Observable,
-    Subject,
-    debounceTime,
     distinctUntilChanged,
     filter,
     map,
+    Observable,
+    Subject,
     takeUntil,
 } from 'rxjs';
-import { User } from '@money-sprouts/shared/domain';
+import { Account } from '@money-sprouts/shared/domain';
+import { RoutePath, routeToDashboard } from '../../app/app.routing.module';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -19,8 +19,8 @@ import { User } from '@money-sprouts/shared/domain';
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {
     childClass: string;
-    username: string;
-    user$: Observable<User | null>;
+    name: string;
+    account$: Observable<Account | null>;
     urlSegment: string;
     logout = 'Logout';
     avatar: string;
@@ -29,8 +29,8 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    constructor(private router: Router, public userService: UserService) {
-        this.userService.loading.subscribe((loading) => {
+    constructor(private router: Router, public accountService: AccountService) {
+        this.accountService.loading.subscribe((loading) => {
             this.isLoading = loading;
         });
     }
@@ -38,9 +38,11 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         const urlSegments = this.router.url.split('/');
         this.urlSegment = urlSegments[urlSegments.length - 1];
-        this.username = urlSegments[2];
+        this.name = urlSegments[2];
 
-        this.user$ = this.userService.currentUser$.pipe(distinctUntilChanged());
+        this.account$ = this.accountService.currentAccount$.pipe(
+            distinctUntilChanged()
+        );
 
         this.router.events
             .pipe(
@@ -49,29 +51,33 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
-            .subscribe((username) => {
-                console.log(console.log('User in header: ', username));
-                this.username = username;
-                this.userService.getUserByUsername(username);
+            .subscribe((name) => {
+                console.log('Account in header: ', name);
+                this.name = name;
+                this.accountService.getAccountByName(name);
             });
     }
 
     goBack() {
         if (this.urlSegment === 'dashboard') {
-            this.router.navigate(['userselection']);
+            this.router.navigate([RoutePath.AccountSelection]);
         } else if (
             this.urlSegment === 'history' ||
             this.urlSegment === 'plan' ||
             this.urlSegment === 'overview'
         ) {
-            this.router.navigate([`user/${this.username}/dashboard`]);
+            this.router.navigate([routeToDashboard(this.name)]);
         } else {
             return;
         }
     }
 
-    goToUserselection() {
-        this.router.navigate(['userselection']);
+    isOnAccountSelectionPage(): boolean {
+        return this.urlSegment === RoutePath.AccountSelection;
+    }
+
+    goToAccountSelection() {
+        this.router.navigate([RoutePath.AccountSelection]);
     }
 
     get pageTitle(): string {
@@ -92,7 +98,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
     onLogout(event: Event) {
         event.preventDefault();
-        this.userService.logoutOrDeselectUser();
+        this.accountService.logoutOrDeselectAccount();
         this.router.navigate(['/logout']);
     }
 
