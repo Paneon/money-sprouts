@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Put;
 use App\Controller\Api\PocketMoneyProcessor;
 use App\Repository\AccountRepository;
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -64,7 +65,7 @@ class Account
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Groups(['account'])]
-    private ?DateTime $firstPayday = null;
+    private ?DateTimeImmutable $firstPayday = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Groups(['account'])]
@@ -109,12 +110,12 @@ class Account
         return $this;
     }
 
-    public function getFirstPayday(): ?DateTime
+    public function getFirstPayday(): ?DateTimeImmutable
     {
         return $this->firstPayday;
     }
 
-    public function setFirstPayday(?DateTime $firstPayday): static
+    public function setFirstPayday(?DateTimeImmutable $firstPayday): static
     {
         $this->firstPayday = $firstPayday;
 

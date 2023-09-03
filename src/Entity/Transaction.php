@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -30,7 +31,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Patch(),
     ]
 )]
-#[ApiFilter(NumericFilter::class, properties: ['user.id'])]
+#[ApiFilter(NumericFilter::class, properties: ['account.id'])]
+#[ApiFilter(OrderFilter::class, properties: ['effectiveOn' => 'DESC', 'id' => 'DESC'])]
 class Transaction
 {
     use TimestampableEntity;

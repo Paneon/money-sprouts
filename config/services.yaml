@@ -28,11 +28,3 @@ services:
       tags:
         - { name: doctrine.event_subscriber }
 
-    Doctrine\Common\Annotations\AnnotationReader: ~
-
-    Paneon\PhpToTypeScript\Services\ParserService:
-      public: true
-      arguments:
-        $reader: '@Doctrine\Common\Annotations\AnnotationReader'
-        $logger: '@monolog.logger'
-        $docParser: '@Paneon\PhpToTypeScript\Parser\PhpDocParser'

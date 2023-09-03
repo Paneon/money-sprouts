@@ -67,3 +67,4 @@ Thumbs.db
 public/build
 .fleet
 .env.prod
+public/*.php
