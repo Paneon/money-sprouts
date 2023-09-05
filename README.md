@@ -11,7 +11,10 @@ Money-Sprouts is an application designed to teach children the value of saving a
 ### Family Account
 
 - **Family Login**: One login for the entire family which encompasses the accounts of all children and an admin account for parents.
-- **User Selection**: Children can easily switch between accounts to view their respective dashboards.
+- **User Selection**: Children can easily switch between accounts to view their respective dashboards and go back by clicking on the avatar in the page header.
+
+  <img width="198" alt="user selection - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/28ddf86f-8cbe-4a1a-88ab-dd2977eb8c30">
+  <img width="200" alt="ms dashboard - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/8fb5c2fc-42b7-4423-aa9a-6646fc29c0bc">
 
 ### Dashboard
 
