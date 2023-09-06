@@ -55,3 +55,20 @@ docker-compose up -d --build
 nx run client:build:development
 nx run client:build:development --watch
 ```
+
+## Credits and Acknowledgements
+
+### Icons and illustrations used in the project
+
+- **Icons**:
+
+  - The illustrations on the overview page are sourced from Icons 8 from Ouch! https://icons8.de/
+  - The rest of the icons (like the money bag, the bill with hour glass, the calculator, pile of coins, shopping cart, logout icon and back arrow) are all icons sourced from Icons 8.
+
+- **Avatar Images**: The avatars in the user selection and page header were sourced from Flaticon.
+
+  - <a href="https://www.flaticon.com/free-icons/girl" title="girl icons">[Girl icon created by Freepik - Flaticon]</a>
+  - <a href="https://www.flaticon.com/free-icons/avatar" title="avatar icons">[Boy icon created by Freepik - Flaticon]</a>
+
+- **Background image**
+  - <a href="https://www.thatsmandarin.com/wp-content/uploads/2019/04/money4.jpg" title="money jars">[Money jars growing sourced from thatsmandarin]
