@@ -1,8 +1,8 @@
-# MoneySprouts
+# Money Sprouts
 
 ## Description
 
-Money-Sprouts is an application designed to teach children the value of saving and spending their pocket money sensibly. Through a fun and interactive interface, children can manage their savings, view transaction histories, plan purchases, and even earn extra by doing chores.
+Money Sprouts is an application designed to teach children the value of saving and spending their pocket money sensibly. Through a fun and interactive interface, children can manage their savings, view transaction histories, plan purchases, and even earn extra by doing chores.
 
 <img src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/35fb3553-6460-4872-a945-28a471a1c23d" width="600" alt="Application mockups on different devices">
 
@@ -36,6 +36,7 @@ Money-Sprouts is an application designed to teach children the value of saving a
 ## Upcoming Features
 
 - **Multi-Language Support**: Soon, Money-Sprouts will be available in both English and German.
+- **Earn Extra Money**: Soon the kids will be able to earn extra money by choosing from voluntary chores.
 
 ## Start the app for local development
 
