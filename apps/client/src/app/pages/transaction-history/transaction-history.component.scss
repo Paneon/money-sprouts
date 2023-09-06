@@ -29,7 +29,7 @@
 }
 
 .custom-table-button-grid {
-  @include create-text-box(70%, 0.9, 2rem, 5rem);
+  @include create-text-box(70%, 0.9, 2rem, 3rem);
 
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -52,7 +52,7 @@
   }
 
   @media (max-width: 1200px) {
-    @include create-text-box(80%, 0.9, 2rem, 4rem);
+    @include create-text-box(80%, 0.9, 2rem, 3rem);
   }
 
   @media (max-width: 1000px) {
