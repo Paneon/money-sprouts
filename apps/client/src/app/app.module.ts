@@ -30,7 +30,7 @@ registerLocaleData(localeDe);
         PagesModule,
         HttpClientModule,
         CommonModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'de' },

@@ -11,6 +11,7 @@ import {
     throwError,
 } from 'rxjs';
 import { ApiService } from './api.service';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
     providedIn: 'root',
@@ -52,5 +53,22 @@ export class TransactionService {
                 return throwError(() => err);
             })
         );
+    }
+
+    addTransaction(title: string, value: number, accountId: number): void {
+        this.http
+            .post('/api/transactions', {
+                title,
+                value,
+                account: '/api/accounts/' + accountId,
+            })
+            .subscribe({
+                next: () => {
+                    console.log('transaction added successfully');
+                },
+                error: (error) => {
+                    console.error('Error updating balance: ', error);
+                },
+            });
     }
 }
