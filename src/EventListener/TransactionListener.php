@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Entity\Transaction;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -28,6 +29,10 @@ class TransactionListener
         /** @var Transaction $transaction */
         $transaction = $args->getObject();
 
+        if (!$transaction->getEffectiveOn()) {
+            $transaction->setEffectiveOn(new DateTime());
+        }
+
         if ($transaction->isApplied()) {
             $this->updatedTransactions[] = $transaction;
         }
@@ -41,7 +46,7 @@ class TransactionListener
 
         /** @var Transaction $transaction */
         $transaction = $args->getObject();
-        
+
         if ($args->hasChangedField('applied')) {
             $this->updatedTransactions[] = $transaction;
         }
