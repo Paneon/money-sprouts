@@ -1,8 +1,8 @@
 <money-sprouts-page-header></money-sprouts-page-header>
 <div id="plan" class="custom-container">
-    <div class="custom-text-box" *ngIf="user$ | async as user">
+    <div class="custom-text-box" *ngIf="account$ | async as account">
         <div class="balance-display">
-            {{ user.balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
+            {{ account.balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
         </div>
         <div class="tabs">
             <div

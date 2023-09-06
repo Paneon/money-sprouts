@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '@money-sprouts/shared/domain';
+import { Account } from '@money-sprouts/shared/domain';
 import { Observable } from 'rxjs';
-import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
+import { AccountService } from '../../services/account.service';
 
 @Component({
     selector: 'money-sprouts-plan',
@@ -10,15 +10,18 @@ import { HttpClient } from '@angular/common/http';
     styleUrls: ['./plan.component.scss'],
 })
 export class PlanComponent implements OnInit {
-    user$: Observable<User | null>;
+    account$: Observable<Account | null>;
     activeTab: 'spend' | 'earn' = 'spend';
     originalBalance: number | null = null;
 
-    constructor(private userService: UserService, private http: HttpClient) {}
+    constructor(
+        private accountService: AccountService,
+        private http: HttpClient
+    ) {}
 
     ngOnInit() {
-        this.user$ = this.userService.currentUser$;
-        this.originalBalance = this.userService.getCurrentBalance();
+        this.account$ = this.accountService.currentAccount$;
+        this.originalBalance = this.accountService.getCurrentBalance();
     }
 
     switchTab(tab: 'spend' | 'earn'): void {
@@ -26,15 +29,15 @@ export class PlanComponent implements OnInit {
     }
 
     onCalculateAmount(amount: number) {
-        this.userService.updateBalanceTemporarily(amount);
+        this.accountService.updateBalanceTemporarily(amount);
     }
 
     onResetBalance(): void {
         console.log('onResetBalance triggered');
-        this.userService.resetBalanceToOriginal();
+        this.accountService.resetBalanceToOriginal();
     }
 
     onApplyChanges() {
-        this.userService.applyBalanceChange();
+        this.accountService.applyBalanceChange();
     }
 }
