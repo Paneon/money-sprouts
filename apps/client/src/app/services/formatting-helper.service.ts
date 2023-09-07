@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { NgForm } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root',
 })
-export class HelperService {
+export class FormattingHelperService {
     message: string | null = '';
     icon: string | null = null;
 
@@ -35,14 +34,5 @@ export class HelperService {
     germanFormatToNumber(amount: string): number {
         const numberAmount = amount.replace(',', '.');
         return parseFloat(numberAmount);
-    }
-
-    fieldsAreEmpty(form: NgForm): boolean {
-        if (!form.value.title || !form.value.amount) {
-            this.icon = '⚠';
-            this.message = 'Both fields are required.';
-            return true;
-        }
-        return false;
     }
 }

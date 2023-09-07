@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { HelperService } from '../../../services/helper.service';
+import { FormattingHelperService } from '../../../services/formatting-helper.service';
 
 @Component({
     selector: 'money-sprouts-plan-expenses',
@@ -18,15 +18,17 @@ export class PlanExpensesComponent {
     }>();
     @Output() resetBalance = new EventEmitter<void>();
 
-    constructor(public helperService: HelperService) {}
+    constructor(public formattingHelperService: FormattingHelperService) {}
 
     calculate(spendingForm: NgForm) {
-        if (this.helperService.fieldsAreEmpty(spendingForm)) {
+        if (this.fieldsAreEmpty(spendingForm)) {
             return;
         } else if (spendingForm.valid) {
             const displayAmount = spendingForm.value.amount;
             const enteredAmount =
-                this.helperService.germanFormatToNumber(displayAmount) * 100;
+                this.formattingHelperService.germanFormatToNumber(
+                    displayAmount
+                ) * 100;
             console.log('enteredAmount: ', enteredAmount);
             this.calculateAmount.emit(enteredAmount);
             this.icon = 'ℹ';
@@ -39,7 +41,7 @@ export class PlanExpensesComponent {
     }
 
     apply(spendingForm: NgForm) {
-        if (this.helperService.fieldsAreEmpty(spendingForm)) {
+        if (this.fieldsAreEmpty(spendingForm)) {
             return;
         } else if (spendingForm.valid) {
             const title = spendingForm.value.title;
@@ -59,6 +61,15 @@ export class PlanExpensesComponent {
         input.value = '';
         console.log('clearInput triggered');
         this.resetBalance.emit();
+    }
+
+    fieldsAreEmpty(form: NgForm): boolean {
+        if (!form.value.title || !form.value.amount) {
+            this.icon = '⚠';
+            this.message = 'Both fields are required.';
+            return true;
+        }
+        return false;
     }
 
     onSubmit() {
