@@ -2,7 +2,7 @@
 <div id="plan" class="custom-container">
     <div class="custom-text-box" *ngIf="account$ | async as account">
         <div class="balance-display">
-            {{ account.balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
+            {{ balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
         </div>
         <div class="tabs">
             <div
@@ -36,7 +36,7 @@
             <div *ngIf="activeTab === 'spend'">
                 <money-sprouts-plan-expenses
                     (calculateAmount)="onCalculateAmount($event)"
-                    (applyChanges)="onApplyChanges()"
+                    (applyChanges)="onApplyChanges($event.title, $event.amount)"
                     (resetBalance)="onResetBalance()"
                 ></money-sprouts-plan-expenses>
             </div>

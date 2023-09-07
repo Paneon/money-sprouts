@@ -8,10 +8,10 @@
             name="title"
             ngModel
             required
-            pattern="[A-Za-z\s]*"
-            title="Only letters and spaces are allowed"
+            pattern="^[a-zA-Z\s0-9-.]+$"
+            title="Only letters, numbers, spaces, hyphens, or dots are allowed"
             #title="ngModel"
-            (blur)="formatNameInput($event)"
+            (blur)="formattingHelperService.formatNameInput($event)"
         />
     </div>
 
@@ -25,8 +25,10 @@
             ngModel
             required
             pattern="^\d{1,3}(?:\.\d{3})*(?:,\d{0,2})?$"
+            title="Only whole numbers or numbers with commas for decimal separation are
+            allowed."
             #amount="ngModel"
-            (blur)="formatAmountInput($event)"
+            (blur)="formattingHelperService.formatAmountInput($event)"
             (focus)="clearInput($event)"
         />
     </div>
@@ -36,15 +38,16 @@
             Calculate
         </button>
         <button class="button" type="submit" (click)="apply(spendingForm)">
-            Apply
+            Submit
         </button>
     </div>
 </form>
 <p *ngIf="title.invalid && title.dirty" class="error">
-    Only letters and spaces are allowed.
+    Only letters, numbers, spaces, hyphens, or dots are allowed.
 </p>
 <p *ngIf="amount.invalid && amount.dirty" class="error">
-    Only numbers are allowed.
+    Only whole numbers or numbers with commas for decimal separation are
+    allowed.
 </p>
 <p *ngIf="message" class="message">
     <span class="message-icon" *ngIf="icon">{{ icon }}</span>

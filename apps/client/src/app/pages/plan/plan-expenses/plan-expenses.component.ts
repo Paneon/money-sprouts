@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { FormattingHelperService } from '../../../services/formatting-helper.service';
 
 @Component({
     selector: 'money-sprouts-plan-expenses',
@@ -11,8 +12,13 @@ export class PlanExpensesComponent {
     icon: string | null = null;
 
     @Output() calculateAmount = new EventEmitter<number>();
-    @Output() applyChanges = new EventEmitter<void>();
+    @Output() applyChanges = new EventEmitter<{
+        title: string;
+        amount: number;
+    }>();
     @Output() resetBalance = new EventEmitter<void>();
+
+    constructor(public formattingHelperService: FormattingHelperService) {}
 
     calculate(spendingForm: NgForm) {
         if (this.fieldsAreEmpty(spendingForm)) {
@@ -20,7 +26,9 @@ export class PlanExpensesComponent {
         } else if (spendingForm.valid) {
             const displayAmount = spendingForm.value.amount;
             const enteredAmount =
-                this.germanFormatToNumber(displayAmount) * 100;
+                this.formattingHelperService.germanFormatToNumber(
+                    displayAmount
+                ) * 100;
             console.log('enteredAmount: ', enteredAmount);
             this.calculateAmount.emit(enteredAmount);
             this.icon = 'ℹ';
@@ -36,7 +44,9 @@ export class PlanExpensesComponent {
         if (this.fieldsAreEmpty(spendingForm)) {
             return;
         } else if (spendingForm.valid) {
-            this.applyChanges.emit();
+            const title = spendingForm.value.title;
+            const amount = spendingForm.value.amount * -100;
+            this.applyChanges.emit({ title, amount });
             this.icon = '✔';
             this.message =
                 'Success! Your sale will soon be approved by your parents and be applied to your total balance.';
@@ -46,33 +56,11 @@ export class PlanExpensesComponent {
         }
     }
 
-    formatNameInput(event: Event): void {
+    clearInput(event: Event): void {
         const input = event.target as HTMLInputElement;
-        let value = input.value;
-        value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-        input.value = value;
-    }
-
-    formatAmountInput(event: Event): void {
-        const input = event.target as HTMLInputElement;
-        const value = parseFloat(input.value.replace(',', '.'));
-        if (!isNaN(value)) {
-            input.value = this.convertToGermanFormat(value);
-        } else {
-            this.icon = '⚠';
-            this.message = 'Please enter a valid amount.';
-        }
-    }
-
-    convertToGermanFormat(amount: number): string {
-        let str = amount.toFixed(2);
-        str = str.replace('.', ',');
-        return str;
-    }
-
-    germanFormatToNumber(amount: string): number {
-        const numberAmount = amount.replace(',', '.');
-        return parseFloat(numberAmount);
+        input.value = '';
+        console.log('clearInput triggered');
+        this.resetBalance.emit();
     }
 
     fieldsAreEmpty(form: NgForm): boolean {
@@ -82,13 +70,6 @@ export class PlanExpensesComponent {
             return true;
         }
         return false;
-    }
-
-    clearInput(event: Event): void {
-        const input = event.target as HTMLInputElement;
-        input.value = '';
-        console.log('clearInput triggered');
-        this.resetBalance.emit();
     }
 
     onSubmit() {

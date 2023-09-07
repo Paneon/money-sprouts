@@ -102,68 +102,13 @@ export class AccountService extends Loggable {
 
     // Method to get the current balance
     getCurrentBalance(): number | null {
-        // TODO rename
-        const currentUser = this.currentAccountSubject.getValue();
-        return currentUser?.balance || null;
+        const currentAccount = this.currentAccountSubject.getValue();
+        return currentAccount?.balance || null;
     }
 
-    // Method to update the balance temporarily
-    updateBalanceTemporarily(amount: number): void {
-        // TODO rename
-        const currentUser = this.currentAccountSubject.getValue();
-        if (currentUser && typeof currentUser.balance === 'number') {
-            currentUser.balance -= amount;
-            this.currentAccountSubject.next(currentUser);
-        }
-    }
-
-    // Method to reset the balance to the original value
-    resetBalanceToOriginal(): void {
-        console.log('resetBalanceToOriginal triggered');
-        // TODO rename
-        const currentUser = this.currentAccountSubject.getValue();
-        this.originalBalance = currentUser.balance;
-
-        // Log the values and conditions
-        console.log('currentUser:', currentUser);
-        console.log('typeof currentUser.balance:', typeof currentUser.balance);
-        console.log('this.originalBalance:', this.originalBalance);
-
-        if (
-            currentUser &&
-            typeof currentUser.balance === 'number' &&
-            this.originalBalance !== null
-        ) {
-            currentUser.balance = this.originalBalance;
-            console.log('resetBalance: ', currentUser.balance);
-            this.currentAccountSubject.next(currentUser);
-        }
-    }
-
-    applyBalanceChange(): void {
-        const currentUserBalance = this.getCurrentBalance();
-        if (currentUserBalance !== null) {
-            this.http
-                .patch('/api/transactions/:userId', {
-                    newBalance: currentUserBalance,
-                })
-                .subscribe({
-                    next: () => {
-                        this.balanceUpdateStatus.next('success');
-                        this.originalBalance = this.currentBalance;
-                    },
-                    error: (error) => {
-                        console.error('Error updating balance: ', error);
-                        this.balanceUpdateStatus.next('error');
-                        const currentBalance = this.getCurrentBalance();
-                        if (currentBalance !== null) {
-                            this.updateBalanceTemporarily(
-                                this.originalBalance - currentBalance
-                            );
-                        }
-                    },
-                });
-        }
+    getCurrentAccountId(): number | null {
+        const currentAccount = this.currentAccountSubject.getValue();
+        return currentAccount?.id;
     }
 
     logoutOrDeselectAccount() {
