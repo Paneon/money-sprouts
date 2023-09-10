@@ -9,18 +9,18 @@
             <figure>
                 <img [src]="getFunnyImage(account.balance)" alt="funny image" />
                 <figcaption class="image-caption">
-                    Illustration by Icons 8 from
+                    {{ 'OVERVIEW.ILLUSTRATION_SOURCE' | translate }}
                     <a href="https://icons8.com/illustrations">Ouch!</a>
                 </figcaption>
             </figure>
         </div>
         <div class="payday-info" *ngIf="combinedDataOverview$ | async as data">
             <div>
-                Next pocket money:
+                {{ 'OVERVIEW.PAYDAY_WEEKDAY_LABEL' | translate }}
                 <span class="bold-text">{{ data.formatedNextPayday }}</span>
             </div>
             <div>
-                Days until payday:
+                {{ 'OVERVIEW.PAYDAY_COUNTER_LABEL' | translate }}
                 <span class="bold-text">{{ data.daysUntilNextPayday }}</span>
             </div>
         </div>

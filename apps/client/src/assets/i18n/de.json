@@ -1,0 +1,19 @@
+{
+  "HOME": {
+    "TITLE": "Willkommen bei GeldKeimling",
+    "DESCRIPTION": "Money Sprouts hilft Kindern bei der Verwaltung ihrer Ersparnisse. Sie lernen, verantwortungsvoll mit Ausgaben umzugehen. Melde Dich an und leg los!",
+    "BUTTON": "Gehe zum LOGIN"
+  },
+  "LOGIN": {
+    "USERNAME": "Name:",
+    "PASSWORD": "Passwort:",
+    "BUTTON": "Bestätigen"
+  },
+  "OVERVIEW": {
+    "ILLUSTRATION_SOURCE": "Illustration von Icons 8 von",
+    "PAYDAY_WEEKDAY_LABEL": "Nächstes Taschengeld am:",
+    "PAYDAY_WEEKDAY_UNKOWN": "Frag Mama oder Papa!",
+    "PAYDAY_COUNTER_UNKOWN": "Frag Mama oder Papa!",
+    "PAYDAY_COUNTER_LABEL": "Tage bis zur Zahlung:"
+  }
+}

@@ -64,7 +64,7 @@ nx run client:build:development --watch
 - **Icons**:
 
   - The illustrations on the overview page are sourced from Icons 8 from Ouch! https://icons8.de/
-  - The rest of the icons (like the money bag, the bill with hour glass, the calculator, pile of coins, shopping cart, logout icon and back arrow) are all icons sourced from Icons 8.
+  - The rest of the icons (like the money bag, the bill with hour glass, the calculator, pile of coins, shopping cart, logout icon, germany flag, usa flag and back arrow) are all icons sourced from Icons 8.
 
 - **Avatar Images**: The avatars in the user selection and page header were sourced from Flaticon.
 

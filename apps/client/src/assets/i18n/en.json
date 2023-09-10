@@ -1,0 +1,19 @@
+{
+  "HOME": {
+    "TITLE": "Welcome to Money Sprouts",
+    "DESCRIPTION": "Money Sprouts helps children manage their savings. They learn to behave responsibly with expenses. Log in to get started!",
+    "BUTTON": "Go to LOGIN"
+  },
+  "LOGIN": {
+    "USERNAME_LABEL": "Username:",
+    "PASSWORD_LABEL": "Password:",
+    "BUTTON": "Submit"
+  },
+  "OVERVIEW": {
+    "ILLUSTRATION_SOURCE": "Illustration by Icons 8 from",
+    "PAYDAY_WEEKDAY_LABEL": "Next pocket money:",
+    "PAYDAY_WEEKDAY_UNKOWN": "Ask Mum or Dad!",
+    "PAYDAY_COUNTER_UNKOWN": "Ask Mum or Dad!",
+    "PAYDAY_COUNTER_LABEL": "Days until payday:"
+  }
+}

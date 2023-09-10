@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { Account } from '@money-sprouts/shared/domain';
 import {
@@ -30,7 +31,8 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     constructor(
         private accountService: AccountService,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        private translate: TranslateService
     ) {
         super();
     }
@@ -93,7 +95,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getFormatedNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'Ask Mom or Dad!';
+            return this.translate.instant('OVERVIEW.PAYDAY_WEEKDAY_UNKOWN');
         }
         const formattedDate = this.datePipe.transform(
             nextPayday,
@@ -112,7 +114,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getDaysUntilNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'Ask Mom or Dad!';
+            return this.translate.instant('OVERVIEW.PAYDAY_COUNTER_UNKOWN');
         }
         const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
         return `${dayDifference}`;

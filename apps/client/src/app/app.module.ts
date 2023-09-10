@@ -19,7 +19,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountsResolver } from './services/accounts-resolver.service';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { customTranslate } from './services/customTranslate.loader';
+import { APP_INITIALIZER } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
+export function appInitializerFactory(translate: TranslateService) {
+    return () => {
+        translate.setDefaultLang('de');
+        return translate.use('de').toPromise();
+    };
+}
 registerLocaleData(localeDe);
 
 @NgModule({
@@ -45,6 +53,12 @@ registerLocaleData(localeDe);
         { provide: LOCALE_ID, useValue: 'de' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
         AccountsResolver,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: appInitializerFactory,
+            deps: [TranslateService, Injector],
+            multi: true,
+        },
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],

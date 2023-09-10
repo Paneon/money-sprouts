@@ -12,9 +12,10 @@ import { AccountService } from '../services/account.service';
 import { PlanExpensesComponent } from './plan/plan-expenses/plan-expenses.component';
 import { PlanEarningsComponent } from './plan/plan-earnings/plan-earnings.component';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-    imports: [CommonModule, SharedModule, FormsModule],
+    imports: [CommonModule, SharedModule, FormsModule, TranslateModule],
     declarations: [
         AccountSelectionComponent,
         StartComponent,
