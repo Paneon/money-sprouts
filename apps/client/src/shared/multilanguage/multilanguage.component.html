@@ -1,0 +1,16 @@
+<div class="form-group">
+    <img
+        *ngIf="currentLang === 'de'"
+        src="assets/images/usa-flag.png"
+        alt="usa-flag"
+        class="flag-icon"
+        (click)="switchLang('en')"
+    />
+    <img
+        *ngIf="currentLang === 'en'"
+        src="assets/images/germany-flag.png"
+        alt="germany-flag"
+        class="flag-icon"
+        (click)="switchLang('de')"
+    />
+</div>

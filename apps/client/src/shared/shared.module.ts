@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { FormatUrlPipe } from '../app/pipes/format-url.pipe';
 import { AccountService } from '../app/services/account.service';
+import { MultilanguageComponent } from './multilanguage/multilanguage.component';
 
 @NgModule({
     imports: [CommonModule],
@@ -13,6 +14,7 @@ import { AccountService } from '../app/services/account.service';
         UserAvatarComponent,
         PageHeaderComponent,
         FormatUrlPipe,
+        MultilanguageComponent,
     ],
     exports: [
         IconWithTextComponent,
@@ -20,6 +22,7 @@ import { AccountService } from '../app/services/account.service';
         PageHeaderComponent,
         FormatUrlPipe,
         CommonModule,
+        MultilanguageComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [AccountService],
