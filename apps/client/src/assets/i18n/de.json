@@ -4,6 +4,14 @@
     "DESCRIPTION": "Money Sprouts hilft Kindern bei der Verwaltung ihrer Ersparnisse. Sie lernen, verantwortungsvoll mit Ausgaben umzugehen. Melde Dich an und leg los!",
     "BUTTON": "Gehe zum LOGIN"
   },
+  "PAGE_HEADER": {
+    "PAGE_NAME": {
+      "DASHBOARD": "Dashboard",
+      "OVERVIEW": "Überblick",
+      "HISTORY": "Historie",
+      "PLAN": "Planung"
+    }
+  },
   "LOGIN": {
     "USERNAME": "Name:",
     "PASSWORD": "Passwort:",

@@ -11,6 +11,7 @@ import {
 } from 'rxjs';
 import { Account } from '@money-sprouts/shared/domain';
 import { RoutePath, routeToDashboard } from '../../app/app.routing.module';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -29,7 +30,11 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    constructor(private router: Router, public accountService: AccountService) {
+    constructor(
+        private router: Router,
+        public accountService: AccountService,
+        public translate: TranslateService
+    ) {
         this.accountService.loading.subscribe((loading) => {
             this.isLoading = loading;
         });
@@ -84,13 +89,13 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         const pageName = this.router.url.split('/')[3];
         switch (pageName) {
             case 'dashboard':
-                return 'Dashboard';
+                return 'PAGE_HEADER.PAGE_NAME.DASHBOARD';
             case 'overview':
-                return 'Overview';
+                return 'PAGE_HEADER.PAGE_NAME.OVERVIEW';
             case 'history':
-                return 'History';
+                return 'PAGE_HEADER.PAGE_NAME.HISTORY';
             case 'plan':
-                return 'Plan';
+                return 'PAGE_HEADER.PAGE_NAME.PLAN';
             default:
                 return '';
         }

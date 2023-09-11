@@ -6,9 +6,10 @@ import { PageHeaderComponent } from './page-header/page-header.component';
 import { FormatUrlPipe } from '../app/pipes/format-url.pipe';
 import { AccountService } from '../app/services/account.service';
 import { MultilanguageComponent } from './multilanguage/multilanguage.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-    imports: [CommonModule],
+    imports: [CommonModule, TranslateModule],
     declarations: [
         IconWithTextComponent,
         UserAvatarComponent,

@@ -4,6 +4,14 @@
     "DESCRIPTION": "Money Sprouts helps children manage their savings. They learn to behave responsibly with expenses. Log in to get started!",
     "BUTTON": "Go to LOGIN"
   },
+  "PAGE_HEADER": {
+    "PAGE_NAME": {
+      "DASHBOARD": "Dashboard",
+      "OVERVIEW": "Overview",
+      "HISTORY": "History",
+      "PLAN": "Plan"
+    }
+  },
   "LOGIN": {
     "USERNAME_LABEL": "Username:",
     "PASSWORD_LABEL": "Password:",
