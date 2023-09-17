@@ -6,7 +6,7 @@
             <button
                 class="btn btn-link"
                 (click)="goBack()"
-                title="Go back to previous page"
+                [title]="'PAGE_HEADER.BUTTONS.GO_BACK' | translate"
             >
                 <img
                     src="assets/images/go-back-arrow_small.png"
@@ -25,7 +25,10 @@
                         *ngIf="!isLoading"
                         class="btn btn-link"
                         (click)="goToAccountSelection()"
-                        title="Go to account selection"
+                        [title]="
+                            'PAGE_HEADER.BUTTONS.GO_TO_ACCOUNT_SELECTION'
+                                | translate
+                        "
                     >
                         <img
                             [src]="
@@ -50,7 +53,7 @@
                 href="/logout"
                 (click)="onLogout($event)"
                 class="btn btn-link"
-                title="Logout"
+                [title]="'PAGE_HEADER.BUTTONS.LOGOUT' | translate"
             >
                 <img
                     src="assets/images/logout-round-grey_small.png"

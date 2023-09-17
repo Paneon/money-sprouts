@@ -10,6 +10,12 @@
       "OVERVIEW": "Überblick",
       "HISTORY": "Historie",
       "PLAN": "Planung"
+    },
+    "BUTTONS": {
+      "GO_BACK": "Gehe zur vorherigen Seite",
+      "GO_TO_ACCOUNT_SELECTION": "Gehe zur Nutzer Auswahl",
+      "LOGOUT": "Logout",
+      "MULTILANGUAGE": "Sprache wechseln"
     }
   },
   "LOGIN": {

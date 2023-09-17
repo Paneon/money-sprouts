@@ -3,6 +3,7 @@
         *ngIf="currentLang === 'de'"
         src="assets/images/usa-flag.png"
         alt="usa-flag"
+        [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
         class="flag-icon"
         (click)="switchLang('en')"
     />
@@ -10,6 +11,7 @@
         *ngIf="currentLang === 'en'"
         src="assets/images/germany-flag.png"
         alt="germany-flag"
+        [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
         class="flag-icon"
         (click)="switchLang('de')"
     />

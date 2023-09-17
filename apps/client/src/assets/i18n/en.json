@@ -10,6 +10,12 @@
       "OVERVIEW": "Overview",
       "HISTORY": "History",
       "PLAN": "Plan"
+    },
+    "BUTTONS": {
+      "GO_BACK": "Go back to previous page",
+      "GO_TO_ACCOUNT_SELECTION": "Go to user selection",
+      "LOGOUT": "Logout",
+      "MULTILANGUAGE": "Switch language"
     }
   },
   "LOGIN": {
