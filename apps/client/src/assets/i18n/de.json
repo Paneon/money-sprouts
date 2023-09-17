@@ -30,5 +30,36 @@
     "PAYDAY_WEEKDAY_UNKOWN": "Frag Mama oder Papa!",
     "PAYDAY_COUNTER_UNKOWN": "Frag Mama oder Papa!",
     "PAYDAY_COUNTER_LABEL": "Tage bis zur Zahlung:"
+  },
+  "PLAN": {
+    "TAB_SPENT": {
+      "TITLE": "Ich will Geld ausgeben",
+      "NAME_LABEL": "Produktname:",
+      "INPUT_HINT": {
+        "PRODUCT_INPUT": "Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche oder Punkte erlaubt.",
+        "AMOUNT_INPUT": "Es sind nur ganze Zahlen oder Zahlen mit Kommas als Dezimaltrennung erlaubt."
+      },
+      "AMOUNT_LABEL": "Betrag (€):",
+      "BUTTON_LABEL": {
+        "CALCULATE": "Berechnen",
+        "SUBMIT": "Bestätigen"
+      },
+      "ERROR_MESSAGE": {
+        "PRODUCT_INPUT": "Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche oder Punkte erlaubt.",
+        "AMOUNT_INPUT": "Es sind nur ganze Zahlen oder Zahlen mit Kommas als Dezimaltrennung erlaubt.",
+        "INPUTS_INVALID": {
+          "PART_1": "Die Angabe für",
+          "PART_2": "von",
+          "PART_3": "scheint ungültig zu sein. Bitte versuche es erneut."
+        },
+        "INPUTS_INCOMPLETE": "Beide Felder sind erforderlich.",
+        "GENERAL": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+      },
+      "MESSAGE_CONFIRM": "Möchtest du dieses Produkt kaufen? Dann klicke 'Bestätigen'.",
+      "MESSAGE_SUCCESS": "Erfolg! Dein Kauf wird bald von deinen Eltern genehmigt und deinem Gesamtsaldo hinzugefügt."
+    },
+    "TAB_EARN": {
+      "TITLE": "Ich will Geld dazu verdienen"
+    }
   }
 }

@@ -30,5 +30,36 @@
     "PAYDAY_WEEKDAY_UNKOWN": "Ask Mum or Dad!",
     "PAYDAY_COUNTER_UNKOWN": "Ask Mum or Dad!",
     "PAYDAY_COUNTER_LABEL": "Days until payday:"
+  },
+  "PLAN": {
+    "TAB_SPENT": {
+      "TITLE": "I want to spend money",
+      "NAME_LABEL": "Product name:",
+      "INPUT_HINT": {
+        "PRODUCT_INPUT": "Only letters, numbers, spaces, hyphens, or dots are allowed.",
+        "AMOUNT_INPUT": "Only whole numbers or numbers with commas for decimal separation are allowed."
+      },
+      "AMOUNT_LABEL": "Amount (€):",
+      "BUTTON_LABEL": {
+        "CALCULATE": "Calculate",
+        "SUBMIT": "Submit"
+      },
+      "ERROR_MESSAGE": {
+        "PRODUCT_INPUT": "Only letters, numbers, spaces, hyphens, or dots are allowed.",
+        "AMOUNT_INPUT": "Only whole numbers or numbers with commas for decimal separation are allowed.",
+        "INPUTS_INVALID": {
+          "PART_1": "The value for",
+          "PART_2": "or",
+          "PART_3": "seem to be invalid. Please try again."
+        },
+        "INPUTS_INCOMPLETE": "Both fields are required.",
+        "GENERAL": "Something went wrong. Please try again."
+      },
+      "MESSAGE_CONFIRM": "Do you want to purchase this product? Then click 'Submit'.",
+      "MESSAGE_SUCCESS": "Success! Your sale will soon be approved by your parents and be applied to your total balance."
+    },
+    "TAB_EARN": {
+      "TITLE": "I want to earn money"
+    }
   }
 }

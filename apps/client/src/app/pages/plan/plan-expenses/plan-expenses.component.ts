@@ -32,11 +32,15 @@ export class PlanExpensesComponent {
             console.log('enteredAmount: ', enteredAmount);
             this.calculateAmount.emit(enteredAmount);
             this.icon = 'ℹ';
-            this.message =
-                'Do you want to purchase this product? Then click "Apply".';
+            this.message = 'PLAN.TAB_SPENT.MESSAGE_CONFIRM';
         } else {
             this.icon = '⚠';
-            this.message = `The inputs "${spendingForm.value.amount}" or "${spendingForm.value.title}" seem to be invalid. Please try again.`;
+            this.message =
+                'PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INVALID.PART_1 ' +
+                spendingForm.value.amount +
+                ' PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INVALID.PART_2 ' +
+                spendingForm.value.title +
+                ' PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INVALID.PART_3';
         }
     }
 
@@ -48,17 +52,17 @@ export class PlanExpensesComponent {
             const amount = spendingForm.value.amount * -100;
             this.applyChanges.emit({ title, amount });
             this.icon = '✔';
-            this.message =
-                'Success! Your sale will soon be approved by your parents and be applied to your total balance.';
+            this.message = 'PLAN.TAB_SPENT.MESSAGE_SUCCESS';
         } else {
             this.icon = '⚠';
-            this.message = 'Something went wrong. Please try again.';
+            this.message = 'PLAN.TAB_SPENT.ERROR_MESSAGE.GENERAL';
         }
     }
 
     clearInput(event: Event): void {
         const input = event.target as HTMLInputElement;
         input.value = '';
+        this.message = '';
         console.log('clearInput triggered');
         this.resetBalance.emit();
     }
@@ -66,7 +70,7 @@ export class PlanExpensesComponent {
     fieldsAreEmpty(form: NgForm): boolean {
         if (!form.value.title || !form.value.amount) {
             this.icon = '⚠';
-            this.message = 'Both fields are required.';
+            this.message = 'PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INCOMPLETE';
             return true;
         }
         return false;
