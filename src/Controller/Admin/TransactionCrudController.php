@@ -7,6 +7,9 @@ namespace App\Controller\Admin;
 use App\Entity\Transaction;
 use App\Enum\TransactionType;
 use App\Trait\HasCurrencyFormatter;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -51,10 +54,27 @@ class TransactionCrudController extends AbstractCrudController
         });
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        $disableIfApplied = function (Action $action) {
+            return $action->displayIf(function ($entity) {
+                // Only display the 'edit' action if the transaction is not applied
+                return !$entity->isApplied();
+            });
+        };
+
+        return $actions
+            ->update(Crud::PAGE_INDEX, Action::EDIT, $disableIfApplied)
+            ->update(Crud::PAGE_DETAIL, Action::EDIT, $disableIfApplied)
+            ->update(Crud::PAGE_INDEX, Action::DELETE, $disableIfApplied)
+            ->update(Crud::PAGE_DETAIL, Action::DELETE, $disableIfApplied);
+    }
+
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
             ->add(BooleanFilter::new('applied')->setFormTypeOption('expanded', true))
+            ->add(BooleanFilter::new('pocketMoney')->setFormTypeOption('expanded', true))
             ->add('account')
             ->add('category');
     }
