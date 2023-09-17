@@ -17,11 +17,15 @@
         <div class="payday-info" *ngIf="combinedDataOverview$ | async as data">
             <div>
                 {{ 'OVERVIEW.PAYDAY_WEEKDAY_LABEL' | translate }}
-                <span class="bold-text">{{ data.formatedNextPayday }}</span>
+                <span class="bold-text">{{
+                    data.formatedNextPayday | translate
+                }}</span>
             </div>
             <div>
                 {{ 'OVERVIEW.PAYDAY_COUNTER_LABEL' | translate }}
-                <span class="bold-text">{{ data.daysUntilNextPayday }}</span>
+                <span class="bold-text">{{
+                    data.daysUntilNextPayday | translate
+                }}</span>
             </div>
         </div>
     </div>

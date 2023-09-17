@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Account } from '@money-sprouts/shared/domain';
 import {
     combineLatest,
@@ -25,6 +25,7 @@ interface CombinedDataOverview {
     styleUrls: ['./balance-overview.component.scss'],
 })
 export class BalanceOverviewComponent extends Loggable implements OnInit {
+    private currentLang: string;
     account$: Observable<Account | null>;
     nextPayday$: Observable<Date | null>;
     combinedDataOverview$: Observable<CombinedDataOverview>;
@@ -32,12 +33,16 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     constructor(
         private accountService: AccountService,
         private datePipe: DatePipe,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private cd: ChangeDetectorRef
     ) {
         super();
+        this.currentLang = this.translate.currentLang;
     }
 
     ngOnInit() {
+        console.log(this.translate.currentLang);
+
         this.account$ = this.accountService.currentAccount$.pipe(
             debounceTime(300), // waits 300ms between emisssions
             distinctUntilChanged((prev, current) => {
@@ -95,26 +100,29 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getFormatedNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return this.translate.instant('OVERVIEW.PAYDAY_WEEKDAY_UNKOWN');
+            return 'OVERVIEW.PAYDAY_WEEKDAY_UNKOWN';
         }
-        const formattedDate = this.datePipe.transform(
+        const currentLanguage = this.translate.currentLang;
+        const datePipe = new DatePipe(currentLanguage);
+
+        const formattedDate = datePipe.transform(
             nextPayday,
             'dd. MMMM yyyy',
             undefined,
-            'en'
+            currentLanguage
         );
-        const dayName = this.datePipe.transform(
+        const dayName = datePipe.transform(
             nextPayday,
             'EEEE',
             undefined,
-            'en'
+            currentLanguage
         );
         return `${dayName} (${formattedDate})`;
     }
 
     getDaysUntilNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return this.translate.instant('OVERVIEW.PAYDAY_COUNTER_UNKOWN');
+            return 'OVERVIEW.PAYDAY_COUNTER_UNKOWN';
         }
         const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
         return `${dayDifference}`;

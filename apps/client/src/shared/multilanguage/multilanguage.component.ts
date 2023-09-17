@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -10,7 +10,10 @@ export class MultilanguageComponent {
     langs: string[] = ['de', 'en'];
 
     currentLang = 'de';
-    constructor(public translateService: TranslateService) {
+    constructor(
+        public translateService: TranslateService,
+        private cd: ChangeDetectorRef
+    ) {
         const browserLang = this.translateService.getBrowserLang();
         this.currentLang = this.langs.includes(browserLang)
             ? browserLang
@@ -23,5 +26,6 @@ export class MultilanguageComponent {
     switchLang(lang: string) {
         this.translateService.use(lang);
         this.currentLang = lang;
+        this.cd.detectChanges();
     }
 }

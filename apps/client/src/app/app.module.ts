@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import localeEn from '@angular/common/locales/en';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountsResolver } from './services/accounts-resolver.service';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -28,7 +29,9 @@ export function appInitializerFactory(translate: TranslateService) {
         return translate.use('de').toPromise();
     };
 }
+
 registerLocaleData(localeDe);
+registerLocaleData(localeEn);
 
 @NgModule({
     declarations: [AppComponent],
