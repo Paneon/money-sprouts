@@ -17,6 +17,13 @@
     "PASSWORD": "Passwort:",
     "BUTTON": "Bestätigen"
   },
+  "DASHBOARD": {
+    "SECTION_NAME": {
+      "OVERVIEW": "Überblick",
+      "HISTORY": "Historie",
+      "PLAN": "Planung"
+    }
+  },
   "OVERVIEW": {
     "ILLUSTRATION_SOURCE": "Illustration von Icons 8 von",
     "PAYDAY_WEEKDAY_LABEL": "Nächstes Taschengeld am:",

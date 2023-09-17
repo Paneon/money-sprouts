@@ -17,6 +17,13 @@
     "PASSWORD_LABEL": "Password:",
     "BUTTON": "Submit"
   },
+  "DASHBOARD": {
+    "SECTION_NAME": {
+      "OVERVIEW": "Overview",
+      "HISTORY": "History",
+      "PLAN": "Plan"
+    }
+  },
   "OVERVIEW": {
     "ILLUSTRATION_SOURCE": "Illustration by Icons 8 from",
     "PAYDAY_WEEKDAY_LABEL": "Next pocket money:",

@@ -16,6 +16,7 @@ import {
     routeToOverview,
     routeToPlan,
 } from '../../app.routing.module';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Section {
     name: string;
@@ -35,15 +36,15 @@ export class DashboardComponent implements OnInit {
 
     sections: Section[] = [
         {
-            name: 'Overview',
+            name: 'DASHBOARD.SECTION_NAME.OVERVIEW',
             image: './assets/images/overview.png',
         },
         {
-            name: 'History',
+            name: 'DASHBOARD.SECTION_NAME.HISTORY',
             image: './assets/images/history.png',
         },
         {
-            name: 'Plan',
+            name: 'DASHBOARD.SECTION_NAME.PLAN',
             image: './assets/images/plan.png',
         },
     ];
@@ -90,13 +91,13 @@ export class DashboardComponent implements OnInit {
         }
 
         switch (section) {
-            case 'Overview':
+            case 'DASHBOARD.SECTION_NAME.OVERVIEW':
                 this.router.navigate([routeToOverview(this.name)]);
                 break;
-            case 'History':
+            case 'DASHBOARD.SECTION_NAME.HISTORY':
                 this.router.navigate([routeToHistory(this.name)]);
                 break;
-            case 'Plan':
+            case 'DASHBOARD.SECTION_NAME.PLAN':
                 this.router.navigate([routeToPlan(this.name)]);
                 break;
         }
