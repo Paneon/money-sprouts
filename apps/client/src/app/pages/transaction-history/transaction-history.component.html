@@ -29,7 +29,7 @@
                         >
                             <tr>
                                 <td
-                                    [ngClass]="data.transactions.classes[i]"
+                                    [ngClass]="{ 'applied': data.transactions.transactions.incomes[i].applied,'not-applied': !data.transactions.transactions.incomes[i].applied, }"
                                     *ngIf="
                                         data.transactions.transactions.incomes[
                                             i
@@ -55,7 +55,14 @@
                                     }}</span>
                                 </td>
                                 <td
-                                    [ngClass]="data.transactions.classes[i]"
+                                    [ngClass]="{
+                                        applied:
+                                            data.transactions.transactions
+                                                .expenses[i].applied,
+                                        'not-applied':
+                                            !data.transactions.transactions
+                                                .expenses[i].applied
+                                    }"
                                     *ngIf="
                                         data.transactions.transactions.expenses[
                                             i
