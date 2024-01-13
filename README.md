@@ -57,6 +57,23 @@ nx run client:build:development
 nx run client:build:development --watch
 ```
 
+## Database Migration and seeding
+
+To work on a local environment you need a database and potentially seed some sample data into it.
+To accomplish this go into the docker server container:
+
+Create the database and execute the migrations
+
+```bash
+./bin/console doctrine:migrations:migrate
+```
+
+Load initial sample data into the database:
+
+```bash
+./bin/console doctrine:fixtures:load
+```
+
 ## Credits and Acknowledgements
 
 ### Icons and illustrations used in the project
