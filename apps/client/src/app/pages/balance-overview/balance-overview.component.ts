@@ -93,6 +93,10 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                 return './assets/images/3d-dog-with-bag.png';
             case balance < 5000:
                 return './assets/images/3d-man-playing-with-dog.png';
+            case balance < 7500:
+                return './assets/images/girl-hugging-dog.png';
+            case balance < 10000:
+                return './assets/images/dog-astronaut-floating.png';
             default:
                 return './assets/images/3d-dog-and-boy-jumping.png';
         }
