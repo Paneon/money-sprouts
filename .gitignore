@@ -68,3 +68,4 @@ public/build
 .fleet
 .env.prod
 public/*.php
+.nx/cache
