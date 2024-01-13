@@ -83,16 +83,28 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         switch (true) {
             case balance <= 0:
                 return './assets/images/3d-empty-box.png';
+            case balance < 250:
+                return './assets/images/3d-cat-in-box.png';
             case balance < 500:
-                return './assets/images/3d-dog-from-behind.png';
+                return './assets/images/3d-cat-with-books-and-mouse.png';
             case balance < 1000:
                 return './assets/images/3d-sitting-dog.png';
             case balance < 1500:
                 return './assets/images/3d-dog-with-leash.png';
             case balance < 2000:
                 return './assets/images/3d-dog-with-bag.png';
+            case balance < 3500:
+                return './assets/images/3d-cat-under-umbrella.png';
             case balance < 5000:
                 return './assets/images/3d-man-playing-with-dog.png';
+            case balance < 7500:
+                return './assets/images/girl-hugging-dog.png';
+            case balance < 10000:
+                return './assets/images/dog-astronaut-floating.png';
+            case balance < 15000:
+                return './assets/images/3d-casual-life-cat-on-laptop.png';
+            case balance < 17500:
+                return './assets/images/3d-casual-life-cat-lies-on-open-books.png';
             default:
                 return './assets/images/3d-dog-and-boy-jumping.png';
         }
