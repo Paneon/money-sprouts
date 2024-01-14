@@ -35,6 +35,8 @@ import { TranslateModule } from '@ngx-translate/core';
         DashboardComponent,
         LoginComponent,
         PlanComponent,
+        PlanExpensesComponent,
+        PlanEarningsComponent,
         CommonModule,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

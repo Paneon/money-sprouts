@@ -66,7 +66,22 @@
       "MESSAGE_SUCCESS": "Erfolg! Dein Kauf wird bald von deinen Eltern genehmigt und deinem Gesamtsaldo hinzugefügt."
     },
     "TAB_EARN": {
-      "TITLE": "Ich will Geld dazu verdienen"
+      "TITLE": "Ich will Geld dazu verdienen",
+      "CHORE_NAME": {
+        "VACUUM": "Raum staubsaugen",
+        "TIDY_ROOM": "Kinderzimmer aufräumen",
+        "TRASH": "Müll rausbringen",
+        "SET_TABLE": "Tisch decken"
+      },
+      "BUTTON_LABEL": {
+        "CALCULATE": "Berechnen",
+        "SUBMIT": "Bestätigen"
+      },
+      "ERROR_MESSAGE": {
+        "GENERAL": "Etwas ist schiefgelaufen. Bitte versuche es später erneut."
+      },
+      "MESSAGE_CONFIRM": "Möchtest du dieses Aufgabe auswählen? Dann klicke 'Bestätigen'.",
+      "MESSAGE_SUCCESS": "Erfolg! Erfülle jetzt die Aufgabe. Wenn deine Eltern die Aufgabe als erfüllt bestätigt haben, wird der Betrag deinem Gesamtsaldo hinzugefügt."
     }
   }
 }

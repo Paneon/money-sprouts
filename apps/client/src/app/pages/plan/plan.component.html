@@ -45,7 +45,10 @@
                 ></money-sprouts-plan-expenses>
             </div>
             <div *ngIf="activeTab === 'earn'">
-                <money-sprouts-plan-earnings></money-sprouts-plan-earnings>
+                <money-sprouts-plan-earnings
+                    (calculateAmount)="onCalculateAdditionOfAmount($event)"
+                    (applyChanges)="onApplyChanges($event.title, $event.amount)"
+                ></money-sprouts-plan-earnings>
             </div>
         </div>
     </div>

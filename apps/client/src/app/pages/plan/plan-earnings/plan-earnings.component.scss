@@ -1,0 +1,38 @@
+@import '../../../styles/abstract';
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.chore-item {
+  display: flex;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.chore-icon {
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+}
+
+.chore-name {
+  flex-grow: 1;
+}
+
+.chore-sum {
+  margin-left: 10px;
+  color: $dark-green;
+}
+
+.message {
+  margin-top: 20px;
+}
+
+.message-icon {
+  font-size: 24px;
+  color: $tertiary-color;
+  padding-right: 8px;
+}

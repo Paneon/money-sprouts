@@ -10,7 +10,7 @@
             name="title"
             ngModel
             required
-            pattern="^[a-zA-Z\s0-9-.]+$"
+            pattern="^[a-zA-Z\s0-9\-.]+$"
             [title]="'PLAN.TAB_SPENT.INPUT_HINT.PRODUCT_INPUT' | translate"
             #title="ngModel"
             (blur)="formattingHelperService.formatNameInput($event)"
