@@ -101,6 +101,10 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         }
     }
 
+    get welcomeTitle(): string {
+        return 'Select your Account';
+    }
+
     onLogout(event: Event) {
         event.preventDefault();
         this.accountService.logoutOrDeselectAccount();

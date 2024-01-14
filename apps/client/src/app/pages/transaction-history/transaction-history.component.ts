@@ -22,7 +22,6 @@ interface TransactionData {
         incomes: Transaction[];
         expenses: Transaction[];
     };
-    classes: string[];
 }
 
 interface CombinedDataTransaction {
@@ -89,15 +88,12 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
                 const expenses = transactions.filter(
                     (transaction) => transaction.type === 2
                 );
-                const classes = [...incomes, ...expenses].map((transaction) =>
-                    transaction.applied ? 'applied' : 'not-applied'
-                );
+
                 return {
                     transactions: {
                         incomes,
                         expenses,
                     },
-                    classes,
                 };
             }),
             shareReplay(1)

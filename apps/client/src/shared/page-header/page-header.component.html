@@ -1,4 +1,9 @@
 <nav class="navbar navbar-light bg-light">
+    <div *ngIf="isOnAccountSelectionPage()" class="welcome-title-overlay">
+        <div class="navbar-text page-title">
+            {{ welcomeTitle | translate }}
+        </div>
+    </div>
     <div
         class="container-fluid d-flex justify-content-between align-items-center"
     >
@@ -15,8 +20,6 @@
                 />
             </button>
         </div>
-
-        <money-sprouts-multilanguage></money-sprouts-multilanguage>
 
         <div class="d-flex justify-content-center">
             <div *ngIf="!isOnAccountSelectionPage()">
@@ -49,6 +52,7 @@
         </div>
 
         <div class="d-flex justify-content-end align-items-center">
+            <money-sprouts-multilanguage></money-sprouts-multilanguage>
             <a
                 href="/logout"
                 (click)="onLogout($event)"
