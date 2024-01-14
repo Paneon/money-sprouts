@@ -78,9 +78,11 @@
         "SUBMIT": "Bestätigen"
       },
       "ERROR_MESSAGE": {
-        "GENERAL": "Etwas ist schiefgelaufen. Bitte versuche es später erneut."
+        "NO_SELECTION": "Du musst erst eine Aufgabe auswählen.",
+        "GENERAL": "Unerwarteter Fehler - Bitte versuche es später erneut."
       },
       "MESSAGE_CONFIRM": "Möchtest du dieses Aufgabe auswählen? Dann klicke 'Bestätigen'.",
+      "MESSAGE_DENY": "Du hast den Verdienst für diese Aufgabe bereits berechnet. Wähle eine andere Aufgabe aus oder klicke auf 'Bestätigen'.",
       "MESSAGE_SUCCESS": "Erfolg! Erfülle jetzt die Aufgabe. Wenn deine Eltern die Aufgabe als erfüllt bestätigt haben, wird der Betrag deinem Gesamtsaldo hinzugefügt."
     }
   }

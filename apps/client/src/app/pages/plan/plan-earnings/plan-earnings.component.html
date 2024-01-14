@@ -32,3 +32,7 @@
     <span class="message-icon" *ngIf="icon">{{ icon }}</span>
     {{ message | translate }}
 </p>
+<p *ngIf="errorMessage" class="error">
+    <span class="error-icon" *ngIf="icon">{{ icon }}</span>
+    <span class="error">{{ errorMessage | translate }}</span>
+</p>

@@ -77,7 +77,12 @@
         "CALCULATE": "Calculate",
         "SUBMIT": "Submit"
       },
-      "MESSAGE_CONFIRM": "Do you want to select this task? Then click 'Confirm'.",
+      "ERROR_MESSAGE": {
+        "NO_SELECTION": "You need to select a task first.",
+        "GENERAL": "Unexpected error - Please try again later."
+      },
+      "MESSAGE_CONFIRM": "Do you want to select this task? Then click 'Submit'.",
+      "MESSAGE_DENY": "You have already calculated the profit from this task. Select another task or click 'Submit'.",
       "MESSAGE_SUCCESS": "Success! Do the selected task. Once your parents have confirmed that you have successfully performed it, the earned money will be added to your total balance."
     }
   }

@@ -7,6 +7,7 @@ interface Chore {
     iconPath: string;
     sum: number;
     selected?: boolean;
+    calculated?: boolean;
 }
 
 @Component({
@@ -22,6 +23,7 @@ export class PlanEarningsComponent {
             iconPath: './assets/images/chore_vacuum.png',
             sum: 1.0,
             selected: false,
+            calculated: false,
         },
         {
             id: '2',
@@ -29,6 +31,7 @@ export class PlanEarningsComponent {
             iconPath: './assets/images/chore_tidy-room.png',
             sum: 1.0,
             selected: false,
+            calculated: false,
         },
         {
             id: '3',
@@ -36,6 +39,7 @@ export class PlanEarningsComponent {
             iconPath: './assets/images/chore_take-out-trash.png',
             sum: 0.5,
             selected: false,
+            calculated: false,
         },
         {
             id: '4',
@@ -43,24 +47,31 @@ export class PlanEarningsComponent {
             iconPath: './assets/images/chore_set-table.png',
             sum: 0.5,
             selected: false,
+            calculated: false,
         },
     ];
 
     selectedChore: Chore | null = null;
     message: string | null = '';
+    errorMessage: string | null = '';
     icon: string | null = null;
     @Output() calculateAmount = new EventEmitter<number>();
     @Output() applyChanges = new EventEmitter<{
         title: string;
         amount: number;
     }>();
+    @Output() resetBalance = new EventEmitter<void>();
 
     constructor(private translate: TranslateService) {}
 
     onChoreSelect(chore: Chore) {
         if (chore.selected) {
+            this.clearAction();
             this.chores.forEach((c) => {
-                if (c.id !== chore.id) c.selected = false;
+                c.selected = c.id === chore.id;
+                if (c.id !== chore.id) {
+                    c.calculated = false;
+                }
             });
             this.selectedChore = chore;
         } else {
@@ -68,23 +79,44 @@ export class PlanEarningsComponent {
         }
     }
 
+    private clearAction(): void {
+        this.clearMessages();
+        this.resetBalance.emit();
+    }
+
+    private clearMessages(): void {
+        this.message = '';
+        this.errorMessage = '';
+        this.icon = null;
+    }
+
     calculate() {
-        if (this.selectedChore) {
+        if (this.selectedChore && !this.selectedChore.calculated) {
             console.log('selected Sum:', this.selectedChore.sum);
             const formatedAmount = this.selectedChore.sum * 100;
             this.calculateAmount.emit(formatedAmount);
             this.icon = 'ℹ';
             this.message = 'PLAN.TAB_EARN.MESSAGE_CONFIRM';
+            this.selectedChore.calculated = true;
+        } else if (this.selectedChore && this.selectedChore.calculated) {
+            this.message = '';
+            this.errorMessage = 'PLAN.TAB_EARN.MESSAGE_DENY';
+            this.icon = '⚠';
+        } else {
+            this.clearMessages();
+            this.icon = '⚠';
+            this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
         }
     }
 
     apply() {
         if (this.selectedChore) {
+            this.clearMessages();
             this.translate
                 .get(this.selectedChore.name)
                 .subscribe((translatedTitle) => {
                     const title = translatedTitle;
-                    const amount = this.selectedChore.sum * -1000;
+                    const amount = this.selectedChore.sum * 100;
 
                     console.log(
                         'selected name & sum:',
@@ -93,14 +125,22 @@ export class PlanEarningsComponent {
                     );
 
                     this.applyChanges.emit({ title, amount });
+                    this.resetChoreSelection();
                 });
 
             this.message = 'PLAN.TAB_EARN.MESSAGE_SUCCESS';
             this.icon = '✔';
         } else {
+            this.clearMessages();
             this.icon = '⚠';
-            this.message = 'PLAN.TAB_EARN.ERROR_MESSAGE.GENERAL';
+            this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
         }
+    }
+
+    private resetChoreSelection() {
+        this.selectedChore.selected = false;
+        this.selectedChore.calculated = false;
+        this.selectedChore = null;
     }
 
     onSubmit() {
