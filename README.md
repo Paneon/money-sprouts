@@ -13,9 +13,9 @@ Money Sprouts is an application designed to teach children the value of saving a
 - **Family Login**: One login for the entire family which encompasses the accounts of all children and an admin account for parents.
 - **User Selection**: Children can easily switch between accounts to view their respective dashboards and go back by clicking on the avatar in the page header.
 
-  <img width="200" alt="start, login and account selection - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/a76eaa65-406d-4aea-8a70-bfafd08be6ff">
-  <img width="200" alt="dashboard - tablet" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/834acff7-5be7-497a-add9-04b2f6498f83">
-  <img width="200" alt="overview history earn  - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/d376a370-f50c-4dc1-abd6-998f5e0bf86a">
+  <img width="600" alt="start, login and account selection - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/a76eaa65-406d-4aea-8a70-bfafd08be6ff">
+  <img width="600" alt="dashboard - tablet" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/834acff7-5be7-497a-add9-04b2f6498f83">
+  <img width="600" alt="overview history earn  - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/d376a370-f50c-4dc1-abd6-998f5e0bf86a">
 
 ### Dashboard
 
