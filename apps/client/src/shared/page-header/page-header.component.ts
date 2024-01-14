@@ -102,7 +102,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     }
 
     get welcomeTitle(): string {
-        return 'Select your Account';
+        return 'PAGE_HEADER.PAGE_NAME.ACCOUNT-SELECTION';
     }
 
     onLogout(event: Event) {

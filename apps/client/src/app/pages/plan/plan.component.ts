@@ -39,6 +39,10 @@ export class PlanComponent implements OnInit {
         this.temporaryBalance = this.originalBalance - amount;
     }
 
+    onCalculateAdditionOfAmount(amount: number) {
+        this.temporaryBalance = this.originalBalance + amount;
+    }
+
     onResetBalance(): void {
         this.temporaryBalance = null;
     }
