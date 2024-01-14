@@ -22,7 +22,6 @@ interface TransactionData {
         incomes: Transaction[];
         expenses: Transaction[];
     };
-    classes: string[];
 }
 
 interface CombinedDataTransaction {

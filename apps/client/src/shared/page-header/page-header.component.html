@@ -1,4 +1,9 @@
 <nav class="navbar navbar-light bg-light">
+    <div *ngIf="isOnAccountSelectionPage()" class="welcome-title-overlay">
+        <div class="navbar-text page-title">
+            {{ welcomeTitle | translate }}
+        </div>
+    </div>
     <div
         class="container-fluid d-flex justify-content-between align-items-center"
     >

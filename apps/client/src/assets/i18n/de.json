@@ -9,7 +9,8 @@
       "DASHBOARD": "Dashboard",
       "OVERVIEW": "Überblick",
       "HISTORY": "Historie",
-      "PLAN": "Planung"
+      "PLAN": "Planung",
+      "ACCOUNT-SELECTION": "Wähle deinen Account"
     },
     "BUTTONS": {
       "GO_BACK": "Gehe zur vorherigen Seite",
