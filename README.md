@@ -14,12 +14,14 @@ Money Sprouts is an application designed to teach children the value of saving a
 - **User Selection**: Children can easily switch between accounts to view their respective dashboards and go back by clicking on the avatar in the page header.
 
   <img width="600" alt="start, login and account selection - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/a76eaa65-406d-4aea-8a70-bfafd08be6ff">
-  <img width="600" alt="dashboard - tablet" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/834acff7-5be7-497a-add9-04b2f6498f83">
-  <img width="600" alt="overview history earn  - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/d376a370-f50c-4dc1-abd6-998f5e0bf86a">
 
 ### Dashboard
 
+ <img width="600" alt="dashboard - tablet" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/834acff7-5be7-497a-add9-04b2f6498f83">
+
 - **Overview Tile**: Shows the total money saved, a dynamic picture that changes as the savings hit certain milestones, countdown to the next pocket money day, and the weekday of the next pocket money day.
+
+  <img width="600" alt="overview history earn  - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/d376a370-f50c-4dc1-abd6-998f5e0bf86a">
 
 - **History Tile**: Provides a table of earnings and expenses with a limit of up to 20 items. Expands by 5 items at a time for easier navigation.
 
