@@ -13,8 +13,9 @@ Money Sprouts is an application designed to teach children the value of saving a
 - **Family Login**: One login for the entire family which encompasses the accounts of all children and an admin account for parents.
 - **User Selection**: Children can easily switch between accounts to view their respective dashboards and go back by clicking on the avatar in the page header.
 
-  <img width="198" alt="user selection - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/28ddf86f-8cbe-4a1a-88ab-dd2977eb8c30">
-  <img width="200" alt="ms dashboard - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/8fb5c2fc-42b7-4423-aa9a-6646fc29c0bc">
+  <img width="200" alt="start, login and account selection - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/a76eaa65-406d-4aea-8a70-bfafd08be6ff">
+  <img width="200" alt="dashboard - tablet" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/834acff7-5be7-497a-add9-04b2f6498f83">
+  <img width="200" alt="overview history earn  - mobile view" src="https://github.com/LisaPMunich/money-sprouts/assets/99111208/d376a370-f50c-4dc1-abd6-998f5e0bf86a">
 
 ### Dashboard
 
@@ -26,17 +27,14 @@ Money Sprouts is an application designed to teach children the value of saving a
 
   - **Spend Money Tab**: Allows children to calculate and apply for expenses. Expenses need admin (parent) approval before being deducted from the account.
 
-  - **Earn Money Tab**: Lists chores with monetary rewards. Kids can select a chore to earn extra, which is added to their account once approved by parents.
+  - **Earn Money Tab**: Lists chores with monetary rewards. Kids can select a chore, temporarily calculate the addition to the total sum and then submit it for approval by their parents. Once it is approved, the amount is permantently added to the total sum.
 
 ### Application Details
 
 - **Optimized for All Devices**: Works seamlessly on mobile, tablet, and desktop.
 - **Performance**: Improved loading time and navigation using resolver and browser animations.
-
-## Upcoming Features
-
-- **Multi-Language Support**: Soon, Money-Sprouts will be available in both English and German.
-- **Earn Extra Money**: Soon the kids will be able to earn extra money by choosing from voluntary chores.
+- **Error Handling**: Display of error, info and sucess messages for improved user experience. Error Logging.
+- **Multi-Language Support, ngx-translate library**: Users can switch between English and German and read the translated text.
 
 ## Start the app for local development
 
