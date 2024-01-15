@@ -7,7 +7,9 @@
 {% block javascripts %}
     <script src="./build/runtime.js" type="module"></script>
     <script src="./build/polyfills.js" type="module"></script>
-    <script src="./build/vendor.js" type="module"></script>
+    {% if file_exists('public/build/vendor.js') %}
+        <script src="./build/vendor.js" type="module"></script>
+    {% endif %}
     <script src="./build/main.js" type="module"></script></body>
 {% endblock %}
 
