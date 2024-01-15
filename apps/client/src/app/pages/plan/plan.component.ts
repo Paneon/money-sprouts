@@ -33,6 +33,7 @@ export class PlanComponent implements OnInit {
 
     switchTab(tab: 'spend' | 'earn'): void {
         this.activeTab = tab;
+        this.onResetBalance();
     }
 
     onCalculateAmount(amount: number) {

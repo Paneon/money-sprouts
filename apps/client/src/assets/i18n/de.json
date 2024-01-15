@@ -38,6 +38,10 @@
     "PAYDAY_COUNTER_UNKOWN": "Frag Mama oder Papa!",
     "PAYDAY_COUNTER_LABEL": "Tage bis zur Zahlung:"
   },
+  "HISTORY": {
+    "SHOW_MORE": "Mehr",
+    "SHOW_LESS": "Weniger"
+  },
   "PLAN": {
     "TAB_SPENT": {
       "TITLE": "Ich will Geld ausgeben",
@@ -68,9 +72,9 @@
     "TAB_EARN": {
       "TITLE": "Ich will Geld dazu verdienen",
       "CHORE_NAME": {
-        "VACUUM": "Raum staubsaugen",
-        "TIDY_ROOM": "Kinderzimmer aufräumen",
-        "TRASH": "Müll rausbringen",
+        "VACUUM": "Staubsaugen",
+        "TIDY_ROOM": "Aufräumen",
+        "TRASH": "Müll raus",
         "SET_TABLE": "Tisch decken"
       },
       "BUTTON_LABEL": {
