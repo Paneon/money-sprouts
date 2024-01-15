@@ -20,6 +20,11 @@
   pointer-events: auto;
   display: inline-block;
   vertical-align: middle;
+
+  @media (max-width: 410px) {
+    position: relative;
+    top: -13px;
+  }
 }
 
 .image-50x50 {
@@ -38,7 +43,7 @@
   padding-right: 1rem !important;
   padding-left: 1rem !important;
 
-  @media (max-width: 400px) {
+  @media (max-width: 410px) {
     font-size: 1.2rem;
     padding-right: 0.8rem !important;
     padding-left: 0.8rem !important;

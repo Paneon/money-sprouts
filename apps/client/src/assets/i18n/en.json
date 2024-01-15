@@ -38,6 +38,10 @@
     "PAYDAY_COUNTER_UNKOWN": "Ask Mum or Dad!",
     "PAYDAY_COUNTER_LABEL": "Days until payday:"
   },
+  "HISTORY": {
+    "SHOW_MORE": "Show more",
+    "SHOW_LESS": "Show less"
+  },
   "PLAN": {
     "TAB_SPENT": {
       "TITLE": "I want to spend money",

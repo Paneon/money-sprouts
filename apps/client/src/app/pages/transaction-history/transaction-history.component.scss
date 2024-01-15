@@ -144,6 +144,8 @@
   .transaction-table {
     tbody {
       td {
+        text-align: center;
+
         .income-amount + .transaction-title {
           display: none;
         }

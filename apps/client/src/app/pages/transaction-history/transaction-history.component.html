@@ -99,7 +99,7 @@
                     *ngIf="displayedItems < latestCombinedData?.maxLength"
                 >
                     <button (click)="showMore()" class="toggle-content-button">
-                        <span>Show more</span>
+                        <span>{{ 'HISTORY.SHOW_MORE' | translate }}</span>
                         <img
                             src="assets/images/arrow-down_small.png"
                             alt="Arrow"
@@ -113,7 +113,7 @@
                             src="assets/images/arrow-up_small.png"
                             alt="Arrow"
                         />
-                        <span>Show less</span>
+                        <span>{{ 'HISTORY.SHOW_LESS' | translate }}</span>
                     </button>
                 </ng-container>
             </div>
