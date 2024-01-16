@@ -1,13 +1,11 @@
 <nav class="navbar navbar-light bg-light">
-    <div *ngIf="isOnAccountSelectionPage()" class="welcome-title-overlay">
-        <div class="navbar-text page-title">
-            {{ welcomeTitle | translate }}
-        </div>
-    </div>
     <div
         class="container-fluid d-flex justify-content-between align-items-center"
     >
-        <div *ngIf="!isOnAccountSelectionPage()">
+        <div
+            *ngIf="!isOnAccountSelectionPage(); else pseudoElement"
+            class="d-flex justify-content-start align-items-center"
+        >
             <button
                 class="btn btn-link"
                 (click)="goBack()"
@@ -20,36 +18,45 @@
                 />
             </button>
         </div>
+        <ng-template #pseudoElement>
+            <div class="pseudo-element"></div>
+        </ng-template>
 
-        <div class="d-flex justify-content-center">
-            <div *ngIf="!isOnAccountSelectionPage()">
-                <div class="d-flex align-items-center">
-                    <button
-                        *ngIf="!isLoading"
-                        class="btn btn-link"
-                        (click)="goToAccountSelection()"
-                        [title]="
-                            'PAGE_HEADER.BUTTONS.GO_TO_ACCOUNT_SELECTION'
-                                | translate
+        <div
+            class="d-flex justify-content-center"
+            *ngIf="!isOnAccountSelectionPage(); else onAccountSelectionPage"
+        >
+            <div class="d-flex align-items-center">
+                <button
+                    *ngIf="!isLoading"
+                    class="btn btn-link"
+                    (click)="goToAccountSelection()"
+                    [title]="
+                        'PAGE_HEADER.BUTTONS.GO_TO_ACCOUNT_SELECTION'
+                            | translate
+                    "
+                >
+                    <img
+                        [src]="
+                            accountService.getAvatarForAccount(account$ | async)
                         "
-                    >
-                        <img
-                            [src]="
-                                accountService.getAvatarForAccount(
-                                    account$ | async
-                                )
-                            "
-                            alt="Account avatar"
-                            class="image-50x50"
-                        />
-                    </button>
+                        alt="Account avatar"
+                        class="image-50x50"
+                    />
+                </button>
 
-                    <div class="navbar-text page-title">
-                        {{ pageTitle | translate }}
-                    </div>
+                <div class="navbar-text page-title">
+                    {{ pageTitle | translate }}
                 </div>
             </div>
         </div>
+        <ng-template #onAccountSelectionPage>
+            <div class="navbar-text added-padding-left page-title">
+                {{ welcomeTitle | translate }}
+            </div>
+        </ng-template>
+
+        <div *ngIf="isOnAccountSelectionPage()" class="pseudo-element"></div>
 
         <div class="d-flex justify-content-end align-items-center">
             <div>
