@@ -1,29 +1,17 @@
 @import '../../app/styles/abstract';
 
-.welcome-title-overlay {
-  position: fixed;
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 10;
-  pointer-events: none;
-  width: 100%;
+.pseudo-element {
+  display: none;
 
-  &::before {
-    content: '';
+  @media (min-width: 450px) {
     display: block;
+    flex: 1;
   }
 }
 
-.welcome-title-overlay .navbar-text {
-  pointer-events: auto;
-  display: inline-block;
-  vertical-align: middle;
-
+.btn-link {
   @media (max-width: 410px) {
-    position: relative;
-    top: -13px;
+    padding: 6px 6px;
   }
 }
 
@@ -46,6 +34,14 @@
   @media (max-width: 410px) {
     font-size: 1.2rem;
     padding-right: 0.8rem !important;
+    padding-left: 0.8rem !important;
+  }
+}
+
+.added-padding-left {
+  padding-left: 10rem !important;
+
+  @media (max-width: 410px) {
     padding-left: 0.8rem !important;
   }
 }
