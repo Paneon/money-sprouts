@@ -28,3 +28,7 @@ services:
       tags:
         - { name: doctrine.event_subscriber }
 
+    App\Service\AssetPathExtractor:
+      arguments:
+        $indexPath: '%kernel.project_dir%/public/build/index.html'
+        $buildDir: './build/'
