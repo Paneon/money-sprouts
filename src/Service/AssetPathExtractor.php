@@ -2,14 +2,12 @@
 
 namespace App\Service;
 
-use Psr\Log\LoggerInterface;
-
 class AssetPathExtractor
 {
     private array $javascriptFiles = [];
     private array $cssFiles = [];
 
-    public function __construct(string $indexPath, string $buildDir, LoggerInterface $logger)
+    public function __construct(string $indexPath, string $buildDir)
     {
         if (!file_exists($indexPath)) {
             return;
