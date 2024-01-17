@@ -20,7 +20,7 @@ class AssetPathExtractor
             $this->javascriptFiles[$baseName] = $buildDir . $path;
         }
 
-        preg_match_all('/<link rel="stylesheet" href="(.+?)"\s(\/)?>/', $content, $matches);
+        preg_match_all('/<link rel="stylesheet" href="(.+?)"(\s\/)?>/', $content, $matches);
         foreach ($matches[1] as $path) {
             $baseName = $this->extractBaseName($path, 'css');
             $this->cssFiles[$baseName] = $buildDir . $path;
