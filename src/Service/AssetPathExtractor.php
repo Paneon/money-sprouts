@@ -11,6 +11,10 @@ class AssetPathExtractor
 
     public function __construct(string $indexPath, string $buildDir, LoggerInterface $logger)
     {
+        if (!file_exists($indexPath)) {
+            return;
+        }
+
         $content = file_get_contents($indexPath);
         preg_match_all('/<script src="(.+?)" type="module"><\/script>/', $content, $matches);
         foreach ($matches[1] as $path) {
@@ -18,7 +22,7 @@ class AssetPathExtractor
             $this->javascriptFiles[$baseName] = $buildDir . $path;
         }
 
-        preg_match_all('/<link rel="stylesheet" href="(.+?)">/', $content, $matches);
+        preg_match_all('/<link rel="stylesheet" href="(.+?)"\s(\/)?>/', $content, $matches);
         foreach ($matches[1] as $path) {
             $baseName = $this->extractBaseName($path, 'css');
             $this->cssFiles[$baseName] = $buildDir . $path;
