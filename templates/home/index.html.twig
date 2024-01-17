@@ -1,15 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="./build/styles.css"></head>
+    {% set styles = asset_path_extractor.getCssPath('styles') %}
+    <link rel="stylesheet" href="{{ styles }}"></head>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="./build/runtime.js" type="module"></script>
-    <script src="./build/polyfills.js" type="module"></script>
-    <script src="./build/vendor.js" type="module"></script>
-    <script src="./build/main.js" type="module"></script></body>
+    {% set runtime = asset_path_extractor.getScriptPath('runtime') %}
+    {% set polyfills = asset_path_extractor.getScriptPath('polyfills') %}
+    {% set vendor = asset_path_extractor.getScriptPath('vendor') %} {# If vendor.js exists #}
+    {% set main = asset_path_extractor.getScriptPath('main') %}
+
+    <script src="{{ runtime }}" type="module"></script>
+    <script src="{{ polyfills }}" type="module"></script>
+    {% if vendor %}
+        <script src="{{ vendor }}" type="module"></script>
+    {% endif %}
+    <script src="{{ main }}" type="module"></script>
 {% endblock %}
+
 
 {% block body %}
         <money-sprouts-root></money-sprouts-root>

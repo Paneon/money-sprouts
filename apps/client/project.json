@@ -42,7 +42,9 @@
               "maximumWarning": "4kb",
               "maximumError": "9kb"
             }
-          ]
+          ],
+          "outputHashing": "bundles",
+          "sourceMap": true
         },
         "development": {
           "buildOptimizer": false,
