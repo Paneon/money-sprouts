@@ -3,7 +3,7 @@
 .pseudo-element {
   display: none;
 
-  @media (min-width: 450px) {
+  @media (min-width: 530px) {
     display: block;
     flex: 1;
   }
@@ -41,7 +41,7 @@
 .added-padding-left {
   padding-left: 10rem !important;
 
-  @media (max-width: 410px) {
+  @media (max-width: 530px) {
     padding-left: 0.8rem !important;
   }
 }
