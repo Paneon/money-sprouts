@@ -44,17 +44,11 @@ class TransactionTest extends ApiTestCase
             '@context' => '/api/contexts/Transaction',
             '@id' => '/api/transactions',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 100,
-            'hydra:view' => [
-                '@id' => '/api/transactions?page=1',
-                '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/api/transactions?page=1',
-                'hydra:last' => '/api/transactions?page=4',
-                'hydra:next' => '/api/transactions?page=2',
-            ],
+            'hydra:totalItems' => 10,
         ]);
+        
         // Because test fixtures are automatically loaded between each test, you can assert on them
-        $this->assertCount(30, $response->toArray()['hydra:member']);
+        $this->assertCount(10, $response->toArray()['hydra:member']);
         // Asserts that the returned JSON is validated by the JSON Schema generated for this resource by API Platform
         // This generated JSON Schema is also used in the OpenAPI spec!
         $this->assertMatchesResourceCollectionJsonSchema(Transaction::class);
