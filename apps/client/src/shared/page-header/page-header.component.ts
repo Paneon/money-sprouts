@@ -1,17 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
 import { AccountService } from '../../app/services/account.service';
-import {
-    distinctUntilChanged,
-    filter,
-    map,
-    Observable,
-    Subject,
-    takeUntil,
-} from 'rxjs';
+import { distinctUntilChanged, Observable, Subject } from 'rxjs';
 import { Account } from '@money-sprouts/shared/domain';
-import { RoutePath, routeToDashboard } from '../../app/app.routing.module';
 import { TranslateService } from '@ngx-translate/core';
+import { RoutePath } from '../../app/enum/routepath';
+import { RouterService } from '../../app/services/router.service';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -31,7 +24,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private router: Router,
+        private router: RouterService,
         public accountService: AccountService,
         public translate: TranslateService
     ) {
@@ -41,7 +34,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        const urlSegments = this.router.url.split('/');
+        const urlSegments = this.router.getURL().split('/');
         this.urlSegment = urlSegments[urlSegments.length - 1];
         this.name = urlSegments[2];
 
@@ -49,29 +42,20 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
             distinctUntilChanged()
         );
 
-        this.router.events
-            .pipe(
-                filter((event) => event instanceof NavigationEnd),
-                map(() => this.router.url.split('/')[2]),
-                distinctUntilChanged(),
-                takeUntil(this.destroy$)
-            )
-            .subscribe((name) => {
-                console.log('Account in header: ', name);
-                this.name = name;
-                this.accountService.getAccountByName(name);
-            });
+        this.accountService.currentAccount$.subscribe((account: Account) => {
+            this.name = account.name;
+        });
     }
 
     goBack() {
         if (this.urlSegment === 'dashboard') {
-            this.router.navigate([RoutePath.AccountSelection]);
+            this.router.navigateToRoute(RoutePath.AccountSelection);
         } else if (
             this.urlSegment === 'history' ||
             this.urlSegment === 'plan' ||
             this.urlSegment === 'overview'
         ) {
-            this.router.navigate([routeToDashboard(this.name)]);
+            this.router.navigateToDashboard(this.name);
         } else {
             return;
         }
@@ -82,11 +66,11 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     }
 
     goToAccountSelection() {
-        this.router.navigate([RoutePath.AccountSelection]);
+        this.router.navigateToRoute(RoutePath.AccountSelection);
     }
 
     get pageTitle(): string {
-        const pageName = this.router.url.split('/')[3];
+        const pageName = this.router.getURL().split('/')[3];
         switch (pageName) {
             case 'dashboard':
                 return 'PAGE_HEADER.PAGE_NAME.DASHBOARD';
@@ -108,7 +92,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     onLogout(event: Event) {
         event.preventDefault();
         this.accountService.logoutOrDeselectAccount();
-        this.router.navigate(['/logout']);
+        this.router.navigateToRoute(RoutePath.Logout);
     }
 
     ngOnDestroy(): void {

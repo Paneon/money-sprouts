@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Account } from '@money-sprouts/shared/domain';
 import { AccountService } from '../../services/account.service';
-import { routeToDashboard } from '../../app.routing.module';
+import { RouterService } from '../../services/router.service';
+import { RoutePath } from '../../enum/routepath';
 
 @Component({
     selector: 'money-sprouts-account-selection',
@@ -14,7 +15,7 @@ export class AccountSelectionComponent implements OnInit {
     accounts$: Observable<Account[]>;
 
     constructor(
-        private router: Router,
+        private router: RouterService,
         public readonly route: ActivatedRoute,
         private accountService: AccountService
     ) {}
@@ -36,7 +37,10 @@ export class AccountSelectionComponent implements OnInit {
         if (selectedAccount) {
             this.accountService.setAccount(selectedAccount);
             setTimeout(() => {
-                this.router.navigate([routeToDashboard(name)]);
+                this.router.navigateToRouteForAccountName(
+                    RoutePath.Dashboard,
+                    name
+                );
             });
         }
     }

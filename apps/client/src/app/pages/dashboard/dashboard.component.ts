@@ -1,22 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import {
-    debounceTime,
-    distinctUntilChanged,
-    filter,
-    map,
-    Observable,
-    Subject,
-    takeUntil,
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 import { Account } from '@money-sprouts/shared/domain';
 import { AccountService } from '../../services/account.service';
-import {
-    routeToHistory,
-    routeToOverview,
-    routeToPlan,
-} from '../../app.routing.module';
-import { TranslateService } from '@ngx-translate/core';
+import { RouterService } from '../../services/router.service';
+import { RoutePath } from '../../enum/routepath';
 
 interface Section {
     name: string;
@@ -52,14 +39,17 @@ export class DashboardComponent implements OnInit {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private router: Router,
+        private router: RouterService,
         private accountService: AccountService
     ) {}
 
     ngOnInit() {
         this.sections;
-        const urlSegments = this.router.url.split('/');
-        this.name = urlSegments[2];
+        setTimeout(() => {
+            const urlSegments = this.router.getURL().split('/');
+            this.name = urlSegments[2];
+        });
+
         this.account$ = this.accountService.currentAccount$.pipe(
             debounceTime(300), // waits 300ms between emisssions
             distinctUntilChanged((prev, curr) => {
@@ -71,17 +61,9 @@ export class DashboardComponent implements OnInit {
             this.accountService.refreshAccount(account.id);
         });
 
-        this.router.events
-            .pipe(
-                filter((event) => event instanceof NavigationEnd),
-                map(() => this.router.url.split('/')[2]),
-                distinctUntilChanged(),
-                takeUntil(this.destroy$)
-            )
-            .subscribe((name) => {
-                this.name = decodeURI(name);
-                this.accountService.getAccountByName(name);
-            });
+        this.accountService.currentAccount$.subscribe((account: Account) => {
+            this.name = account.name;
+        });
     }
 
     goToSection(section: string) {
@@ -92,13 +74,22 @@ export class DashboardComponent implements OnInit {
 
         switch (section) {
             case 'DASHBOARD.SECTION_NAME.OVERVIEW':
-                this.router.navigate([routeToOverview(this.name)]);
+                this.router.navigateToRouteForAccountName(
+                    RoutePath.Overview,
+                    this.name
+                );
                 break;
             case 'DASHBOARD.SECTION_NAME.HISTORY':
-                this.router.navigate([routeToHistory(this.name)]);
+                this.router.navigateToRouteForAccountName(
+                    RoutePath.History,
+                    this.name
+                );
                 break;
             case 'DASHBOARD.SECTION_NAME.PLAN':
-                this.router.navigate([routeToPlan(this.name)]);
+                this.router.navigateToRouteForAccountName(
+                    RoutePath.Plan,
+                    this.name
+                );
                 break;
         }
     }

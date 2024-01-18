@@ -2,7 +2,7 @@ name: Deployment (Prod) 🚀
 
 on:
   workflow_dispatch:
-  
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,6 +26,7 @@ jobs:
         uses: mansagroup/nrwl-nx-action@v3
         with:
           targets: build
+          all: true
 
       - name: Remove not required files
         run: |
@@ -41,12 +42,12 @@ jobs:
           port: 22
           source: "./*"
           target: ${{ secrets.DEPLOYMENT_PATH }}
- 
+
   clear-cache:
     name: 🧹 Clear Cache
     needs: deploy
     runs-on: ubuntu-latest
-    environment: production 
+    environment: production
 
     steps:
       - name: SSH and Clear Symfony Cache
@@ -59,4 +60,4 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOYMENT_PATH }}
             php81 `which composer` cache
-            
+

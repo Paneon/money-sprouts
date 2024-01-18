@@ -7,7 +7,7 @@ import {
     Output,
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subject, filter, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'money-sprouts-user-avatar',
@@ -36,11 +36,10 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     }
 
     getClass() {
-        let cssClass = '';
         if (this.smallPaths.includes(this.urlSegment)) {
-            return (cssClass = 'avatar-icon--small');
+            return 'avatar-icon--small';
         } else {
-            return (cssClass = 'avatar-icon');
+            return 'avatar-icon';
         }
     }
 
