@@ -60,4 +60,3 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOYMENT_PATH }}
             php81 `which composer` cache
-
