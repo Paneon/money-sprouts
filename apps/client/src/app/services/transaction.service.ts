@@ -11,7 +11,6 @@ import {
     throwError,
 } from 'rxjs';
 import { ApiService } from './api.service';
-import { DatePipe } from '@angular/common';
 
 @Injectable({
     providedIn: 'root',

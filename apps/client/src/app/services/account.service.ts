@@ -70,7 +70,7 @@ export class AccountService extends Loggable {
      * Refreshes data of a single account
      */
     refreshAccount(id: number) {
-        this.getAccount(id).subscribe((account) => {
+        return this.getAccount(id).subscribe((account) => {
             this.setAccount(account);
         });
     }

@@ -1,46 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccountSelectionComponent } from './pages/account-selection/account-selection.component';
 import { StartComponent } from './pages/start/start.component';
 
 import { CommonModule } from '@angular/common';
 import { BalanceOverviewComponent } from './pages/balance-overview/balance-overview.component';
 import { TransactionHistoryComponent } from './pages/transaction-history/transaction-history.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { PlanComponent } from './pages/plan/plan.component';
+import { AccountSelectionComponent } from './pages/account-selection/account-selection.component';
 import { AccountsResolver } from './services/accounts-resolver.service';
-
-export enum RoutePath {
-    Home = 'home',
-    Login = 'login',
-    AccountSelection = 'accountselection',
-    Dashboard = 'account/:name/dashboard',
-    Overview = 'account/:name/overview',
-    History = 'account/:name/history',
-    Plan = 'account/:name/plan',
-}
-
-export function routeToDashboard(name: string) {
-    name = decodeURI(name);
-    return RoutePath.Dashboard.replace(':name', name);
-}
-
-export function routeToOverview(name: string) {
-    console.log({ name });
-    name = decodeURI(name);
-    return RoutePath.Overview.replace(':name', name);
-}
-
-export function routeToHistory(name: string) {
-    name = decodeURI(name);
-    return RoutePath.History.replace(':name', name);
-}
-
-export function routeToPlan(name: string) {
-    name = decodeURI(name);
-    return RoutePath.Plan.replace(':name', name);
-}
+import { RoutePath } from './enum/routepath';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 const routes: Routes = [
     {
