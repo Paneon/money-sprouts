@@ -19,13 +19,13 @@ describe('AppComponent', () => {
         fixture.detectChanges();
         const compiled = fixture.nativeElement as HTMLElement;
         expect(compiled.querySelector('h1')?.textContent).toContain(
-            'Welcome client'
+            'Money Pig'
         );
     });
 
-    it(`should have as title 'client'`, () => {
+    it(`should have as title 'Money Pig'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
-        expect(app.title).toEqual('client');
+        expect(app.title).toEqual('Money Pig');
     });
 });
