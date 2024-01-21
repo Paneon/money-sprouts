@@ -12,7 +12,7 @@ export class MultilanguageComponent {
     currentLang = 'de';
     constructor(
         public translateService: TranslateService,
-        private cd: ChangeDetectorRef
+        private readonly cd: ChangeDetectorRef
     ) {
         const browserLang = this.translateService.getBrowserLang();
         this.currentLang = this.langs.includes(browserLang)

@@ -21,7 +21,7 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     smallPaths: string[] = ['dashboard', 'overview', 'history', 'plan'];
     private destroy$ = new Subject<void>();
 
-    constructor(private router: Router) {}
+    constructor(private readonly router: Router) {}
 
     ngOnInit() {
         this.urlSegment = this.router.url.split('/')[3];

@@ -31,10 +31,10 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     combinedDataOverview$: Observable<CombinedDataOverview>;
 
     constructor(
-        private accountService: AccountService,
-        private datePipe: DatePipe,
-        private translate: TranslateService,
-        private cd: ChangeDetectorRef
+        private readonly accountService: AccountService,
+        private readonly datePipe: DatePipe,
+        private readonly translate: TranslateService,
+        private readonly cd: ChangeDetectorRef
     ) {
         super();
         this.currentLang = this.translate.currentLang;

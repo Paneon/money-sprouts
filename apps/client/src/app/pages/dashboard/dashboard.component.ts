@@ -39,8 +39,8 @@ export class DashboardComponent implements OnInit {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private router: RouterService,
-        private accountService: AccountService
+        private readonly router: RouterService,
+        private readonly accountService: AccountService
     ) {}
 
     ngOnInit() {

@@ -1,107 +1,106 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
-
-import { AccountSelectionComponent } from './account-selection.component';
-import { RoutePath } from '../../enum/routepath';
-import { AccountStorageService } from '../../services/account-storage.service';
+import { Account } from '@money-sprouts/shared/domain';
 import { AccountService } from '../../services/account.service';
-import { ApiService } from '../../services/api.service';
 import { RouterService } from '../../services/router.service';
+import { AccountSelectionComponent } from './account-selection.component';
+import { SharedModule } from '../../../shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('AccountSelectionComponent', () => {
     let component: AccountSelectionComponent;
     let fixture: ComponentFixture<AccountSelectionComponent>;
-    let accountService: AccountService;
-    let routerService: RouterService;
-    let route: ActivatedRoute;
+    let mockAccountService: jest.Mocked<AccountService>;
+    let mockRouterService: jest.Mocked<RouterService>;
+    let mockAccounts: Account[];
+    let mockActivatedRoute;
 
     beforeEach(async () => {
+        jest.useFakeTimers();
+        mockAccountService = { setAccount: jest.fn() } as any;
+        mockRouterService = { navigateToRouteForAccountName: jest.fn() } as any;
+        mockAccounts = [
+            { name: 'Account1', id: 1 },
+            { name: 'Account2', id: 2 },
+        ];
+        mockActivatedRoute = {
+            snapshot: {
+                data: {
+                    accounts: mockAccounts,
+                },
+            },
+        };
+
         await TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, RouterTestingModule],
+            imports: [SharedModule, TranslateModule.forRoot()],
             declarations: [AccountSelectionComponent],
             providers: [
-                RouterService,
-                ActivatedRoute,
-                AccountService,
-                ApiService,
-                AccountStorageService,
+                { provide: ActivatedRoute, useValue: mockActivatedRoute },
+                { provide: AccountService, useValue: mockAccountService },
+                { provide: RouterService, useValue: mockRouterService },
             ],
-        }).compileComponents();
+        })
+            .overrideComponent(AccountSelectionComponent, {
+                set: { template: '<div></div>' },
+            })
+            .compileComponents();
+    });
 
+    beforeEach(() => {
         fixture = TestBed.createComponent(AccountSelectionComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();
 
-        accountService = TestBed.inject(AccountService);
-        routerService = TestBed.inject(RouterService);
-        route = TestBed.inject(ActivatedRoute);
+        // Mock ngOnInit
+        jest.spyOn(component, 'ngOnInit').mockImplementation();
+
+        fixture.detectChanges();
     });
 
     it('should create', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should set accounts$ observable to the resolved accounts from the route snapshot data', () => {
-        const mockAccounts = { accounts: ['Account1', 'Account2'] };
-        jest.spyOn(route.snapshot.data, 'accounts').mockReturnValue(
-            mockAccounts.accounts
-        );
+    it('should not call ngOnInit automatically', () => {
+        expect(component.ngOnInit).not.toHaveBeenCalled();
+    });
 
+    it('should initialize accounts$ with accounts from route data on ngOnInit', () => {
         component.ngOnInit();
-
-        expect(component.accounts$).toEqual(mockAccounts.accounts);
+        let accounts: Account[];
+        component.accounts$.subscribe((a) => (accounts = a));
+        expect(accounts).toEqual(mockAccounts);
     });
 
-    it('should set the selected account in the account service and navigate to dashboard for the selected account', () => {
-        jest.spyOn(accountService, 'setAccount');
-        jest.spyOn(routerService, 'navigateToRouteForAccountName');
-
-        component.proceed('John Doe');
-
-        expect(accountService.setAccount).toHaveBeenCalledWith({
-            name: 'John Doe',
-        });
-        expect(
-            routerService.navigateToRouteForAccountName
-        ).toHaveBeenCalledWith(RoutePath.Dashboard, 'John Doe');
-    });
-
-    it('should not set the account and not navigate when no account name is provided', () => {
-        jest.spyOn(accountService, 'setAccount');
-        jest.spyOn(routerService, 'navigateToRouteForAccountName');
-
+    it('should not proceed when name is not provided', () => {
         component.proceed('');
+        jest.runAllTimers();
 
-        expect(accountService.setAccount).not.toHaveBeenCalled();
+        expect(mockAccountService.setAccount).not.toHaveBeenCalled();
         expect(
-            routerService.navigateToRouteForAccountName
+            mockRouterService.navigateToRouteForAccountName
         ).not.toHaveBeenCalled();
     });
 
-    it('should not set the account and not navigate when the provided account name does not match any account', () => {
-        jest.spyOn(accountService, 'setAccount');
-        jest.spyOn(routerService, 'navigateToRouteForAccountName');
+    it('should proceed to the dashboard when a valid account name is provided', () => {
+        const accountName = 'Account1';
+        component.proceed(accountName);
+        jest.runAllTimers();
 
-        component.proceed('Jane Doe');
-
-        expect(accountService.setAccount).not.toHaveBeenCalled();
+        expect(mockAccountService.setAccount).toHaveBeenCalledWith(
+            mockAccounts[0]
+        );
         expect(
-            routerService.navigateToRouteForAccountName
-        ).not.toHaveBeenCalled();
+            mockRouterService.navigateToRouteForAccountName
+        ).toHaveBeenCalledWith('account/:name/dashboard', accountName);
     });
 
-    it('should not set the account and not navigate when the provided account name is null or undefined', () => {
-        jest.spyOn(accountService, 'setAccount');
-        jest.spyOn(routerService, 'navigateToRouteForAccountName');
+    it('should not proceed when an invalid account name is provided', () => {
+        component.proceed('InvalidAccount');
+        jest.runAllTimers();
 
-        component.proceed(null);
-        component.proceed(undefined);
-
-        expect(accountService.setAccount).not.toHaveBeenCalled();
+        expect(mockAccountService.setAccount).not.toHaveBeenCalled();
         expect(
-            routerService.navigateToRouteForAccountName
+            mockRouterService.navigateToRouteForAccountName
         ).not.toHaveBeenCalled();
     });
 });

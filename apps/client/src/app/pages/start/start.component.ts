@@ -7,5 +7,5 @@ import { Router } from '@angular/router';
     styleUrls: ['./start.component.scss'],
 })
 export class StartComponent {
-    constructor(private router: Router) {}
+    constructor(private readonly router: Router) {}
 }

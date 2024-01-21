@@ -17,9 +17,9 @@ export class PlanComponent implements OnInit {
     temporaryBalance: number | null = null;
 
     constructor(
-        private accountService: AccountService,
-        private transactionService: TransactionService,
-        private http: HttpClient
+        private readonly accountService: AccountService,
+        private readonly transactionService: TransactionService,
+        private readonly http: HttpClient
     ) {}
 
     ngOnInit() {

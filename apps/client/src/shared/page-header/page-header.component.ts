@@ -24,7 +24,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private router: RouterService,
+        private readonly router: RouterService,
         public accountService: AccountService,
         public translate: TranslateService
     ) {
