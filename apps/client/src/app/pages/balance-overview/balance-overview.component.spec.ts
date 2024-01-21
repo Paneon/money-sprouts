@@ -14,23 +14,6 @@ import { AccountStorageService } from '../../services/account-storage.service';
 })
 class MockPageHeaderComponent {}
 
-class MockAccountService {
-    currentAccount$ = of({
-        id: '1',
-        nextPayday: new Date(),
-        user: 'jasmine',
-        name: 'jasmine',
-        avatar: {
-            id: 1,
-            url: 'www.test.de',
-        },
-        balance: 120,
-        allowance: 2,
-        firstPayday: new Date(),
-    });
-    refreshAccount = jest.fn();
-}
-
 describe('BalanceOverviewComponent', () => {
     let component: BalanceOverviewComponent;
     let fixture: ComponentFixture<BalanceOverviewComponent>;
