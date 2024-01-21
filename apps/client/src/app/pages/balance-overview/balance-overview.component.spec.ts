@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { BalanceOverviewComponent } from './balance-overview.component';
 import { AccountService } from '../../services/account.service';
-import { fakeAsync, tick, flush } from '@angular/core/testing';
+import { AccountStorageService } from '../../services/account-storage.service';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -36,12 +36,36 @@ describe('BalanceOverviewComponent', () => {
     let fixture: ComponentFixture<BalanceOverviewComponent>;
     let accountService: AccountService;
     let translateService: TranslateService;
+    let mockAccountStorageService: Partial<AccountStorageService>;
 
     beforeEach(async () => {
+        mockAccountStorageService = {
+            getCurrentAccount: jest.fn().mockReturnValue({
+                id: '1',
+                nextPayday: new Date(),
+                user: 'jasmine',
+                name: 'jasmine',
+                avatar: {
+                    id: 1,
+                    url: 'www.test.de',
+                },
+                balance: 120,
+                allowance: 2,
+                firstPayday: new Date(),
+            }),
+        };
         await TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, TranslateModule.forRoot()],
             declarations: [BalanceOverviewComponent, MockPageHeaderComponent],
-            providers: [AccountService, TranslateService, DatePipe],
+            providers: [
+                {
+                    provide: AccountStorageService,
+                    useValue: mockAccountStorageService,
+                },
+                AccountService,
+                TranslateService,
+                DatePipe,
+            ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(BalanceOverviewComponent);
@@ -49,6 +73,7 @@ describe('BalanceOverviewComponent', () => {
         fixture.detectChanges();
 
         accountService = TestBed.inject(AccountService);
+        TestBed.inject(AccountStorageService);
         translateService = TestBed.inject(TranslateService);
     });
 
