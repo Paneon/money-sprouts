@@ -36,7 +36,7 @@ export class PlanComponent implements OnInit {
         this.onResetBalance();
     }
 
-    onCalculateAmount(amount: number) {
+    onCalculateDeductionOfAmount(amount: number) {
         this.temporaryBalance = this.originalBalance - amount;
     }
 
