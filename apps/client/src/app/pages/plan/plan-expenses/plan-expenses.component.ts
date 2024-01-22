@@ -67,7 +67,7 @@ export class PlanExpensesComponent {
         this.resetBalance.emit();
     }
 
-    fieldsAreEmpty(form: NgForm): boolean {
+    private fieldsAreEmpty(form: NgForm): boolean {
         if (!form.value.title || !form.value.amount) {
             this.icon = '⚠';
             this.message = 'PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INCOMPLETE';

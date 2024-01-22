@@ -9,6 +9,7 @@
     "build:dev": "nx run client:build:development --watch",
     "build": "nx run client:build:production",
     "cypress:open": "cypress open",
+    "jest:test": "nx test client",
     "generate:interfaces": "npm init @api-platform/client http://localhost:8101/api/ libs/shared/domain/src/ -- --generator typescript"
   },
   "private": true,

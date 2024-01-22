@@ -50,8 +50,8 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private accountService: AccountService,
-        private transactionService: TransactionService
+        private readonly accountService: AccountService,
+        private readonly transactionService: TransactionService
     ) {}
 
     ngOnInit() {

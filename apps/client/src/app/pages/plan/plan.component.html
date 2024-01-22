@@ -39,7 +39,7 @@
         <div class="tab-content">
             <div *ngIf="activeTab === 'spend'">
                 <money-sprouts-plan-expenses
-                    (calculateAmount)="onCalculateAmount($event)"
+                    (calculateAmount)="onCalculateDeductionOfAmount($event)"
                     (applyChanges)="onApplyChanges($event.title, $event.amount)"
                     (resetBalance)="onResetBalance()"
                 ></money-sprouts-plan-expenses>

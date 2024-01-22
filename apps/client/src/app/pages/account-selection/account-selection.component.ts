@@ -15,9 +15,9 @@ export class AccountSelectionComponent implements OnInit {
     accounts$: Observable<Account[]>;
 
     constructor(
-        private router: RouterService,
+        private readonly router: RouterService,
         public readonly route: ActivatedRoute,
-        private accountService: AccountService
+        private readonly accountService: AccountService
     ) {}
 
     ngOnInit(): void {

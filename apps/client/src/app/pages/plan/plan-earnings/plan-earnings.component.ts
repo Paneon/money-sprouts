@@ -62,7 +62,7 @@ export class PlanEarningsComponent {
     }>();
     @Output() resetBalance = new EventEmitter<void>();
 
-    constructor(private translate: TranslateService) {}
+    constructor(private readonly translate: TranslateService) {}
 
     onChoreSelect(chore: Chore) {
         if (chore.selected) {
