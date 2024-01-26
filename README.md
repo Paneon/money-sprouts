@@ -1,5 +1,7 @@
 # Money Sprouts
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/c78b6a634c70f52b7499/maintainability)](https://codeclimate.com/github/Paneon/money-sprouts/maintainability)
+
 ## Description
 
 Money Sprouts is an application designed to teach children the value of saving and spending their pocket money sensibly. Through a fun and interactive interface, children can manage their savings, view transaction histories, plan purchases, and even earn extra by doing chores.
