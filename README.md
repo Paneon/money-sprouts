@@ -2,7 +2,6 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/c78b6a634c70f52b7499/maintainability)](https://codeclimate.com/github/Paneon/money-sprouts/maintainability)
 
-### Visitor Info 👀 
 ![Profile View Counter](https://komarev.com/ghpvc/?username=Paneon)
 
 ## Description
