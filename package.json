@@ -27,7 +27,7 @@
     "@angular/router": "~16.1.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
-    "@nrwl/angular": "^16.5.5",
+    "@nrwl/angular": "^17.3.0",
     "@popperjs/core": "^2.11.6",
     "axios": "^1.6.0",
     "bootstrap": "^5.2.3",
