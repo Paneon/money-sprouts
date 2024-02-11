@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import translationEN from '../../../apps/client/src/assets/i18n/en.json';
 import translationDE from '../../../apps/client/src/assets/i18n/de.json';
+import { Locale } from '@/client/types/Locale';
 
 i18n
     // detect user language
@@ -14,7 +15,7 @@ i18n
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
         debug: true,
-        fallbackLng: 'en',
+        fallbackLng: Locale.EN,
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default
         },
