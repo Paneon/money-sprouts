@@ -86,7 +86,7 @@ describe('PlanExpensesComponent', () => {
                 description: 'Valid form data',
                 form: {
                     valid: true,
-                    value: { amount: 1000, title: 'Test Expense' },
+                    value: { amount: '1000', title: 'Test Expense' },
                 },
                 expectedEmit: true,
                 expectedTitle: 'Test Expense',
