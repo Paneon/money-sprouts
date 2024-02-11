@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const path = require('node:path');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -20,7 +21,7 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
-  .addEntry('app', './assets/client/main.ts')
+  .addEntry('app', './assets/client/main.tsx')
 
   .splitEntryChunks()
   .enableSingleRuntimeChunk()
@@ -45,7 +46,10 @@ Encore
 
   .enableSassLoader()
   .enableTypeScriptLoader()
-  .enableReactPreset();
+  .enableReactPreset()
+  .addAliases({
+    '@': path.resolve(__dirname, 'assets'),
+  });
 
 // uncomment to get integrity="..." attributes on your script & link tags
 // requires WebpackEncoreBundle 1.4 or higher
