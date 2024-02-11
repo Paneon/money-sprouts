@@ -31,6 +31,8 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     account$: Observable<Account | null>;
     nextPayday$: Observable<Date | null>;
     combinedDataOverview$: Observable<CombinedDataOverview>;
+    showConfettiText = false;
+    showTreasureButton = false;
 
     constructor(
         private readonly accountService: AccountService,
@@ -169,10 +171,30 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                     localStorage.getItem(confettiTriggeredKey);
 
                 if (!hasConfettiBeenTriggered) {
+                    this.resetOtherConfettiTriggerKeys(confettiTriggeredKey);
+
+                    this.showConfettiText = true;
                     this.confettiService.startConfetti();
                     localStorage.setItem(confettiTriggeredKey, 'true');
+                    setTimeout(() => {
+                        this.showConfettiText = false;
+                    }, 4000);
+                    this.showTreasureButton = true;
                 }
             }
         });
+    }
+
+    private resetOtherConfettiTriggerKeys(exceptKey: string): void {
+        balanceImageMap.forEach((item) => {
+            const key = `confettiTriggeredFor${item.threshold}`;
+            if (key !== exceptKey && item.threshold !== Infinity) {
+                localStorage.removeItem(key);
+            }
+        });
+    }
+
+    get ConfettiText(): string {
+        return 'OVERVIEW.CONFETTI_TEXT';
     }
 }

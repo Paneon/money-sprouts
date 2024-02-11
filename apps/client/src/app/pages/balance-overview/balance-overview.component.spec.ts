@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { BalanceOverviewComponent } from './balance-overview.component';
 import { AccountService } from '../../services/account.service';
 import { AccountStorageService } from '../../services/account-storage.service';
-
+import { ConfettiService } from '../../services/confetti.service';
+import { of } from 'rxjs';
 @Component({
     selector: 'money-sprouts-page-header',
     template: '<div></div>',
@@ -22,21 +22,24 @@ describe('BalanceOverviewComponent', () => {
     let mockAccountStorageService: Partial<AccountStorageService>;
 
     beforeEach(async () => {
+        const getCurrentAccountMock = jest.fn().mockReturnValue({
+            id: '1',
+            nextPayday: new Date(),
+            user: 'jasmine',
+            name: 'jasmine',
+            avatar: {
+                id: 1,
+                url: 'www.test.de',
+            },
+            balance: 100,
+            allowance: 2,
+            firstPayday: new Date(),
+        });
+
         mockAccountStorageService = {
-            getCurrentAccount: jest.fn().mockReturnValue({
-                id: '1',
-                nextPayday: new Date(),
-                user: 'jasmine',
-                name: 'jasmine',
-                avatar: {
-                    id: 1,
-                    url: 'www.test.de',
-                },
-                balance: 120,
-                allowance: 2,
-                firstPayday: new Date(),
-            }),
+            getCurrentAccount: getCurrentAccountMock,
         };
+
         await TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, TranslateModule.forRoot()],
             declarations: [BalanceOverviewComponent, MockPageHeaderComponent],
@@ -55,8 +58,8 @@ describe('BalanceOverviewComponent', () => {
         component = fixture.componentInstance;
         fixture.detectChanges();
 
-        accountService = TestBed.inject(AccountService);
         TestBed.inject(AccountStorageService);
+        accountService = TestBed.inject(AccountService);
         translateService = TestBed.inject(TranslateService);
     });
 

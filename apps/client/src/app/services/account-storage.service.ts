@@ -25,7 +25,6 @@ export class AccountStorageService extends Loggable {
 
     saveSelectedAccount(account: Account) {
         const string = JSON.stringify(account);
-        this.log('Storing selected account in local storage: ', string);
         localStorage.setItem(LocalStorageField.ACCOUNT, string);
     }
 

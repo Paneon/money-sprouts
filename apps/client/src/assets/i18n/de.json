@@ -36,7 +36,9 @@
     "PAYDAY_WEEKDAY_LABEL": "Nächstes Taschengeld am:",
     "PAYDAY_WEEKDAY_UNKOWN": "Frag Mama oder Papa!",
     "PAYDAY_COUNTER_UNKOWN": "Frag Mama oder Papa!",
-    "PAYDAY_COUNTER_LABEL": "Tage bis zur Zahlung:"
+    "PAYDAY_COUNTER_LABEL": "Tage bis zur Zahlung:",
+    "CONFETTI_TEXT": "Hurra, Du hast ein neues Level erreicht!! Neue Schätze wurden hinzugefügt.",
+    "BUTTON_TEXT_LEVEL": "Gehe Zu Deinen Schätzen"
   },
   "HISTORY": {
     "SHOW_MORE": "Mehr",
