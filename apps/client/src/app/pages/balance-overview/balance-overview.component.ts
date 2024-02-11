@@ -13,6 +13,7 @@ import { AccountService } from '../../services/account.service';
 import { DatePipe } from '@angular/common';
 import { Loggable } from '../../services/loggable';
 import { balanceImageMap } from '../../../shared/balance-image-map';
+import { ConfettiStateService } from '../../services/confetti-state.service';
 
 interface CombinedDataOverview {
     account: Account | null; // Replace 'any' with your Account type
@@ -39,15 +40,14 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         private readonly datePipe: DatePipe,
         private readonly translate: TranslateService,
         private readonly cd: ChangeDetectorRef,
-        private readonly confettiService: ConfettiService
+        private readonly confettiService: ConfettiService,
+        private readonly confettiStateService: ConfettiStateService
     ) {
         super();
         this.currentLang = this.translate.currentLang;
     }
 
     ngOnInit() {
-        console.log(this.translate.currentLang);
-
         this.account$ = this.accountService.currentAccount$.pipe(
             debounceTime(300),
             distinctUntilChanged((prev, current) => {
@@ -59,7 +59,12 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
         this.account$.subscribe((account) => {
             this.accountService.refreshAccount(account.id);
-            this.triggerConfettiIfNeeded(account);
+            const confettiThreshold = `confettiTriggeredFor${account.balance}`;
+            if (
+                !this.confettiStateService.hasSeenThreshold(confettiThreshold)
+            ) {
+                this.triggerConfettiIfNeeded(account);
+            }
         });
 
         this.nextPayday$ = this.account$.pipe(
@@ -161,28 +166,39 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     private triggerConfettiIfNeeded(account: Account | null): void {
         if (!account) return;
 
-        balanceImageMap.forEach((item) => {
-            if (item.threshold === Infinity) return;
+        const confettiThreshold = this.determineConfettiThreshold(
+            account.balance
+        );
+        if (confettiThreshold !== null) {
+            this.executeConfettiTriggerActions(confettiThreshold);
+        }
+    }
+
+    private determineConfettiThreshold(balance: number): number | null {
+        for (const item of balanceImageMap) {
+            if (item.threshold === Infinity) continue;
 
             const confettiTriggeredKey = `confettiTriggeredFor${item.threshold}`;
+            const hasBeenTriggered = localStorage.getItem(confettiTriggeredKey);
 
-            if (account.balance >= item.threshold) {
-                const hasConfettiBeenTriggered =
-                    localStorage.getItem(confettiTriggeredKey);
-
-                if (!hasConfettiBeenTriggered) {
-                    this.resetOtherConfettiTriggerKeys(confettiTriggeredKey);
-
-                    this.showConfettiText = true;
-                    this.confettiService.startConfetti();
-                    localStorage.setItem(confettiTriggeredKey, 'true');
-                    setTimeout(() => {
-                        this.showConfettiText = false;
-                    }, 4000);
-                    this.showTreasureButton = true;
-                }
+            if (balance >= item.threshold && !hasBeenTriggered) {
+                return item.threshold;
             }
-        });
+        }
+        return null; // No threshold met or all thresholds already triggered
+    }
+
+    private executeConfettiTriggerActions(threshold: number): void {
+        const confettiTriggeredKey = `confettiTriggeredFor${threshold}`;
+
+        this.showConfettiText = true;
+        this.confettiService.startConfetti();
+        setTimeout(() => (this.showConfettiText = false), 5000);
+        localStorage.setItem(confettiTriggeredKey, 'true');
+        this.showTreasureButton = true;
+        this.confettiStateService.markThresholdAsSeen(
+            `confettiTriggeredFor${threshold}`
+        );
     }
 
     private resetOtherConfettiTriggerKeys(exceptKey: string): void {
