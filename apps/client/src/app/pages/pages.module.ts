@@ -2,7 +2,6 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountSelectionComponent } from './account-selection/account-selection.component';
 import { SharedModule } from '../../shared/shared.module';
-import { StartComponent } from './start/start.component';
 import { BalanceOverviewComponent } from './balance-overview/balance-overview.component';
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -18,7 +17,6 @@ import { TranslateModule } from '@ngx-translate/core';
     imports: [CommonModule, SharedModule, FormsModule, TranslateModule],
     declarations: [
         AccountSelectionComponent,
-        StartComponent,
         BalanceOverviewComponent,
         TransactionHistoryComponent,
         DashboardComponent,
@@ -29,7 +27,6 @@ import { TranslateModule } from '@ngx-translate/core';
     ],
     exports: [
         AccountSelectionComponent,
-        StartComponent,
         BalanceOverviewComponent,
         TransactionHistoryComponent,
         DashboardComponent,
