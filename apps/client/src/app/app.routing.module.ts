@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StartComponent } from './pages/start/start.component';
 
 import { CommonModule } from '@angular/common';
 import { BalanceOverviewComponent } from './pages/balance-overview/balance-overview.component';
@@ -17,10 +16,6 @@ const routes: Routes = [
         path: '',
         redirectTo: RoutePath.Home,
         pathMatch: 'full',
-    },
-    {
-        path: RoutePath.Home,
-        component: StartComponent,
     },
     {
         path: RoutePath.Login,
