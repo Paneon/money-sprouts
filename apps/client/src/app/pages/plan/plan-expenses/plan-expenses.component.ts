@@ -49,7 +49,14 @@ export class PlanExpensesComponent {
             return;
         } else if (spendingForm.valid) {
             const title = spendingForm.value.title;
-            const amount = spendingForm.value.amount * -100;
+            const enteredAmount = spendingForm.value.amount;
+            const formattedAmount =
+                this.formattingHelperService.germanFormatToNumber(
+                    enteredAmount
+                );
+            const amount = formattedAmount * -100;
+            console.log('selected name & sum:', title, amount);
+
             this.applyChanges.emit({ title, amount });
             this.icon = '✔';
             this.message = 'PLAN.TAB_SPENT.MESSAGE_SUCCESS';
