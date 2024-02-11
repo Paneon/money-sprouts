@@ -10,6 +10,7 @@
     "dev": "encore dev",
     "dev:watch": "encore dev --watch",
     "build": "nx run client:build:production",
+    "build:encore": "encore prod",
     "cypress:open": "cypress open",
     "jest:test": "nx test client",
     "generate:interfaces": "npm init @api-platform/client http://localhost:8101/api/ libs/shared/domain/src/ -- --generator typescript"
