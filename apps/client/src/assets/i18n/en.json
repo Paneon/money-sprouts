@@ -36,7 +36,9 @@
     "PAYDAY_WEEKDAY_LABEL": "Next pocket money:",
     "PAYDAY_WEEKDAY_UNKOWN": "Ask Mum or Dad!",
     "PAYDAY_COUNTER_UNKOWN": "Ask Mum or Dad!",
-    "PAYDAY_COUNTER_LABEL": "Days until payday:"
+    "PAYDAY_COUNTER_LABEL": "Days until payday:",
+    "CONFETTI_TEXT": "Yeah, you reached a new level!! New treasures have been added.",
+    "BUTTON_TEXT_LEVEL": "Discover New Treasures"
   },
   "HISTORY": {
     "SHOW_MORE": "Show more",

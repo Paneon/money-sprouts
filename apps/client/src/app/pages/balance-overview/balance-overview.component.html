@@ -24,5 +24,13 @@
                 }}</span>
             </div>
         </div>
+        <div *ngIf="showConfettiText" class="confetti-text">
+            {{ ConfettiText | translate }}
+        </div>
+        <div *ngIf="showConfettiText || showTreasureButton">
+            <button class="button extra-margin" type="submit">
+                {{ 'OVERVIEW.BUTTON_TEXT_LEVEL' | translate }}
+            </button>
+        </div>
     </div>
 </div>
