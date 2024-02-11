@@ -109,10 +109,16 @@ describe('BalanceOverviewComponent', () => {
         expect(daysUntilNextPayday).toBe('OVERVIEW.PAYDAY_COUNTER_UNKOWN');
     });
     it('should return correct image path based on balance', () => {
+        expect(component.getFunnyImage(undefined)).toBe(
+            './assets/images/3d-dog-and-boy-jumping.png'
+        );
         expect(component.getFunnyImage(0)).toBe(
             './assets/images/3d-empty-box.png'
         );
         expect(component.getFunnyImage(100)).toBe(
+            './assets/images/3d-cat-in-box.png'
+        );
+        expect(component.getFunnyImage(250)).toBe(
             './assets/images/3d-cat-in-box.png'
         );
     });

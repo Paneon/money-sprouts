@@ -1,3 +1,4 @@
+import { ConfettiService } from './../../services/confetti.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Account } from '@money-sprouts/shared/domain';
@@ -11,6 +12,7 @@ import {
 import { AccountService } from '../../services/account.service';
 import { DatePipe } from '@angular/common';
 import { Loggable } from '../../services/loggable';
+import { balanceImageMap } from '../../../shared/balance-image-map';
 
 interface CombinedDataOverview {
     account: Account | null; // Replace 'any' with your Account type
@@ -34,7 +36,8 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         private readonly accountService: AccountService,
         private readonly datePipe: DatePipe,
         private readonly translate: TranslateService,
-        private readonly cd: ChangeDetectorRef
+        private readonly cd: ChangeDetectorRef,
+        private readonly confettiService: ConfettiService
     ) {
         super();
         this.currentLang = this.translate.currentLang;
@@ -44,7 +47,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         console.log(this.translate.currentLang);
 
         this.account$ = this.accountService.currentAccount$.pipe(
-            debounceTime(300), // waits 300ms between emisssions
+            debounceTime(300),
             distinctUntilChanged((prev, current) => {
                 return prev && current
                     ? prev.id === current.id
@@ -54,6 +57,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
         this.account$.subscribe((account) => {
             this.accountService.refreshAccount(account.id);
+            this.triggerConfettiIfNeeded(account);
         });
 
         this.nextPayday$ = this.account$.pipe(
@@ -80,34 +84,23 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     }
 
     getFunnyImage(balance: number | undefined): string {
-        switch (true) {
-            case balance <= 0:
-                return './assets/images/3d-empty-box.png';
-            case balance < 250:
-                return './assets/images/3d-cat-in-box.png';
-            case balance < 500:
-                return './assets/images/3d-cat-with-books-and-mouse.png';
-            case balance < 1000:
-                return './assets/images/3d-sitting-dog.png';
-            case balance < 1500:
-                return './assets/images/3d-dog-with-leash.png';
-            case balance < 2000:
-                return './assets/images/3d-dog-with-bag.png';
-            case balance < 3500:
-                return './assets/images/3d-cat-under-umbrella.png';
-            case balance < 5000:
-                return './assets/images/3d-man-playing-with-dog.png';
-            case balance < 7500:
-                return './assets/images/girl-hugging-dog.png';
-            case balance < 10000:
-                return './assets/images/dog-astronaut-floating.png';
-            case balance < 15000:
-                return './assets/images/3d-casual-life-cat-on-laptop.png';
-            case balance < 17500:
-                return './assets/images/3d-casual-life-cat-lies-on-open-books.png';
-            default:
-                return './assets/images/3d-dog-and-boy-jumping.png';
+        if (typeof balance === 'undefined') {
+            return balanceImageMap[balanceImageMap.length - 1].imagePath;
         }
+
+        if (balance === 0) {
+            return (
+                balanceImageMap.find((item) => item.threshold === 0)
+                    ?.imagePath || ''
+            );
+        }
+
+        const imagePath = balanceImageMap.find(
+            (item) => balance <= item.threshold
+        )?.imagePath;
+        return (
+            imagePath || balanceImageMap[balanceImageMap.length - 1].imagePath
+        );
     }
 
     getFormatedNextPayday(nextPayday: Date): string {
@@ -161,5 +154,25 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         const diffDays = Math.round(diffMilliseconds / (24 * 60 * 60 * 1000));
 
         return diffDays;
+    }
+
+    private triggerConfettiIfNeeded(account: Account | null): void {
+        if (!account) return;
+
+        balanceImageMap.forEach((item) => {
+            if (item.threshold === Infinity) return;
+
+            const confettiTriggeredKey = `confettiTriggeredFor${item.threshold}`;
+
+            if (account.balance >= item.threshold) {
+                const hasConfettiBeenTriggered =
+                    localStorage.getItem(confettiTriggeredKey);
+
+                if (!hasConfettiBeenTriggered) {
+                    this.confettiService.startConfetti();
+                    localStorage.setItem(confettiTriggeredKey, 'true');
+                }
+            }
+        });
     }
 }
