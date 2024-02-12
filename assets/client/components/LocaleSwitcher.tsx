@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Locale } from '@/client/types/Locale';
+import { Locale } from '@/client/interfaces/Locale';
 
 interface FlagImageProps {
   src: string;

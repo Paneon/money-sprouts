@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    #[Route('/accountselection2', name: 'accountselection')]
+    #[Route('/dashboard', name: 'user_dashboard')]
     public function react(): Response
     {
         return $this->render('home/index_react.html.twig', [
