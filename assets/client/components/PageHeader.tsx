@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
   title?: string;
-  isLoggedIn: boolean;
+  showLogout: boolean;
   backButtonTarget?: string;
 }
 
 export default function PageHeader({
   title,
-  isLoggedIn,
+  showLogout,
   backButtonTarget,
 }: Props) {
   const { t } = useTranslation();
@@ -47,7 +47,7 @@ export default function PageHeader({
             <div>
               <LocaleSwitcher />
             </div>
-            {isLoggedIn && (
+            {showLogout && (
               <a href="/logout" title={t('PAGE_HEADER.BUTTONS.LOGOUT')}>
                 <img
                   src="/assets/images/logout-round-grey_small.png"

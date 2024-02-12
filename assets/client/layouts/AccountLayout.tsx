@@ -4,10 +4,10 @@ import React, { PropsWithChildren } from 'react';
 interface Props extends PropsWithChildren {
   title?: string;
 }
-export default function UserLayout({ title, children }: Props) {
+export default function AccountLayout({ title, children }: Props) {
   return (
     <>
-      <PageHeader showLogout={true} title={title} />
+      <PageHeader showLogout={false} title={title} />
       {children}
     </>
   );

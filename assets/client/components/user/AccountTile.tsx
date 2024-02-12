@@ -11,7 +11,7 @@ export default function AccountTile({ account }: Props) {
   }
 
   return (
-    <a className="account-tile" href={`/account/show/${account.id}`}>
+    <a className="account-tile" href={`/accounts/${account.id}/`}>
       <img src={account.avatar.url} width={100} height={100} alt="Avatar" />
       <label className="label pt-4">{account.name}</label>
     </a>

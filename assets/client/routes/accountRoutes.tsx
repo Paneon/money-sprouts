@@ -1,3 +1,5 @@
+import AccountDashboard from '@/client/components/account/AccountDashboard';
+
 const routes = [
   // {
   //   path: '/accounts/create',
@@ -12,8 +14,14 @@ const routes = [
   // {
   //   path: '/accounts/show/:id',
   //   key: 'accounts_show',
-  //   element: <Show />,
+  //   element: <AccountShow />,
   // },
+  // TODO Differentiate if a User or an Account holder view an account
+  {
+    path: '/accounts/:id/',
+    key: 'account_dashboard',
+    element: <AccountDashboard />,
+  },
 ];
 
 export default routes;
