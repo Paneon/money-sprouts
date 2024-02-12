@@ -10,6 +10,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    #[Route('/', name: 'app_home')]
+    #[Route('/accountselection2', name: 'accountselection')]
+    public function react(): Response
+    {
+        return $this->render('home/index_react.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
     #[Route(
         '/{page}',
         name: 'app_frontend',
@@ -26,11 +35,4 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'app_home')]
-    public function react(): Response
-    {
-        return $this->render('home/index_react.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
 }

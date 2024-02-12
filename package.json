@@ -39,6 +39,7 @@
     "axios": "^1.6.0",
     "bootstrap": "^5.2.3",
     "canvas-confetti": "^1.9.2",
+    "clsx": "^2.1.0",
     "i18next": "^23.8.2",
     "i18next-browser-languagedetector": "^7.2.0",
     "prop-types": "^15.8.1",
