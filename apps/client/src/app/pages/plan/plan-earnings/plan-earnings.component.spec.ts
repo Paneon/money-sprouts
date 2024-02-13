@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlanEarningsComponent } from './plan-earnings.component';
+import { PlanEarningsComponent } from '../../../../../../../assets/client/config/plan-earnings.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
