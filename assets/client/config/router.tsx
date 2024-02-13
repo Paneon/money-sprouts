@@ -5,6 +5,7 @@ import UserDashboard from '@/client/components/user/UserDashboard';
 import AccountDashboard from '@/client/components/account/AccountDashboard';
 import AccountBalance from '@/client/components/account/AccountBalance';
 import AccountHistory from '@/client/components/account/AccountHistory';
+import PlanPage from '@/client/components/account/plan/PlanPage';
 
 export type RouteKey =
   | 'home'
@@ -42,9 +43,9 @@ export const routes: RouteObject[] = [
     element: <AccountHistory />,
   },
   {
-    path: '/accounts/:id/history',
+    path: '/accounts/:id/plan',
     id: 'accounts_plan' as RouteKey,
-    element: <Account />,
+    element: <PlanPage />,
   },
 ];
 

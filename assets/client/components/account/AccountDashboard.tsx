@@ -32,8 +32,7 @@ export default function AccountDashboard() {
     {
       name: 'DASHBOARD.SECTION_NAME.PLAN',
       image: './assets/images/plan.png',
-      url: '/',
-      //url: pathToRoute('accounts_plan', { id }),
+      url: pathToRoute('accounts_plan', { id }),
     },
   ];
 

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Chore, chores } from '@/client/config/chores';
 import { formatCentsToEuro } from '@/client/utils/currency';
+import './PlanEarnings.scss';
 
 interface TextWithIcon {
   text: string;
@@ -17,61 +18,61 @@ export default function PlanEarnings() {
   const [error, setError] = useState<TextWithIcon | null>(null);
 
   function onChoreSelect(chore: Chore) {
-    if (chore.selected) {
-      this.clearAction();
-      this.chores.forEach((c) => {
-        c.selected = c.id === chore.id;
-        if (c.id !== chore.id) {
-          c.calculated = false;
-        }
-      });
-      this.selectedChore = chore;
-    } else {
-      this.selectedChore = null;
-    }
+    // if (chore.selected) {
+    //   this.clearAction();
+    //   this.chores.forEach((c) => {
+    //     c.selected = c.id === chore.id;
+    //     if (c.id !== chore.id) {
+    //       c.calculated = false;
+    //     }
+    //   });
+    //   this.selectedChore = chore;
+    // } else {
+    //   this.selectedChore = null;
+    // }
   }
 
   function calculate() {
-    if (this.selectedChore && !this.selectedChore.calculated) {
-      console.log('selected Sum:', this.selectedChore.sum);
-      const formatedAmount = this.selectedChore.sum * 100;
-      this.calculateAmount.emit(formatedAmount);
-      this.icon = 'ℹ';
-      this.message = 'PLAN.TAB_EARN.MESSAGE_CONFIRM';
-      this.selectedChore.calculated = true;
-    } else if (this.selectedChore && this.selectedChore.calculated) {
-      this.message = '';
-      this.errorMessage = 'PLAN.TAB_EARN.MESSAGE_DENY';
-      this.icon = '⚠';
-    } else {
-      this.clearMessages();
-      this.icon = '⚠';
-      this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
-    }
+    // if (this.selectedChore && !this.selectedChore.calculated) {
+    //   console.log('selected Sum:', this.selectedChore.sum);
+    //   const formatedAmount = this.selectedChore.sum * 100;
+    //   this.calculateAmount.emit(formatedAmount);
+    //   this.icon = 'ℹ';
+    //   this.message = 'PLAN.TAB_EARN.MESSAGE_CONFIRM';
+    //   this.selectedChore.calculated = true;
+    // } else if (this.selectedChore && this.selectedChore.calculated) {
+    //   this.message = '';
+    //   this.errorMessage = 'PLAN.TAB_EARN.MESSAGE_DENY';
+    //   this.icon = '⚠';
+    // } else {
+    //   this.clearMessages();
+    //   this.icon = '⚠';
+    //   this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
+    // }
   }
 
   function apply() {
-    if (this.selectedChore) {
-      this.clearMessages();
-      this.translate
-        .get(this.selectedChore.name)
-        .subscribe((translatedTitle) => {
-          const title = translatedTitle;
-          const amount = this.selectedChore.sum * 100;
-
-          console.log('selected name & sum:', translatedTitle, amount);
-
-          this.applyChanges.emit({ title, amount });
-          this.resetChoreSelection();
-        });
-
-      this.message = 'PLAN.TAB_EARN.MESSAGE_SUCCESS';
-      this.icon = '✔';
-    } else {
-      this.clearMessages();
-      this.icon = '⚠';
-      this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
-    }
+    // if (this.selectedChore) {
+    //   this.clearMessages();
+    //   this.translate
+    //     .get(this.selectedChore.name)
+    //     .subscribe((translatedTitle) => {
+    //       const title = translatedTitle;
+    //       const amount = this.selectedChore.sum * 100;
+    //
+    //       console.log('selected name & sum:', translatedTitle, amount);
+    //
+    //       this.applyChanges.emit({ title, amount });
+    //       this.resetChoreSelection();
+    //     });
+    //
+    //   this.message = 'PLAN.TAB_EARN.MESSAGE_SUCCESS';
+    //   this.icon = '✔';
+    // } else {
+    //   this.clearMessages();
+    //   this.icon = '⚠';
+    //   this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
+    // }
   }
 
   return (

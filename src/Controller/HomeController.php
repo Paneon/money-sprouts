@@ -15,6 +15,7 @@ class HomeController extends AbstractController
     #[Route('/accounts/{user}/', name: 'accounts_dashboard')]
     #[Route('/accounts/{user}/balance', name: 'accounts_balance')]
     #[Route('/accounts/{user}/history', name: 'accounts_history')]
+    #[Route('/accounts/{user}/plan', name: 'accounts_plan')]
     public function react(): Response
     {
         return $this->render('home/index_react.html.twig', [
