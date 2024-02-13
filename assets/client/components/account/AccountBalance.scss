@@ -1,0 +1,60 @@
+@import "../../../styles/abstract/variables";
+
+.balance-display {
+  font-size: 2rem;
+  color: $primary-color;
+  margin-bottom: 20px;
+}
+
+.funny-image {
+  img {
+    max-width: 100%;
+  }
+}
+
+.image-caption {
+  margin: 5px;
+  font-size: 0.8rem;
+}
+
+.payday-info {
+  font-size: 1.2rem;
+  margin-top: 20px;
+
+  @media (max-size: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.bold-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+  @media (max-size: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.confetti-text {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primary-color;
+  font-family: fantasy;
+  font-weight: bold;
+  font-size: 2rem;
+  z-index: 1050;
+  background-color: rgba(195, 216, 126, 0.8);
+  text-align: center;
+  @media (max-size: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.extra-margin {
+  margin-top: 20px;
+}

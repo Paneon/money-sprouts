@@ -1,0 +1,14 @@
+@import "./variables";
+
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --tertiary-color: #{$tertiary-color};
+  --background-color: #{$background-color};
+  --highlight-light: #{$highlight-light};
+  --white: #{$white};
+  --grey: #{$grey};
+  --dark-green: #{$dark-green};
+  --dark-red: #{$dark-red};
+  --font-family: #{$font-family};
+}
