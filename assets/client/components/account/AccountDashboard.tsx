@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import AccountLayout from '@/client/layouts/AccountLayout';
 import { useParams } from 'react-router-dom';
 import './AccountDashboard.scss';
+import { pathToRoute } from '@/client/utils/pathToRoute';
 
 interface Section {
   name: string;
@@ -21,17 +22,18 @@ export default function AccountDashboard() {
     {
       name: 'DASHBOARD.SECTION_NAME.OVERVIEW',
       image: './assets/images/overview.png',
-      url: `/accounts/${id}/balance`,
+      url: pathToRoute('accounts_balance', { id }),
     },
     {
       name: 'DASHBOARD.SECTION_NAME.HISTORY',
       image: './assets/images/history.png',
-      url: `/accounts/${id}/transactions`,
+      url: pathToRoute('accounts_history', { id }),
     },
     {
       name: 'DASHBOARD.SECTION_NAME.PLAN',
       image: './assets/images/plan.png',
-      url: `/accounts/${id}/plan`,
+      url: '/',
+      //url: pathToRoute('accounts_plan', { id }),
     },
   ];
 
@@ -39,8 +41,8 @@ export default function AccountDashboard() {
     <AccountLayout title={t('PAGE_HEADER.PAGE_NAME.DASHBOARD')}>
       <div className="custom-container no-transparency">
         <div className="button-container">
-          {sections.map((section) => (
-            <div>
+          {sections.map((section, index) => (
+            <div key={index}>
               <a href={section.url} className="image-text-button">
                 <img src={section.image} />
                 <label>{t(section.name)}</label>

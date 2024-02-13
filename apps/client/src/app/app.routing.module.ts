@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
-import { TransactionHistoryComponent } from './pages/transaction-history/transaction-history.component';
 import { PlanComponent } from './pages/plan/plan.component';
 import { RoutePath } from './enum/routepath';
 
@@ -11,10 +10,6 @@ const routes: Routes = [
         path: '',
         redirectTo: RoutePath.Home,
         pathMatch: 'full',
-    },
-    {
-        path: RoutePath.History,
-        component: TransactionHistoryComponent,
     },
     {
         path: RoutePath.Plan,
