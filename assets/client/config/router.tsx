@@ -44,7 +44,7 @@ export const routes: RouteObject[] = [
   {
     path: '/accounts/:id/history',
     id: 'accounts_plan' as RouteKey,
-    element: <AccountHistory />,
+    element: <Account />,
   },
 ];
 
