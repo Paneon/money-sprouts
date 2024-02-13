@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AccountTile from '@/client/components/user/AccountTile';
 import useApi from '@/client/hooks/useApi';
 import { Account } from '@/client/interfaces/Account';
+import Loading from '@/client/components/Loading';
 
 export default function UserDashboard() {
   const { t } = useTranslation();
@@ -12,11 +13,7 @@ export default function UserDashboard() {
   return (
     <UserLayout title={t('PAGE_HEADER.PAGE_NAME.ACCOUNT-SELECTION')}>
       <div className="custom-container no-transparency">
-        {isLoading && (
-          <div className="alert alert-info" role="status">
-            Loading...
-          </div>
-        )}
+        {isLoading && <Loading />}
         {error && (
           <div className="alert alert-danger" role="alert">
             <span className="fa fa-exclamation-triangle" aria-hidden="true" />{' '}

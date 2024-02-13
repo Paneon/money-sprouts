@@ -1,4 +1,5 @@
 import AccountDashboard from '@/client/components/account/AccountDashboard';
+import AccountBalance from '@/client/components/account/AccountBalance';
 
 const routes = [
   // {
@@ -11,16 +12,16 @@ const routes = [
   //   key: 'accounts_update',
   //   element: <Update />,
   // },
-  // {
-  //   path: '/accounts/show/:id',
-  //   key: 'accounts_show',
-  //   element: <AccountShow />,
-  // },
   // TODO Differentiate if a User or an Account holder view an account
   {
     path: '/accounts/:id/',
     key: 'account_dashboard',
     element: <AccountDashboard />,
+  },
+  {
+    path: '/accounts/:id/balance',
+    key: 'accounts_balance',
+    element: <AccountBalance />,
   },
 ];
 
