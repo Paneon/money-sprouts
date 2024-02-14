@@ -7,7 +7,7 @@ export class ConfettiService {
             spread: 300,
             startVelocity: 60,
             scalar: 1.5,
-            duration: 8000,
+            ticks: 8000,
             origin: { y: 0.5 },
         });
     }

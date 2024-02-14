@@ -60,6 +60,7 @@
       "ERROR_MESSAGE": {
         "PRODUCT_INPUT": "Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche oder Punkte erlaubt.",
         "AMOUNT_INPUT": "Es sind nur ganze Zahlen oder Zahlen mit Kommas als Dezimaltrennung erlaubt.",
+        "EXPENSE_INPUT_INVALID": "Die Angabe für {{amount}} von {{title}} scheint ungültig zu sein. Bitte versuche es erneut.",
         "INPUTS_INVALID": {
           "PART_1": "Die Angabe für",
           "PART_2": "von",

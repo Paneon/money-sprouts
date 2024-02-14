@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import AccountLayout from '@/client/layouts/AccountLayout';
 import { pathToRoute } from '@/client/utils/pathToRoute';
 import { useTranslation } from 'react-i18next';
@@ -10,13 +10,20 @@ import clsx from 'clsx';
 import PlanEarnings from '@/client/components/account/plan/PlanEarnings';
 import PlanExpenses from '@/client/components/account/plan/PlanExpenses';
 import './PlanPage.scss';
+import { useAccountStore } from '@/client/config/accountStore';
 
 export default function PlanPage() {
   const { t, i18n } = useTranslation();
   const { id } = useParams();
-  const { data: account, isLoading, error } = useApi<Account>(`accounts/${id}`);
-  const [balance, setBalance] = useState<string | null>(null);
+  const { data: account, fetchData } = useApi<Account>(`accounts/${id}`);
+  const accountStore = useAccountStore();
+  const [formattedBalance, setFormattedBalance] = useState<string | null>(null);
+  const [tempBalance, setTempBalance] = useState<ReactElement | null>(null);
   const [activeTab, setActiveTab] = useState('spend');
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (!account) {
@@ -24,11 +31,23 @@ export default function PlanPage() {
     }
 
     if (account.balance) {
-      setBalance(formatCentsToEuro(account.balance));
+      accountStore.setBalance(account.balance);
+      setFormattedBalance(formatCentsToEuro(account.balance));
     }
   }, [account, i18n.language]);
 
-  function switchTab(tab: string) {}
+  function planExpense(costInCents: number) {
+    console.log('planExpense', costInCents);
+    const balance = accountStore.balance ?? 0;
+    const newBalance = balance - costInCents;
+    console.log({ balance, newBalance, costInCents });
+    setTempBalance(
+      <>
+        =&gt;{' '}
+        <span className="text-danger">{formatCentsToEuro(newBalance)}</span>
+      </>
+    );
+  }
 
   return (
     <AccountLayout
@@ -37,7 +56,9 @@ export default function PlanPage() {
     >
       <div id="plan" className="custom-container">
         <div className="custom-text-box">
-          <div className="balance-display">{balance}</div>
+          <div className="balance-display">
+            {formattedBalance} {tempBalance}
+          </div>
           <div className="tabs">
             <div
               onClick={() => setActiveTab('spend')}
@@ -64,7 +85,9 @@ export default function PlanPage() {
           </div>
 
           <div className="tab-content">
-            {activeTab === 'spend' ? <PlanExpenses /> : null}
+            {activeTab === 'spend' ? (
+              <PlanExpenses onCalculateExpense={(v) => planExpense(v)} />
+            ) : null}
             {activeTab === 'earn' ? <PlanEarnings /> : null}
           </div>
         </div>

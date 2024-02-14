@@ -18,12 +18,20 @@ export default function AccountHistory() {
     return null;
   }
 
-  const { data: transactionData, isLoading, error } = useTransactions(id);
+  const {
+    data: transactionData,
+    isLoading,
+    getTransactions,
+  } = useTransactions();
   const [earnings, setEarnings] = useState<Transaction[]>([]);
   const [expenses, setExpenses] = useState<Transaction[]>([]);
   const [maxLength, setMaxLength] = useState(0);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [displayedItems, setDisplayedItems] = useState(5);
+
+  useEffect(() => {
+    getTransactions(id);
+  }, []);
 
   useEffect(() => {
     if (!transactionData) {

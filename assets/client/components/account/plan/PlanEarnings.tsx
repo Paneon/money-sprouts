@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
 import { Chore, chores } from '@/client/config/chores';
 import { formatCentsToEuro } from '@/client/utils/currency';
 import './PlanEarnings.scss';
@@ -13,9 +12,6 @@ interface TextWithIcon {
 export default function PlanEarnings() {
   const { t } = useTranslation();
   const { id } = useParams();
-
-  const [message, setMessage] = useState<TextWithIcon | null>(null);
-  const [error, setError] = useState<TextWithIcon | null>(null);
 
   function onChoreSelect(chore: Chore) {
     // if (chore.selected) {
@@ -106,18 +102,6 @@ export default function PlanEarnings() {
           {t('PLAN.TAB_EARN.BUTTON_LABEL.SUBMIT')}
         </button>
       </div>
-      {message && (
-        <p className="message">
-          <span className="message-icon">{message.icon}</span>
-          {t(message.text)}
-        </p>
-      )}
-      {error && (
-        <p className="error">
-          <span className="error-icon">{error.icon}</span>
-          <span className="error">{t(error.text)}</span>
-        </p>
-      )}
     </div>
   );
 }

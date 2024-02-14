@@ -1,66 +1,102 @@
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
-import useApi from '@/client/hooks/useApi';
-import { Account } from '@/client/interfaces/Account';
 import './PlanExpenses.scss';
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import {
+  createEmptyMessage,
+  createErrorMessage,
+  createSuccessMessage,
+} from '@/client/utils/MessageFactory';
+import { Message } from '@/client/interfaces/Message';
+import MessageContainer from '@/client/components/MessageContainer';
+import { parseFormattedCurrencyToCents } from '@/client/utils/currency';
+import clsx from 'clsx';
+import useTransactions from '@/client/hooks/useTransactions';
+import { useParams } from 'react-router-dom';
+import { resourceUrlForAccount } from '@/client/utils/resource.factory';
 
-export default function PlanExpenses() {
+type Inputs = {
+  title: string;
+  amount: string;
+};
+
+interface Props {
+  onCalculateExpense: (v: number) => void;
+}
+
+export default function PlanExpenses({ onCalculateExpense }: Props) {
   const { t, i18n } = useTranslation();
   const { id } = useParams();
-  const { data: account, isLoading, error } = useApi<Account>(`accounts/${id}`);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues: { title: '', amount: '' },
+  });
+  const [message, setMessage] = useState<Message>(createEmptyMessage());
+  const { addTransaction, isLoading, error } = useTransactions();
 
-  // { t('PLAN.TAB_SPENT.ERROR_MESSAGE.PRODUCT_INPUT')}
-  // { t('PLAN.TAB_SPENT.ERROR_MESSAGE.AMOUNT_INPUT')}
+  async function calculate() {
+    await trigger('amount');
+    const amount = watch('amount');
 
-  function calculate() {
-    // if (this.fieldsAreEmpty(spendingForm)) {
-    //   return;
-    // } else if (spendingForm.valid) {
-    //   const displayAmount = spendingForm.value.amount;
-    //   const enteredAmount =
-    //     this.formattingHelperService.germanFormatToNumber(
-    //       displayAmount
-    //     ) * 100;
-    //   console.log('enteredAmount: ', enteredAmount);
-    //   this.calculateAmount.emit(enteredAmount);
-    //   this.icon = 'ℹ';
-    //   this.message = 'PLAN.TAB_SPENT.MESSAGE_CONFIRM';
-    // } else {
-    //   this.icon = '⚠';
-    //   this.message =
-    //     'PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INVALID.PART_1 ' +
-    //     spendingForm.value.amount +
-    //     ' PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INVALID.PART_2 ' +
-    //     spendingForm.value.title +
-    //     ' PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INVALID.PART_3';
-    // }
+    if (amount === '' || errors.amount) {
+      let errorMessage = t('PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INCOMPLETE');
+
+      switch (errors.amount?.type) {
+        case 'pattern':
+          errorMessage = t('PLAN.TAB_SPENT.ERROR_MESSAGE.AMOUNT_INPUT');
+      }
+
+      setMessage(createErrorMessage(errorMessage));
+      return;
+    }
+
+    onCalculateExpense(parseFormattedCurrencyToCents(amount));
+    setMessage(createSuccessMessage('PLAN.TAB_SPENT.MESSAGE_CONFIRM'));
   }
 
-  function apply() {
-    // if (this.fieldsAreEmpty(spendingForm)) {
-    //   return;
-    // } else if (spendingForm.valid) {
-    //   const title = spendingForm.value.title;
-    //   const enteredAmount = spendingForm.value.amount;
-    //   const formattedAmount =
-    //     this.formattingHelperService.germanFormatToNumber(
-    //       enteredAmount
-    //     );
-    //   const amount = formattedAmount * -100;
-    //   console.log('selected name & sum:', title, amount);
-    //
-    //   this.applyChanges.emit({ title, amount });
-    //   this.icon = '✔';
-    //   this.message = 'PLAN.TAB_SPENT.MESSAGE_SUCCESS';
-    // } else {
-    //   this.icon = '⚠';
-    //   this.message = 'PLAN.TAB_SPENT.ERROR_MESSAGE.GENERAL';
-    // }
-  }
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log('on submit', data);
+    if (!id) {
+      throw new Error('Invalid Account ID');
+    }
+
+    addTransaction({
+      title: data.title,
+      value: parseFormattedCurrencyToCents(data.amount),
+      account: resourceUrlForAccount(id),
+    })
+      .then((r) => {
+        setMessage(createSuccessMessage(t('PLAN.TAB_SPENT.MESSAGE_SUCCESS')));
+      })
+      .catch(() => {
+        setMessage(
+          createErrorMessage(t('PLAN.TAB_SPENT.ERROR_MESSAGE.GENERAL'))
+        );
+      });
+  };
+
+  const onInvalid: SubmitErrorHandler<Inputs> = async (errors) => {
+    let errorMessage = t('PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INCOMPLETE');
+    if (errors.amount?.type === 'pattern') {
+      errorMessage = t('PLAN.TAB_SPENT.INPUT_HINT.AMOUNT_INPUT');
+    } else if (errors.title?.type === 'pattern') {
+      errorMessage = t('PLAN.TAB_SPENT.INPUT_HINT.PRODUCT_INPUT');
+    }
+
+    setMessage(createErrorMessage(errorMessage));
+  };
 
   return (
     <>
-      <form className="form-container">
+      <form
+        className="form-container"
+        onSubmit={handleSubmit(onSubmit, onInvalid)}
+      >
         <div className="form-group">
           <label className="name-label" htmlFor="title">
             {t('PLAN.TAB_SPENT.NAME_LABEL')}
@@ -69,10 +105,11 @@ export default function PlanExpenses() {
             className="name-input"
             type="text"
             id="title"
-            name="title"
-            required
-            pattern="^[a-zA-Z\s0-9\-.]+$"
             title={t('PLAN.TAB_SPENT.INPUT_HINT.PRODUCT_INPUT')}
+            {...register('title', {
+              required: true,
+              pattern: /^[a-zA-Zs0-9-.]+$/,
+            })}
           />
         </div>
 
@@ -81,25 +118,39 @@ export default function PlanExpenses() {
             {t('PLAN.TAB_SPENT.AMOUNT_LABEL')}
           </label>
           <input
-            className="amount-input"
+            className={clsx({
+              'amount-input': true,
+              'border-danger': errors.amount,
+            })}
             type="text"
-            id="amount"
-            name="amount"
             required
-            pattern="^\d+(?:,\d{1,2})?$"
             title={t('PLAN.TAB_SPENT.INPUT_HINT.AMOUNT_INPUT')}
+            {...register('amount', {
+              required: true,
+              pattern: /^\d+(?:,\d{1,2})?$/,
+            })}
           />
         </div>
 
         <div className="button-group--plan-page">
-          <button className="button" type="submit" onClick={() => calculate()}>
+          <button className="button" type="button" onClick={() => calculate()}>
             {t('PLAN.TAB_SPENT.BUTTON_LABEL.CALCULATE')}
           </button>
-          <button className="button" type="submit" onClick={() => apply()}>
-            {t('PLAN.TAB_SPENT.BUTTON_LABEL.SUBMIT')}
+          <button
+            className="button"
+            type="submit"
+            disabled={isLoading}
+            onClick={handleSubmit(onSubmit)}
+          >
+            {isLoading ? 'Saving..' : t('PLAN.TAB_SPENT.BUTTON_LABEL.SUBMIT')}
           </button>
         </div>
       </form>
+      <MessageContainer
+        icon={message.icon}
+        message={message.message}
+        type={message.type}
+      />
     </>
   );
 }
