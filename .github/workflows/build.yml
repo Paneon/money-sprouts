@@ -32,7 +32,7 @@ jobs:
         run: npm run test
 
       - name: Webpack Encore
-        run: npm run build:encore
+        run: npm run build:prod
 
   server:
     name: Symfony Build
