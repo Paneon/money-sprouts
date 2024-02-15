@@ -65,9 +65,11 @@ export default function PlanExpenses({ onCalculateExpense }: Props) {
       throw new Error('Invalid Account ID');
     }
 
+    const negativeValue = -Math.abs(parseFormattedCurrencyToCents(data.amount));
+
     addTransaction({
       title: data.title,
-      value: parseFormattedCurrencyToCents(data.amount),
+      value: negativeValue,
       account: resourceUrlForAccount(id),
     })
       .then((r) => {

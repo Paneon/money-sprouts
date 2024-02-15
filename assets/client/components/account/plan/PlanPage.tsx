@@ -37,7 +37,6 @@ export default function PlanPage() {
   }, [account, i18n.language]);
 
   function planExpense(costInCents: number) {
-    console.log('planExpense', costInCents);
     const balance = accountStore.balance ?? 0;
     const newBalance = balance - costInCents;
     console.log({ balance, newBalance, costInCents });
@@ -45,6 +44,23 @@ export default function PlanPage() {
       <>
         =&gt;{' '}
         <span className="text-danger">{formatCentsToEuro(newBalance)}</span>
+      </>
+    );
+  }
+
+  function planEarning(earnInCents: number | null) {
+    if (earnInCents === null) {
+      setTempBalance(null);
+      return;
+    }
+
+    const balance = accountStore.balance ?? 0;
+    const newBalance = balance + earnInCents;
+    console.log({ balance, newBalance, costInCents: earnInCents });
+    setTempBalance(
+      <>
+        =&gt;{' '}
+        <span className="text-success">{formatCentsToEuro(newBalance)}</span>
       </>
     );
   }
@@ -88,7 +104,9 @@ export default function PlanPage() {
             {activeTab === 'spend' ? (
               <PlanExpenses onCalculateExpense={(v) => planExpense(v)} />
             ) : null}
-            {activeTab === 'earn' ? <PlanEarnings /> : null}
+            {activeTab === 'earn' ? (
+              <PlanEarnings onCalculateEarning={(y) => planEarning(y)} />
+            ) : null}
           </div>
         </div>
       </div>

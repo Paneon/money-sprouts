@@ -1,107 +1,162 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { Chore, chores } from '@/client/config/chores';
+import { Chore } from '@/client/config/chores';
 import { formatCentsToEuro } from '@/client/utils/currency';
 import './PlanEarnings.scss';
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import useChores from '@/client/hooks/useChores';
+import { useEffect, useState } from 'react';
+import { Message } from '@/client/interfaces/Message';
+import {
+  createEmptyMessage,
+  createErrorMessage,
+  createInfoMessage,
+  createSuccessMessage,
+} from '@/client/utils/MessageFactory';
+import MessageContainer from '@/client/components/MessageContainer';
+import { resourceUrlForAccount } from '@/client/utils/resource.factory';
+import useTransactions from '@/client/hooks/useTransactions';
 
-interface TextWithIcon {
-  text: string;
-  icon: string;
+interface Inputs {
+  selectedChore: null | string;
 }
 
-export default function PlanEarnings() {
+interface Props {
+  onCalculateEarning: (v: number | null) => void;
+}
+
+export default function PlanEarnings({ onCalculateEarning }: Props) {
   const { t } = useTranslation();
   const { id } = useParams();
+  const { data: chores, getChores } = useChores();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    getValues,
+    trigger,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues: {
+      selectedChore: null,
+    },
+  });
+  const [message, setMessage] = useState<Message>(createEmptyMessage());
+  const { addTransaction, isLoading, error } = useTransactions();
+
+  useEffect(() => {
+    getChores().then(() => {
+      console.log('getChores', chores);
+    });
+  }, []);
 
   function onChoreSelect(chore: Chore) {
-    // if (chore.selected) {
-    //   this.clearAction();
-    //   this.chores.forEach((c) => {
-    //     c.selected = c.id === chore.id;
-    //     if (c.id !== chore.id) {
-    //       c.calculated = false;
-    //     }
-    //   });
-    //   this.selectedChore = chore;
-    // } else {
-    //   this.selectedChore = null;
-    // }
+    const currentSelection = getValues('selectedChore');
+    const isSelected = currentSelection == chore.id;
+    setValue('selectedChore', isSelected ? null : chore.id);
+    calculate();
   }
 
   function calculate() {
-    // if (this.selectedChore && !this.selectedChore.calculated) {
-    //   console.log('selected Sum:', this.selectedChore.sum);
-    //   const formatedAmount = this.selectedChore.sum * 100;
-    //   this.calculateAmount.emit(formatedAmount);
-    //   this.icon = 'ℹ';
-    //   this.message = 'PLAN.TAB_EARN.MESSAGE_CONFIRM';
-    //   this.selectedChore.calculated = true;
-    // } else if (this.selectedChore && this.selectedChore.calculated) {
-    //   this.message = '';
-    //   this.errorMessage = 'PLAN.TAB_EARN.MESSAGE_DENY';
-    //   this.icon = '⚠';
-    // } else {
-    //   this.clearMessages();
-    //   this.icon = '⚠';
-    //   this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
-    // }
+    const selected = getValues('selectedChore');
+    if (selected !== null && chores.length) {
+      const choreValue = chores.find(
+        (chore) => chore.id === selected[0]
+      )?.value;
+      if (choreValue) {
+        onCalculateEarning(choreValue);
+        setMessage(createInfoMessage('PLAN.TAB_EARN.MESSAGE_CONFIRM'));
+        return;
+      } else {
+        setMessage(createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.GENERAL'));
+      }
+    } else {
+      setMessage(
+        createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION')
+      );
+    }
+    onCalculateEarning(null);
   }
 
-  function apply() {
-    // if (this.selectedChore) {
-    //   this.clearMessages();
-    //   this.translate
-    //     .get(this.selectedChore.name)
-    //     .subscribe((translatedTitle) => {
-    //       const title = translatedTitle;
-    //       const amount = this.selectedChore.sum * 100;
-    //
-    //       console.log('selected name & sum:', translatedTitle, amount);
-    //
-    //       this.applyChanges.emit({ title, amount });
-    //       this.resetChoreSelection();
-    //     });
-    //
-    //   this.message = 'PLAN.TAB_EARN.MESSAGE_SUCCESS';
-    //   this.icon = '✔';
-    // } else {
-    //   this.clearMessages();
-    //   this.icon = '⚠';
-    //   this.errorMessage = 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION';
-    // }
-  }
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log('on submit', data);
+    setMessage(createEmptyMessage());
+
+    if (!id) {
+      setMessage(createErrorMessage('Invalid Account.'));
+      return;
+    }
+
+    const chore = chores.filter((c) => c.id === data.selectedChore)[0];
+
+    if (!chore) {
+      setMessage(
+        createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION')
+      );
+      return;
+    }
+
+    addTransaction({
+      title: t(chore.name),
+      value: chore.value,
+      account: resourceUrlForAccount(id),
+    })
+      .then((r) => {
+        setMessage(createSuccessMessage(t('PLAN.TAB_EARN.MESSAGE_SUCCESS')));
+      })
+      .catch(() => {
+        setMessage(
+          createErrorMessage(t('PLAN.TAB_EARN.ERROR_MESSAGE.GENERAL'))
+        );
+      })
+      .finally(() => {
+        setValue('selectedChore', null);
+      });
+  };
+
+  const onInvalid: SubmitErrorHandler<Inputs> = (errors) => {
+    setMessage(createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION'));
+  };
 
   return (
-    <div>
+    <form
+      className="form-container"
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
+    >
       {chores.map((chore, index) => (
-        <div key={index} className="chore-item">
+        <div key={index} className="chore-item form-check">
           <input
             type="checkbox"
-            className="checkbox"
-            id={chore.id}
+            className="checkbox form-check-input"
+            value={chore.id}
+            {...register('selectedChore')}
             name={`chore-${chore.id}`}
-            onChange={() => onChoreSelect(chore)}
+            onClick={() => onChoreSelect(chore)}
+            checked={watch('selectedChore') === chore.id}
           />
-          <label htmlFor={`chore-${chore.id}`}>
+          <label htmlFor={`chore-${chore.id}`} className="form-check-label">
             <img
               src={chore.iconPath}
               alt={t(chore.name)}
               className="chore-icon"
             />
             <span className="chore-name">{t(chore.name)}</span>
-            <span className="chore-sum">{formatCentsToEuro(chore.sum)}</span>
+            <span className="chore-sum">{formatCentsToEuro(chore.value)}</span>
           </label>
         </div>
       ))}
 
       <div className="button-group--plan-page">
-        <button className="button" type="submit" onClick={() => calculate()}>
-          {t('PLAN.TAB_EARN.BUTTON_LABEL.CALCULATE')}
-        </button>
-        <button className="button" type="submit" onClick={() => apply()}>
+        <button className="button" type="submit">
           {t('PLAN.TAB_EARN.BUTTON_LABEL.SUBMIT')}
         </button>
       </div>
-    </div>
+      <MessageContainer
+        icon={message.icon}
+        message={message.message}
+        type={message.type}
+      />
+    </form>
   );
 }
