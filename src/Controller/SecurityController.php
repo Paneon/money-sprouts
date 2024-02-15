@@ -20,7 +20,7 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         if ($this->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)) {
-            return $this->redirect('/accountselection');
+            return $this->redirect('/dashboard');
         }
 
         return $this->render('@EasyAdmin/page/login.html.twig', [

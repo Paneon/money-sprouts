@@ -1,1 +1,7 @@
 node_modules
+vendor
+var
+public
+webpack.config.js
+cypress.config.ts
+cypress

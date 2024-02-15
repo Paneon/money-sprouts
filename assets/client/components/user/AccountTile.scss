@@ -1,0 +1,22 @@
+@import "../../../styles/abstract/variables";
+@import "../../../styles/abstract/mixins";
+
+.account-tile {
+  border: 2px solid $secondary-color;
+  border-radius: 10%;
+  background: linear-gradient($white, $highlight-light);
+  text-align: center;
+  padding: 50px 70px;
+  margin: 20px;
+  @include make-flexbox();
+
+  label {
+    text-decoration: none;
+    color: $primary-color;
+  }
+}
+
+.account-tile:hover,
+.account-tile:active {
+  border: 2px solid $tertiary-color;
+}

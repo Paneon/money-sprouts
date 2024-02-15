@@ -13,11 +13,6 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
 # compiled output
 dist
 tmp
@@ -44,13 +39,10 @@ node_modules
 !.vscode/extensions.json
 
 # misc
-.angular
 /.sass-cache
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log
-yarn-error.log
 testem.log
 /typings
 

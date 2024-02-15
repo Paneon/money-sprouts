@@ -22,14 +22,8 @@ jobs:
       - name: 🛠 Install Dependencies
         run: npm install
 
-      - name: 🛠 Build NX
-        uses: mansagroup/nrwl-nx-action@v3
-        with:
-          targets: build
-          all: true
-
       - name: 🛠 Build Webpack Encore
-        run: npm run build:encore
+        run: npm run build:prod
 
       - name: Remove not required files
         run: |
