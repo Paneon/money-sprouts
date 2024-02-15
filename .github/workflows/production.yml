@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
 
     steps:
       - name: 🚚 Get Latest Code
@@ -56,4 +56,5 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.DEPLOYMENT_PATH }}
+            php81 `which composer` install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
             php81 `which composer` cache
