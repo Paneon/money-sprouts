@@ -1,4 +1,4 @@
-name: Build 🚀
+name: Build
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,9 +25,14 @@ jobs:
         run: |
           npm install
 
-      - uses: mansagroup/nrwl-nx-action@v3
-        with:
-          targets: lint,build #,test
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Webpack Encore
+        run: npm run build:prod
 
   server:
     name: Symfony Build

@@ -44,6 +44,12 @@ The dashboard is the central interface from where the user can navigate to the p
 - **Error Handling**: Display of error, info and sucess messages for improved user experience. Error Logging.
 - **Multi-Language Support, ngx-translate library**: Users can switch between English and German and read the translated text.
 
+## Ideas for Future Features
+
+- Userfriendly interface for the initial Configuration of the parents, to set number of children accounts, child names, sum of pocket money, interval of payment, levels for visual cues and incentives, generate QR codes for each child account to log in by themselves
+- Adjusted access of children to each others account, e.g. they can only see a graph how the income and expenses of their siblings developed compared to their own
+- Gamification: Definition of levels the children can reach, add messaging function
+
 ## Start the app for local development
 
 1. (optional) Create a `.env.local` to provide custom configuration for your local environment

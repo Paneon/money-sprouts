@@ -1,0 +1,42 @@
+@import '../../../../styles/abstract/variables';
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  padding: 10px 0;
+}
+
+.name-label,
+.name-input,
+.amount-label,
+.amount-input {
+  flex: 1;
+  align-self: center;
+}
+
+.name-input,
+.amount-input {
+  height: 50px;
+  padding: 10px;
+  color: $primary-color;
+  border-radius: 10px;
+}
+
+.message {
+  margin-top: 20px;
+}
+
+.message__icon {
+  font-size: 24px;
+  color: $tertiary-color;
+  padding-right: 8px;
+}
+
+.message--error {
+  color: $dark-red;
+
+  .message__icon {
+    color: $dark-red;
+  }
+}

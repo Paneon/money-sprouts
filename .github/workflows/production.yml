@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
 
     steps:
       - name: 🚚 Get Latest Code
@@ -22,11 +22,8 @@ jobs:
       - name: 🛠 Install Dependencies
         run: npm install
 
-      - name: 🛠 Build NX
-        uses: mansagroup/nrwl-nx-action@v3
-        with:
-          targets: build
-          all: true
+      - name: 🛠 Build Webpack Encore
+        run: npm run build:prod
 
       - name: Remove not required files
         run: |
@@ -59,4 +56,5 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.DEPLOYMENT_PATH }}
+            php81 `which composer` install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
             php81 `which composer` cache

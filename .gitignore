@@ -13,11 +13,6 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
 # compiled output
 dist
 tmp
@@ -44,13 +39,10 @@ node_modules
 !.vscode/extensions.json
 
 # misc
-.angular
 /.sass-cache
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log
-yarn-error.log
 testem.log
 /typings
 
@@ -69,3 +61,10 @@ public/build
 .env.prod
 public/*.php
 .nx/cache
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
