@@ -1,4 +1,4 @@
-import '../styles/app.scss';
+import '../styles/styles.scss';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import App from '@/client/App';

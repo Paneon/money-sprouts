@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import translationEN from '../../../apps/client/src/assets/i18n/en.json';
-import translationDE from '../../../apps/client/src/assets/i18n/de.json';
+import translationEN from '../../../translations/en.json';
+import translationDE from '../../../translations/de.json';
 import { Locale } from '@/client/interfaces/Locale';
 
 i18n

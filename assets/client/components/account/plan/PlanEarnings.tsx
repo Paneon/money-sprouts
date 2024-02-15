@@ -132,6 +132,7 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
             value={chore.id}
             {...register('selectedChore')}
             name={`chore-${chore.id}`}
+            id={`chore-${chore.id}`}
             onClick={() => onChoreSelect(chore)}
             checked={watch('selectedChore') === chore.id}
           />

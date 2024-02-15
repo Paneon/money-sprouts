@@ -1,7 +1,10 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
-@import './app/styles/abstract';
+@import './abstract/variables';
+@import './abstract/css-variables';
+@import './abstract/mixins';
+@import './vendors/bootstrap';
 
 * {
   font-family: $font-family;
@@ -24,14 +27,14 @@ body {
       rgba(219, 230, 219, 0.5),
       rgba(223, 235, 223, 0.5)
     ),
-    url('./assets/images/background.jpg') center/cover repeat;
+    url(../images/background.jpg) center/cover repeat;
 
   display: flex;
   flex-direction: column;
 }
 
 .custom-container {
-  @include make-container(5rem, 4rem);
+  @include ms-container(5rem, 4rem);
   @include make-flexbox();
 
   @media (max-width: 400px) {
