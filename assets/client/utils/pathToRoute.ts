@@ -2,7 +2,7 @@ import { RouteKey, routes } from '@/client/config/router';
 
 export function pathToRoute(
     key: RouteKey,
-    params: Record<string, any> | null = null
+    params: Record<string, string | undefined> | null = null
 ): string {
     // Find the route object by key
     const route = routes.find((route) => route.id === key);
@@ -16,6 +16,10 @@ export function pathToRoute(
     if (params) {
         // Replace each param in the path with its value from the params argument
         Object.entries(params).forEach(([paramKey, paramValue]) => {
+            if (!paramValue) {
+                return;
+            }
+
             path = path!.replace(`:${paramKey}`, paramValue);
         });
     }

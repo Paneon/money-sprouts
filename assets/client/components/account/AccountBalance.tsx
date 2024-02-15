@@ -17,13 +17,22 @@ import { Locale } from '@/client/interfaces/Locale';
 export default function AccountBalance() {
   const { t, i18n } = useTranslation();
   const { id } = useParams();
-  const { data: account, isLoading, error } = useApi<Account>(`accounts/${id}`);
+  const {
+    data: account,
+    isLoading,
+    fetchData,
+  } = useApi<Account>(`accounts/${id}`);
   const [balance, setBalance] = useState<string | null>(null);
   const { imagePath } = useFunnyImage(account?.balance);
   const [nextPayday, setNextPayday] = useState<string | null>(null);
   const [daysUntilNextPayday, setDaysUntilNextPayday] = useState<string | null>(
     null
   );
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!account) {

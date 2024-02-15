@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function PlanExpenses({ onCalculateExpense }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { id } = useParams();
   const {
     register,
@@ -37,7 +37,7 @@ export default function PlanExpenses({ onCalculateExpense }: Props) {
     defaultValues: { title: '', amount: '' },
   });
   const [message, setMessage] = useState<Message>(createEmptyMessage());
-  const { addTransaction, isLoading, error } = useTransactions();
+  const { addTransaction, isLoading } = useTransactions();
 
   async function calculate() {
     await trigger('amount');
@@ -60,7 +60,6 @@ export default function PlanExpenses({ onCalculateExpense }: Props) {
   }
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log('on submit', data);
     if (!id) {
       throw new Error('Invalid Account ID');
     }
@@ -72,7 +71,7 @@ export default function PlanExpenses({ onCalculateExpense }: Props) {
       value: negativeValue,
       account: resourceUrlForAccount(id),
     })
-      .then((r) => {
+      .then(() => {
         setMessage(createSuccessMessage(t('PLAN.TAB_SPENT.MESSAGE_SUCCESS')));
       })
       .catch(() => {
@@ -110,7 +109,7 @@ export default function PlanExpenses({ onCalculateExpense }: Props) {
             title={t('PLAN.TAB_SPENT.INPUT_HINT.PRODUCT_INPUT')}
             {...register('title', {
               required: true,
-              pattern: /^[a-zA-Zs0-9-.]+$/,
+              pattern: /^[a-zA-Z\s0-9-.]+$/,
             })}
           />
         </div>

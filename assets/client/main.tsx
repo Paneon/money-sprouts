@@ -8,6 +8,4 @@ const domNode = document.getElementById('reactApp');
 
 if (domNode) {
   createRoot(domNode).render(<App />);
-} else {
-  console.log('React Root not found.');
 }

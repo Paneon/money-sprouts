@@ -4,11 +4,22 @@ import AccountTile from '@/client/components/user/AccountTile';
 import useApi from '@/client/hooks/useApi';
 import { Account } from '@/client/interfaces/Account';
 import Loading from '@/client/components/Loading';
+import { useEffect } from 'react';
 
 export default function UserDashboard() {
   const { t } = useTranslation();
 
-  const { data: accounts, isLoading, error } = useApi<Account[]>('accounts');
+  const {
+    data: accounts,
+    isLoading,
+    error,
+    fetchData,
+  } = useApi<Account[]>('accounts');
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <UserLayout title={t('PAGE_HEADER.PAGE_NAME.ACCOUNT-SELECTION')}>
@@ -22,7 +33,9 @@ export default function UserDashboard() {
         )}
         <div className="button-container">
           {accounts &&
-            accounts.map((account) => <AccountTile account={account} />)}
+            accounts.map((account) => (
+              <AccountTile key={account.id} account={account} />
+            ))}
         </div>
       </div>
     </UserLayout>

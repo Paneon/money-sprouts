@@ -4,8 +4,8 @@ import { ENTRYPOINT } from '@/client/config/config';
 
 interface UseApiOptions {
     method?: 'GET' | 'PUT' | 'POST' | 'DELETE';
-    body?: any;
-    query?: any;
+    body?: object;
+    query?: string;
     hydrated?: boolean;
 }
 
@@ -82,7 +82,7 @@ const useApi = <TResource>(
 
             return data;
         },
-        [resource, initialOptions]
+        [data, resource, initialOptions]
     );
 
     return { data, isLoading, error, fetchData };

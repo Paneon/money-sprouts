@@ -11,7 +11,7 @@
 // please read our getting started guide:
 // https://on.cypress.io/introduction-to-cypress
 
-type TestAccountCtx = {};
+type TestAccountCtx = object;
 
 describe('API - Account', () => {
     let ctx: TestAccountCtx = {};
@@ -21,7 +21,7 @@ describe('API - Account', () => {
     });
 
     context('GET /accounts', () => {
-        cy.request('/api/accounts/', HttpMethod)
+        cy.request('/api/accounts/');
 
         it('should return JSON', () => {
             cy.request('/api/accounts.json')

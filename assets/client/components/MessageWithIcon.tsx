@@ -8,15 +8,17 @@ interface Props {
 }
 
 export default function MessageWithIcon({ icon, message, modifier }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (!message) {
     return null;
   }
 
+  const classes = modifier ? { ['message--' + modifier]: true } : {};
+
   return (
-    <div className={clsx({ message: true })}>
-      {icon && <span className="message-icon">{icon}</span>}
+    <div className={'message ' + clsx(classes)}>
+      {icon && <span className="message__icon">{icon}</span>}
       {t(message!)}
     </div>
   );

@@ -1,4 +1,8 @@
 export function formatCentsToEuro(cents: number): string {
+    if (typeof cents !== 'number' || isNaN(cents)) {
+        throw new Error('Invalid input for formatCentsToEuro.');
+    }
+
     const euros = cents / 100;
     return new Intl.NumberFormat('de-DE', {
         style: 'currency',

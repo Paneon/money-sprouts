@@ -29,26 +29,18 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
   const { t } = useTranslation();
   const { id } = useParams();
   const { data: chores, getChores } = useChores();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    getValues,
-    trigger,
-    formState: { errors },
-  } = useForm<Inputs>({
-    defaultValues: {
-      selectedChore: null,
-    },
-  });
+  const { register, handleSubmit, watch, setValue, getValues } =
+    useForm<Inputs>({
+      defaultValues: {
+        selectedChore: null,
+      },
+    });
   const [message, setMessage] = useState<Message>(createEmptyMessage());
-  const { addTransaction, isLoading, error } = useTransactions();
+  const { addTransaction } = useTransactions();
 
   useEffect(() => {
-    getChores().then(() => {
-      console.log('getChores', chores);
-    });
+    getChores();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function onChoreSelect(chore: Chore) {
@@ -80,7 +72,6 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
   }
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log('on submit', data);
     setMessage(createEmptyMessage());
 
     if (!id) {
@@ -102,7 +93,7 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
       value: chore.value,
       account: resourceUrlForAccount(id),
     })
-      .then((r) => {
+      .then(() => {
         setMessage(createSuccessMessage(t('PLAN.TAB_EARN.MESSAGE_SUCCESS')));
       })
       .catch(() => {
@@ -115,7 +106,7 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
       });
   };
 
-  const onInvalid: SubmitErrorHandler<Inputs> = (errors) => {
+  const onInvalid: SubmitErrorHandler<Inputs> = () => {
     setMessage(createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION'));
   };
 

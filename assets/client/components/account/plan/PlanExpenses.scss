@@ -27,21 +27,16 @@
   margin-top: 20px;
 }
 
-.message-icon {
+.message__icon {
   font-size: 24px;
   color: $tertiary-color;
   padding-right: 8px;
 }
 
-.ng-invalid.ng-dirty:not(form) {
-  border: 1px solid $dark-red;
-}
-
-.error {
-  margin-top: 20px;
+.message--error {
   color: $dark-red;
-}
 
-.error::before {
-  content: '⚠';
+  .message__icon {
+    color: $dark-red;
+  }
 }

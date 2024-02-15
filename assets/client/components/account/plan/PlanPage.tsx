@@ -23,6 +23,7 @@ export default function PlanPage() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -34,12 +35,13 @@ export default function PlanPage() {
       accountStore.setBalance(account.balance);
       setFormattedBalance(formatCentsToEuro(account.balance));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, i18n.language]);
 
   function planExpense(costInCents: number) {
     const balance = accountStore.balance ?? 0;
     const newBalance = balance - costInCents;
-    console.log({ balance, newBalance, costInCents });
+
     setTempBalance(
       <>
         =&gt;{' '}
@@ -56,7 +58,7 @@ export default function PlanPage() {
 
     const balance = accountStore.balance ?? 0;
     const newBalance = balance + earnInCents;
-    console.log({ balance, newBalance, costInCents: earnInCents });
+
     setTempBalance(
       <>
         =&gt;{' '}

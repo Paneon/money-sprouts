@@ -16,13 +16,6 @@ class HomeController extends AbstractController
     #[Route('/accounts/{user}/balance', name: 'accounts_balance')]
     #[Route('/accounts/{user}/history', name: 'accounts_history')]
     #[Route('/accounts/{user}/plan', name: 'accounts_plan')]
-    public function react(): Response
-    {
-        return $this->render('home/index_react.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
     #[Route(
         '/{page}',
         name: 'app_frontend',
@@ -32,11 +25,12 @@ class HomeController extends AbstractController
         '/account/{user}/{page}',
         name: 'app_user_page'
     )]
-    public function index(): Response
+    public function react(): Response
     {
-        return $this->render('home/index.html.twig', [
+        return $this->render('home/index_react.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }
+
 
 }

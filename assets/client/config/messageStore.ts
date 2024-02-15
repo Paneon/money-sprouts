@@ -18,7 +18,7 @@ export const useMessageStore = create<MessageStoreState>((set) => ({
             type: 'error',
             icon: '⚠',
         }),
-    successMessage: (message: string, icon: string = '✔') =>
+    successMessage: (message: string, icon = '✔') =>
         set({
             message,
             type: 'success',

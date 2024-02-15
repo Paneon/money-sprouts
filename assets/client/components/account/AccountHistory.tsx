@@ -1,7 +1,7 @@
 import AccountLayout from '@/client/layouts/AccountLayout';
 import { useTranslation } from 'react-i18next';
 import { redirect, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Loading from '@/client/components/Loading';
 import { pathToRoute } from '@/client/utils/pathToRoute';
 import useTransactions from '@/client/hooks/useTransactions';
@@ -10,28 +10,32 @@ import { formatCentsToEuro } from '@/client/utils/currency';
 import './AccountHistory.scss';
 
 export default function AccountHistory() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { id } = useParams();
-
-  if (!id) {
-    redirect(pathToRoute('dashboard'));
-    return null;
-  }
-
   const {
     data: transactionData,
     isLoading,
     getTransactions,
   } = useTransactions();
+
   const [earnings, setEarnings] = useState<Transaction[]>([]);
   const [expenses, setExpenses] = useState<Transaction[]>([]);
   const [maxLength, setMaxLength] = useState(0);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [displayedItems, setDisplayedItems] = useState(5);
 
+  const getTransactionsRef = useRef(getTransactions);
+
+  // useEffect(() => {
+  //   getTransactionsRef.current = getTransactions;
+  // });
+
   useEffect(() => {
-    getTransactions(id);
-  }, []);
+    if (!id) {
+      return;
+    }
+    getTransactionsRef.current(id);
+  }, [id]);
 
   useEffect(() => {
     if (!transactionData) {
@@ -46,11 +50,11 @@ export default function AccountHistory() {
     setMaxLength(max);
     setShowMoreButton(displayedItems < max);
     setDisplayedItems(Math.min(max, displayedItems));
-  }, [transactionData]);
+  }, [displayedItems, transactionData]);
 
   useEffect(() => {
     setShowMoreButton(displayedItems < maxLength);
-  }, [displayedItems]);
+  }, [displayedItems, maxLength]);
 
   function cssClasses(t: Transaction | undefined) {
     if (!t) {
@@ -66,6 +70,11 @@ export default function AccountHistory() {
 
   function showMore() {
     setDisplayedItems(displayedItems + 5);
+  }
+
+  if (!id) {
+    redirect(pathToRoute('dashboard'));
+    return null;
   }
 
   return (

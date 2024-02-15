@@ -1,5 +1,5 @@
 {
-  "name": "@money-sprouts/source",
+  "name": "money-sprouts",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -25,6 +25,7 @@
     "core-js": "^3.35.1",
     "date-fns": "^3.3.1",
     "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "i18next": "^23.8.2",
     "i18next-browser-languagedetector": "^7.2.0",
     "prop-types": "^15.8.1",

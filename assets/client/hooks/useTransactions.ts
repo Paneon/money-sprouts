@@ -14,6 +14,9 @@ const useTransactions = () => {
 
     const addTransaction = useCallback(
         async (transactionData: CreateTransactionDTO) => {
+            if (!transactionData) {
+                return;
+            }
             await fetchData({
                 method: 'POST',
                 body: transactionData,

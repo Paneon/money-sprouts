@@ -12,12 +12,10 @@ const useChores = () => {
     //     useApi<Transaction[]>('chores');
 
     const getChores = async () => {
-        console.log('getChores fake api fall');
         setIsLoading(true);
         try {
             await Promise.resolve().then(() => {
                 setData(chores);
-                console.log('setData called');
             });
         } catch (e) {
             setError('Failed to load chores.');
