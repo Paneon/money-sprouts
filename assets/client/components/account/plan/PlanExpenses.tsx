@@ -46,9 +46,8 @@ export default function PlanExpenses({ onCalculateExpense }: Props) {
     if (amount === '' || errors.amount) {
       let errorMessage = t('PLAN.TAB_SPENT.ERROR_MESSAGE.INPUTS_INCOMPLETE');
 
-      switch (errors.amount?.type) {
-        case 'pattern':
-          errorMessage = t('PLAN.TAB_SPENT.ERROR_MESSAGE.AMOUNT_INPUT');
+      if (errors.amount?.type === 'pattern') {
+        errorMessage = t('PLAN.TAB_SPENT.ERROR_MESSAGE.AMOUNT_INPUT');
       }
 
       setMessage(createErrorMessage(errorMessage));

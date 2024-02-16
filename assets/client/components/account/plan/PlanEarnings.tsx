@@ -25,6 +25,14 @@ interface Props {
   onCalculateEarning: (v: number | null) => void;
 }
 
+const messages = {
+  errorNoSelection: 'PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION',
+  errorGeneral: 'PLAN.TAB_EARN.ERROR_MESSAGE.GENERAL',
+  success: 'PLAN.TAB_EARN.MESSAGE_SUCCESS',
+  confirm: 'PLAN.TAB_EARN.MESSAGE_CONFIRM',
+  buttonSubmit: 'PLAN.TAB_EARN.BUTTON_LABEL.SUBMIT',
+};
+
 export default function PlanEarnings({ onCalculateEarning }: Props) {
   const { t } = useTranslation();
   const { id } = useParams();
@@ -58,15 +66,13 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
       )?.value;
       if (choreValue) {
         onCalculateEarning(choreValue);
-        setMessage(createInfoMessage('PLAN.TAB_EARN.MESSAGE_CONFIRM'));
+        setMessage(createInfoMessage(messages.confirm));
         return;
       } else {
-        setMessage(createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.GENERAL'));
+        setMessage(createErrorMessage(messages.errorGeneral));
       }
     } else {
-      setMessage(
-        createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION')
-      );
+      setMessage(createErrorMessage(messages.errorNoSelection));
     }
     onCalculateEarning(null);
   }
@@ -82,9 +88,7 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
     const chore = chores.filter((c) => c.id === data.selectedChore)[0];
 
     if (!chore) {
-      setMessage(
-        createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION')
-      );
+      setMessage(createErrorMessage(messages.errorNoSelection));
       return;
     }
 
@@ -94,12 +98,10 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
       account: resourceUrlForAccount(id),
     })
       .then(() => {
-        setMessage(createSuccessMessage(t('PLAN.TAB_EARN.MESSAGE_SUCCESS')));
+        setMessage(createSuccessMessage(t(messages.success)));
       })
       .catch(() => {
-        setMessage(
-          createErrorMessage(t('PLAN.TAB_EARN.ERROR_MESSAGE.GENERAL'))
-        );
+        setMessage(createErrorMessage(t(messages.errorGeneral)));
       })
       .finally(() => {
         setValue('selectedChore', null);
@@ -107,7 +109,7 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
   };
 
   const onInvalid: SubmitErrorHandler<Inputs> = () => {
-    setMessage(createErrorMessage('PLAN.TAB_EARN.ERROR_MESSAGE.NO_SELECTION'));
+    setMessage(createErrorMessage(messages.errorNoSelection));
   };
 
   return (
@@ -141,7 +143,7 @@ export default function PlanEarnings({ onCalculateEarning }: Props) {
 
       <div className="button-group--plan-page">
         <button className="button" type="submit">
-          {t('PLAN.TAB_EARN.BUTTON_LABEL.SUBMIT')}
+          {t(messages.buttonSubmit)}
         </button>
       </div>
       <MessageContainer

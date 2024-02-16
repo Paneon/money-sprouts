@@ -9,6 +9,28 @@ interface UseApiOptions {
     hydrated?: boolean;
 }
 
+const buildEndpointPath = (resource: string, options: UseApiOptions) => {
+    let endpointPath = `${ENTRYPOINT}${resource}`;
+    if (!options.hydrated) {
+        endpointPath += '.json';
+    }
+
+    if (options.query) {
+        const params = new URLSearchParams(options.query);
+        endpointPath += '?' + params.toString();
+    }
+
+    return endpointPath;
+};
+
+const buildRequestConfig = (options: UseApiOptions): AxiosRequestConfig => ({
+    headers: {
+        'Content-Type': options.hydrated
+            ? 'application/ld+json'
+            : 'application/json',
+    },
+});
+
 const useApi = <TResource>(
     resource: string,
     initialOptions: UseApiOptions = {}
@@ -22,50 +44,24 @@ const useApi = <TResource>(
             setIsLoading(true);
             setError(null);
 
-            const {
-                method = initialOptions.method || 'GET',
-                body = initialOptions.body,
-                query = initialOptions.query,
-                hydrated = initialOptions.hydrated || false,
-            } = options;
+            options = {
+                method: 'GET',
+                hydrated: false,
+                ...initialOptions,
+                ...options,
+            };
 
             try {
-                let endpointPath = `${ENTRYPOINT}${resource}`;
-                if (!hydrated) {
-                    endpointPath += '.json';
-                }
+                const endpointPath = buildEndpointPath(resource, options);
+                const requestConfig: AxiosRequestConfig =
+                    buildRequestConfig(options);
 
-                if (query) {
-                    const params = new URLSearchParams(query);
-                    endpointPath += '?' + params.toString();
-                }
-
-                const requestConfig: AxiosRequestConfig = {
-                    headers: {
-                        'Content-Type': hydrated
-                            ? 'application/ld+json'
-                            : 'application/json',
-                    },
-                };
-
-                let response;
-                if (method === 'GET') {
-                    response = await axios.get(endpointPath, requestConfig);
-                } else if (method === 'PUT') {
-                    response = await axios.put(
-                        endpointPath,
-                        body,
-                        requestConfig
-                    );
-                } else if (method === 'POST') {
-                    response = await axios.post(
-                        endpointPath,
-                        body,
-                        requestConfig
-                    );
-                } else if (method === 'DELETE') {
-                    response = await axios.delete(endpointPath, requestConfig);
-                }
+                const response = await axios({
+                    url: endpointPath,
+                    method: options.method,
+                    data: options.body,
+                    ...requestConfig,
+                });
 
                 if (response?.data) {
                     setData(response.data);
