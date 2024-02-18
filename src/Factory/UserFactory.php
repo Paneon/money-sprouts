@@ -68,14 +68,4 @@ final class UserFactory extends ModelFactory
         ];
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
-    protected function initialize(): self
-    {
-        return $this
-            ->afterInstantiate(function (User $user) {
-                $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
-            });
-    }
 }

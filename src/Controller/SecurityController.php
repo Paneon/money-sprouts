@@ -52,7 +52,7 @@ class SecurityController extends AbstractController
             'csrf_token_intention' => 'authenticate',
 
             // the URL users are redirected to after the login (default: '/admin')
-            'target_path' => '/accountselection',
+            'target_path' => '/dashboard',
 
             // the label displayed for the username form field (the |trans filter is applied to it)
             'username_label' => 'Your username',

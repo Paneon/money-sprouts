@@ -57,30 +57,33 @@ export default function AccountBalance() {
       backTo={`/accounts/${id}`}
     >
       <div className="custom-container no-transparency">
-        {isLoading && <Loading />}
-        <div className="custom-text-box">
-          {balance && <div className="balance-display">{balance}</div>}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className="custom-text-box">
+            {balance && <div className="balance-display">{balance}</div>}
 
-          <div className="funny-image-wrapper">
-            <figure>
-              <img src={imagePath} alt="funny image" />
-            </figure>
-          </div>
-          <div className="payday-info">
-            <div>
-              {t('OVERVIEW.PAYDAY_WEEKDAY_LABEL')}&nbsp;
-              <span className="bold-text">
-                {nextPayday ?? t('OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN')}
-              </span>
+            <div className="funny-image-wrapper">
+              <figure>
+                <img src={imagePath} alt="funny image" />
+              </figure>
             </div>
-            <div>
-              {t('OVERVIEW.PAYDAY_COUNTER_LABEL')}&nbsp;
-              <span className="bold-text">
-                {daysUntilNextPayday ?? t('OVERVIEW.PAYDAY_COUNTER_UNKNOWN')}
-              </span>
+            <div className="payday-info">
+              <div>
+                {t('OVERVIEW.PAYDAY_WEEKDAY_LABEL')}&nbsp;
+                <span className="bold-text">
+                  {nextPayday ?? t('OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN')}
+                </span>
+              </div>
+              <div>
+                {t('OVERVIEW.PAYDAY_COUNTER_LABEL')}&nbsp;
+                <span className="bold-text">
+                  {daysUntilNextPayday ?? t('OVERVIEW.PAYDAY_COUNTER_UNKNOWN')}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </AccountLayout>
   );
