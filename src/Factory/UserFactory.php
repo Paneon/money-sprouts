@@ -67,5 +67,4 @@ final class UserFactory extends ModelFactory
             'roles' => [UserRole::USER],
         ];
     }
-
 }

@@ -13,6 +13,7 @@ import {
   getFormattedNextPayday,
 } from '@/client/utils/date';
 import { Locale } from '@/client/interfaces/Locale';
+import { pathToRoute } from '@/client/utils/pathToRoute';
 
 export default function AccountBalance() {
   const { t, i18n } = useTranslation();
@@ -54,7 +55,7 @@ export default function AccountBalance() {
   return (
     <AccountLayout
       title={t('PAGE_HEADER.PAGE_NAME.OVERVIEW')}
-      backTo={`/accounts/${id}`}
+      backTo={pathToRoute('accounts_dashboard', { id })}
     >
       <div className="custom-container no-transparency">
         {isLoading ? (
