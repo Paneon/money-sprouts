@@ -1,6 +1,7 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
-import { ENTRYPOINT } from '@/client/config/config';
+import { buildEndpointPath, buildRequestHeaders } from '../services/ApiService';
+import { ENTRYPOINT } from '../config/config';
 
 interface UseApiOptions {
     method?: 'GET' | 'PUT' | 'POST' | 'DELETE';
@@ -8,28 +9,6 @@ interface UseApiOptions {
     query?: string;
     hydrated?: boolean;
 }
-
-const buildEndpointPath = (resource: string, options: UseApiOptions) => {
-    let endpointPath = `${ENTRYPOINT}${resource}`;
-    if (!options.hydrated) {
-        endpointPath += '.json';
-    }
-
-    if (options.query) {
-        const params = new URLSearchParams(options.query);
-        endpointPath += '?' + params.toString();
-    }
-
-    return endpointPath;
-};
-
-const buildRequestConfig = (options: UseApiOptions): AxiosRequestConfig => ({
-    headers: {
-        'Content-Type': options.hydrated
-            ? 'application/ld+json'
-            : 'application/json',
-    },
-});
 
 const useApi = <TResource>(
     resource: string,
@@ -52,15 +31,14 @@ const useApi = <TResource>(
             };
 
             try {
-                const endpointPath = buildEndpointPath(resource, options);
-                const requestConfig: AxiosRequestConfig =
-                    buildRequestConfig(options);
+                const endpointPath =
+                    ENTRYPOINT + buildEndpointPath(resource, options);
 
                 const response = await axios({
                     url: endpointPath,
                     method: options.method,
                     data: options.body,
-                    ...requestConfig,
+                    headers: buildRequestHeaders(),
                 });
 
                 if (response?.data) {

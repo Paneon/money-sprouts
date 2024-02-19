@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import PlanEarnings from '@/client/components/account/plan/PlanEarnings';
 import PlanExpenses from '@/client/components/account/plan/PlanExpenses';
 import './PlanPage.scss';
-import { useAccountStore } from '@/client/config/accountStore';
+import { useAccountStore } from '@/client/store/useAccountStore';
 
 export default function PlanPage() {
   const { t, i18n } = useTranslation();
@@ -32,14 +32,13 @@ export default function PlanPage() {
     }
 
     if (account.balance) {
-      accountStore.setBalance(account.balance);
       setFormattedBalance(formatCentsToEuro(account.balance));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, i18n.language]);
 
   function planExpense(costInCents: number) {
-    const balance = accountStore.balance ?? 0;
+    const balance = accountStore.account?.balance ?? 0;
     const newBalance = balance - costInCents;
 
     setTempBalance(
@@ -56,7 +55,7 @@ export default function PlanPage() {
       return;
     }
 
-    const balance = accountStore.balance ?? 0;
+    const balance = accountStore.account?.balance ?? 0;
     const newBalance = balance + earnInCents;
 
     setTempBalance(
