@@ -37,7 +37,10 @@ export default function AccountDashboard() {
   ];
 
   return (
-    <AccountLayout title={t('PAGE_HEADER.PAGE_NAME.DASHBOARD')}>
+    <AccountLayout
+      title={t('PAGE_HEADER.PAGE_NAME.DASHBOARD')}
+      backTo={pathToRoute('dashboard')}
+    >
       <div className="custom-container no-transparency">
         <div className="button-container">
           {sections.map((section, index) => (

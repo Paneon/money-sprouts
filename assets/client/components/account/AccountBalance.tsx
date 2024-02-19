@@ -13,6 +13,7 @@ import {
   getFormattedNextPayday,
 } from '@/client/utils/date';
 import { Locale } from '@/client/interfaces/Locale';
+import { pathToRoute } from '@/client/utils/pathToRoute';
 
 export default function AccountBalance() {
   const { t, i18n } = useTranslation();
@@ -54,33 +55,36 @@ export default function AccountBalance() {
   return (
     <AccountLayout
       title={t('PAGE_HEADER.PAGE_NAME.OVERVIEW')}
-      backTo={`/accounts/${id}`}
+      backTo={pathToRoute('accounts_dashboard', { id })}
     >
       <div className="custom-container no-transparency">
-        {isLoading && <Loading />}
-        <div className="custom-text-box">
-          {balance && <div className="balance-display">{balance}</div>}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className="custom-text-box">
+            {balance && <div className="balance-display">{balance}</div>}
 
-          <div className="funny-image-wrapper">
-            <figure>
-              <img src={imagePath} alt="funny image" />
-            </figure>
-          </div>
-          <div className="payday-info">
-            <div>
-              {t('OVERVIEW.PAYDAY_WEEKDAY_LABEL')}&nbsp;
-              <span className="bold-text">
-                {nextPayday ?? t('OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN')}
-              </span>
+            <div className="funny-image-wrapper">
+              <figure>
+                <img src={imagePath} alt="funny image" />
+              </figure>
             </div>
-            <div>
-              {t('OVERVIEW.PAYDAY_COUNTER_LABEL')}&nbsp;
-              <span className="bold-text">
-                {daysUntilNextPayday ?? t('OVERVIEW.PAYDAY_COUNTER_UNKNOWN')}
-              </span>
+            <div className="payday-info">
+              <div>
+                {t('OVERVIEW.PAYDAY_WEEKDAY_LABEL')}&nbsp;
+                <span className="bold-text">
+                  {nextPayday ?? t('OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN')}
+                </span>
+              </div>
+              <div>
+                {t('OVERVIEW.PAYDAY_COUNTER_LABEL')}&nbsp;
+                <span className="bold-text">
+                  {daysUntilNextPayday ?? t('OVERVIEW.PAYDAY_COUNTER_UNKNOWN')}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </AccountLayout>
   );
