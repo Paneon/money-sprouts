@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { StoreApi, create } from 'zustand';
 import { Account } from '../interfaces/Account';
 import { ErrorMessage } from '../interfaces/Message';
 import { buildEndpointPath, buildRequestHeaders } from '../services/ApiService';
@@ -19,6 +19,37 @@ interface AccountStoreState {
 
 const CACHE_DURATION_MS = 60 * 1000;
 
+const handleError = (
+    error: Error | AxiosError | unknown,
+    set: StoreApi<AccountStoreState>['setState']
+) => {
+    if (!axios.isCancel(error)) {
+        const errorMessage =
+            error instanceof Error || error instanceof AxiosError
+                ? error.message
+                : 'An error occured while fetching the account.';
+        set({
+            error: createErrorMessage(errorMessage),
+        });
+    }
+};
+
+function shouldFetchData(
+    id: string,
+    get: StoreApi<AccountStoreState>['getState']
+) {
+    const { lastFetch, cancelTokenSource } = get();
+
+    const now = Date.now();
+
+    // Cancel previous request
+    if (cancelTokenSource) {
+        cancelTokenSource.cancel('New request initiated.');
+    }
+
+    return !(lastFetch && now - lastFetch < CACHE_DURATION_MS);
+}
+
 export const useAccountStore = create<AccountStoreState>((set, get) => ({
     balance: null,
     isLoading: false,
@@ -28,21 +59,7 @@ export const useAccountStore = create<AccountStoreState>((set, get) => ({
     cancelTokenSource: undefined,
 
     fetchData: async (id: string) => {
-        const now = Date.now();
-        const currentState = get();
-
-        // Cancel previous request
-        if (currentState.cancelTokenSource) {
-            currentState.cancelTokenSource.cancel('New request initiated.');
-        }
-
-        // Cancel current request if cache duration has not passed yet
-        if (
-            currentState.lastFetch &&
-            now - currentState.lastFetch < CACHE_DURATION_MS
-        ) {
-            return;
-        }
+        if (!shouldFetchData(id, get)) return;
 
         const endpointPath = buildEndpointPath(resourceUrlForAccount(id));
         const cancelTokenSource = axios.CancelToken.source();
@@ -60,21 +77,10 @@ export const useAccountStore = create<AccountStoreState>((set, get) => ({
                 });
             })
             .catch((error) => {
-                if (!axios.isCancel(error)) {
-                    const errorMessage =
-                        error instanceof Error || error instanceof AxiosError
-                            ? error.message
-                            : 'An error occured while fetching the account.';
-                    set({
-                        error: createErrorMessage(errorMessage),
-                    });
-                }
+                handleError(error, set);
             })
             .finally(() => {
-                set({
-                    isLoading: false,
-                    cancelTokenSource: undefined,
-                });
+                set({ isLoading: false, cancelTokenSource: undefined });
             });
     },
     setAccount: (value: Account) =>

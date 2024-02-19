@@ -8,9 +8,21 @@ import useTransactions from '@/client/hooks/useTransactions';
 import { Transaction } from '@/client/interfaces/Transaction';
 import { formatCentsToEuro } from '@/client/utils/currency';
 import './AccountHistory.scss';
+import clsx from 'clsx';
 
 interface Props {
   transactions: Transaction[];
+}
+
+function TransactionEntry({ transaction }: { transaction: Transaction }) {
+  return (
+    <>
+      <span className="transaction__amount">
+        +{formatCentsToEuro(transaction.value!)}
+      </span>
+      <span className="transaction__title">{transaction.title}</span>
+    </>
+  );
 }
 
 function AccountHistoryView({ transactions }: Props) {
@@ -27,22 +39,6 @@ function AccountHistoryView({ transactions }: Props) {
     setShowMoreButton(displayedItems < max);
     setDisplayedItems(Math.min(max, displayedItems));
   }, [displayedItems, max]);
-
-  useEffect(() => {
-    setShowMoreButton(displayedItems < max);
-  }, [displayedItems, max]);
-
-  function cssClasses(t: Transaction | undefined) {
-    if (!t) {
-      return '';
-    }
-
-    if (t.applied) {
-      return 'applied';
-    } else {
-      return 'not-applied';
-    }
-  }
 
   function showMore() {
     setDisplayedItems(displayedItems + 5);
@@ -67,28 +63,25 @@ function AccountHistoryView({ transactions }: Props) {
         <tbody>
           {[...Array(displayedItems)].map((_, index) => (
             <tr key={index}>
-              <td className={cssClasses(earnings[index])}>
+              <td
+                className={clsx({
+                  transaction: true,
+                  'transaction--inactive': !earnings[index].applied,
+                })}
+              >
                 {earnings[index]?.value ? (
-                  <>
-                    <span className="income-amount">
-                      +{formatCentsToEuro(earnings[index].value!)}
-                    </span>
-                    <span className="transaction-title">
-                      {earnings[index].title}
-                    </span>
-                  </>
+                  <TransactionEntry transaction={earnings[index]} />
                 ) : null}
               </td>
-              <td className={cssClasses(earnings[index])}>
+              <td
+                className={clsx({
+                  transaction: true,
+                  'transaction--expense': true,
+                  'transaction--inactive': !expenses[index].applied,
+                })}
+              >
                 {expenses[index]?.value ? (
-                  <>
-                    <span className="expense-amount">
-                      {formatCentsToEuro(expenses[index].value!)}
-                    </span>
-                    <span className="transaction-title">
-                      {expenses[index].title}
-                    </span>
-                  </>
+                  <TransactionEntry transaction={expenses[index]} />
                 ) : null}
               </td>
             </tr>
