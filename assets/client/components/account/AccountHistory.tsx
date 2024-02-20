@@ -18,7 +18,8 @@ function TransactionEntry({ transaction }: { transaction: Transaction }) {
   return (
     <>
       <span className="transaction__amount">
-        +{formatCentsToEuro(transaction.value!)}
+        {transaction.value! > 0 ? '+' : ''}
+        {formatCentsToEuro(transaction.value!)}
       </span>
       <span className="transaction__title">{transaction.title}</span>
     </>
