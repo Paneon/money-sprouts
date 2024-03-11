@@ -67,7 +67,7 @@ function AccountHistoryView({ transactions }: Props) {
               <td
                 className={clsx({
                   transaction: true,
-                  'transaction--inactive': !earnings[index].applied,
+                  'transaction--inactive': !earnings[index]?.applied,
                 })}
               >
                 {earnings[index]?.value ? (
@@ -78,7 +78,7 @@ function AccountHistoryView({ transactions }: Props) {
                 className={clsx({
                   transaction: true,
                   'transaction--expense': true,
-                  'transaction--inactive': !expenses[index].applied,
+                  'transaction--inactive': !expenses[index]?.applied,
                 })}
               >
                 {expenses[index]?.value ? (
