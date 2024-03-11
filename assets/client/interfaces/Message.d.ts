@@ -4,3 +4,7 @@ export interface Message {
     icon?: string;
     type: MessageType;
 }
+
+export interface ErrorMessage extends Message {
+    type: 'error';
+}

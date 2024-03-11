@@ -1,4 +1,4 @@
-import { Message } from '@/client/interfaces/Message';
+import { ErrorMessage, Message } from '@/client/interfaces/Message';
 
 export function createSuccessMessage(message: string, icon = '✔'): Message {
     return {
@@ -16,7 +16,7 @@ export function createInfoMessage(message: string, icon = 'ℹ'): Message {
     };
 }
 
-export function createErrorMessage(message: string, icon = '⚠'): Message {
+export function createErrorMessage(message: string, icon = '⚠'): ErrorMessage {
     return {
         message,
         icon,
