@@ -18,7 +18,7 @@
     "@symfony/webpack-encore": "^4.6.1",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
-    "axios": "^1.6.7",
+    "axios": "^1.7.4",
     "bootstrap": "^5.2.3",
     "canvas-confetti": "^1.9.2",
     "clsx": "^2.1.0",
