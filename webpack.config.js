@@ -39,6 +39,9 @@ Encore
   .enableVersioning(Encore.isProduction())
 
   // enables and configure @babel/preset-env polyfills
+  // .configureBabel((config) => {
+  //   config.plugins = ['@babel/plugin-proposal-class-properties'];
+  // })
   .configureBabelPresetEnv((config) => {
     config.useBuiltIns = 'usage';
     config.corejs = '3.23';
@@ -49,6 +52,15 @@ Encore
   .enableReactPreset()
   .addAliases({
     '@': path.resolve(__dirname, 'assets'),
+  })
+
+  // Asset modules (new in Webpack 5)
+  .configureImageRule({
+    type: 'asset',
+    maxSize: 4 * 1024, // 4kb
+  })
+  .configureFontRule({
+    type: 'asset',
   });
 
 // uncomment to get integrity="..." attributes on your script & link tags
