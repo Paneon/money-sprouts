@@ -7,12 +7,12 @@ import {
     shareReplay,
     tap,
     throwError,
+    map,
 } from 'rxjs';
 import { Account } from '../types/account';
 import { ApiService } from './api.service';
 import { AccountStorageService } from './account-storage.service';
 import { Loggable } from './loggable';
-import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
@@ -76,35 +76,59 @@ export class AccountService extends Loggable {
         });
     }
 
-    getAccountByName(name: string): void {
-        this.accounts$.subscribe((accounts) => {
-            const account = accounts.find((a: Account) => a.name === name);
-            // currentAccountSubject only emits new value if account is not the same as the current one
-            if (
-                !this.currentAccountSubject.getValue() ||
-                (account &&
-                    account.id !== this.currentAccountSubject.getValue().id)
-            ) {
-                this.currentAccountSubject.next(account);
-            }
-        });
+    getAccountByName(name: string): Observable<Account> {
+        return this.accounts$.pipe(
+            map((accounts) => {
+                const account = accounts.find((a: Account) => a.name === name);
+                if (!account) {
+                    throw new Error(`Account with name ${name} not found`);
+                }
+                // currentAccountSubject only emits new value if account is not the same as the current one
+                if (
+                    !this.currentAccountSubject.getValue() ||
+                    (account &&
+                        account.id !==
+                            this.currentAccountSubject.getValue()?.id)
+                ) {
+                    this.currentAccountSubject.next(account);
+                }
+                return account;
+            })
+        );
     }
 
     setAccount(account: Account) {
         this.storage.saveSelectedAccount(account);
         this.currentAccountSubject.next(account);
 
-        this.setInitialBalance(account.balance || 0);
+        this.setInitialBalance(account.balance as number);
     }
 
-    getAvatarForAccount(account: Account | null): string {
-        return account?.avatar?.url ?? '';
+    getAvatarForAccount(account: Account): string {
+        if (typeof account.id !== 'number') {
+            return 'assets/images/avatars/default-0.png';
+        }
+
+        if (account.avatar?.url) {
+            return account.avatar.url;
+        }
+
+        return this.getDefaultAvatar(account.id as number);
     }
 
-    // Method to get the current balance
-    getCurrentBalance(): number | null {
-        const currentAccount = this.currentAccountSubject.getValue();
-        return currentAccount?.balance || null;
+    private getDefaultAvatar(id: number): string {
+        return `assets/images/avatars/default-${id % 5}.png`;
+    }
+
+    getCurrentBalance(): Observable<number | null> {
+        return this.currentAccountSubject.pipe(
+            map((account) => {
+                if (!account || typeof account.balance !== 'number') {
+                    return null;
+                }
+                return account.balance as number;
+            })
+        );
     }
 
     getCurrentAccountId(): number | null {

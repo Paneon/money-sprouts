@@ -8,14 +8,17 @@ import {
     distinctUntilChanged,
     map,
     Observable,
+    tap,
 } from 'rxjs';
 import { AccountService } from '@/app/services/account.service';
 import { DatePipe } from '@angular/common';
 import { Loggable } from '@/app/services/loggable';
 import { balanceImageMap } from '@/app/components/balance-image-map';
+import { Transaction } from '@/app/types/transaction';
+import { TransactionService } from '@/app/services/transaction.service';
 
 interface CombinedDataOverview {
-    account: Account | null; // Replace 'any' with your Account type
+    account: Account | null;
     nextPayday: Date | null;
     formatedNextPayday: string;
     daysUntilNextPayday: string;
@@ -39,34 +42,35 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         private readonly datePipe: DatePipe,
         private readonly translate: TranslateService,
         private readonly cd: ChangeDetectorRef,
-        private readonly confettiService: ConfettiService
+        private readonly confettiService: ConfettiService,
+        private readonly transactionService: TransactionService
     ) {
         super();
         this.currentLang = this.translate.currentLang;
+        this.account$ = this.accountService.currentAccount$;
     }
 
     ngOnInit() {
         console.log(this.translate.currentLang);
 
-        this.account$ = this.accountService.currentAccount$.pipe(
-            debounceTime(300),
-            distinctUntilChanged((prev, current) => {
-                return prev && current
-                    ? prev.id === current.id
-                    : prev === current;
-            })
-        );
-
-        this.account$.subscribe((account) => {
-            this.accountService.refreshAccount(account.id);
-            this.triggerConfettiIfNeeded(account);
-        });
+        this.account$
+            .pipe(
+                debounceTime(300),
+                distinctUntilChanged((prev, current) => {
+                    return prev && current
+                        ? prev.id === current.id
+                        : prev === current;
+                })
+            )
+            .subscribe((account) => {
+                if (account) {
+                    this.accountService.refreshAccount(account.id);
+                    this.triggerConfettiIfNeeded(account);
+                }
+            });
 
         this.nextPayday$ = this.account$.pipe(
-            map((account) => {
-                this.log('next payday of this account: ', account?.nextPayday);
-                return account ? account.nextPayday : null;
-            })
+            map((account) => account?.nextPayday ?? null)
         );
 
         this.combinedDataOverview$ = combineLatest([
@@ -77,9 +81,12 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                 return {
                     account,
                     nextPayday,
-                    formatedNextPayday: this.getFormatedNextPayday(nextPayday),
-                    daysUntilNextPayday:
-                        this.getDaysUntilNextPayday(nextPayday),
+                    formatedNextPayday: nextPayday
+                        ? this.getFormatedNextPayday(nextPayday)
+                        : 'OVERVIEW.PAYDAY_WEEKDAY_UNKOWN',
+                    daysUntilNextPayday: nextPayday
+                        ? this.getDaysUntilNextPayday(nextPayday)
+                        : 'OVERVIEW.PAYDAY_COUNTER_UNKOWN',
                 };
             })
         );
@@ -131,42 +138,41 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         if (!nextPayday) {
             return 'OVERVIEW.PAYDAY_COUNTER_UNKOWN';
         }
-        const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
-        return `${dayDifference}`;
+        try {
+            const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
+            return `${dayDifference}`;
+        } catch (error) {
+            this.log('Error calculating days until next payday:', error);
+            return 'OVERVIEW.PAYDAY_COUNTER_UNKOWN';
+        }
     }
 
     private calculateDaysUntilNextPayday(nextPayday: Date): number {
         if (!nextPayday) {
-            this.log('nextPayday is: ', nextPayday);
-            return 0;
+            throw new Error('No next payday date provided');
         }
 
-        const nowString = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-        const nextPaydayString = this.datePipe.transform(
-            nextPayday,
-            'yyyy-MM-dd'
-        );
+        const now = new Date();
+        const nextPaydayDate = new Date(nextPayday);
 
-        // Convert the strings back to Date objects
-        const now = new Date(nowString);
-        const nextPaydayDate = new Date(nextPaydayString);
+        // Reset time part to compare only dates
+        now.setHours(0, 0, 0, 0);
+        nextPaydayDate.setHours(0, 0, 0, 0);
 
         const diffMilliseconds = nextPaydayDate.getTime() - now.getTime();
-
-        const diffDays = Math.round(diffMilliseconds / (24 * 60 * 60 * 1000));
-
-        return diffDays;
+        return Math.round(diffMilliseconds / (24 * 60 * 60 * 1000));
     }
 
     private triggerConfettiIfNeeded(account: Account | null): void {
-        if (!account) return;
+        if (!account || account.balance === undefined) return;
+        const balance = account.balance;
 
         balanceImageMap.forEach((item) => {
             if (item.threshold === Infinity) return;
 
             const confettiTriggeredKey = `confettiTriggeredFor${item.threshold}`;
 
-            if (account.balance >= item.threshold) {
+            if (balance >= item.threshold) {
                 const hasConfettiBeenTriggered =
                     localStorage.getItem(confettiTriggeredKey);
 

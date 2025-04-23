@@ -32,5 +32,16 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/test.ts",
+    "**/test-setup.ts",
+    "**/setup-jest.ts",
+    "**/jest.config.ts",
+    "**/jest.config.js",
+    "**/cypress/**/*",
+    "node_modules"
+  ]
 }

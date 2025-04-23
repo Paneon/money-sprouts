@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'money-sprouts-icon-with-text',
     templateUrl: './icon-with-text.component.html',
     styleUrls: ['./icon-with-text.component.scss'],
+    standalone: true,
+    imports: [CommonModule],
 })
 export class IconWithTextComponent {
     @Input() avatarFile: string = '';

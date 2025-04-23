@@ -116,7 +116,7 @@ export class PlanEarningsComponent {
                 .get(this.selectedChore.name)
                 .subscribe((translatedTitle) => {
                     const title = translatedTitle;
-                    const amount = this.selectedChore.sum * 100;
+                    const amount = this.selectedChore!.sum * 100;
 
                     console.log(
                         'selected name & sum:',
@@ -138,8 +138,6 @@ export class PlanEarningsComponent {
     }
 
     private resetChoreSelection() {
-        this.selectedChore.selected = false;
-        this.selectedChore.calculated = false;
         this.selectedChore = null;
     }
 

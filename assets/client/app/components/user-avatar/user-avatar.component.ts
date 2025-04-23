@@ -8,11 +8,14 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'money-sprouts-user-avatar',
     templateUrl: './user-avatar.component.html',
     styleUrls: ['./user-avatar.component.scss'],
+    standalone: true,
+    imports: [CommonModule],
 })
 export class UserAvatarComponent implements OnInit, OnDestroy {
     @Input() avatarFile: string = '';
@@ -29,7 +32,10 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
         this.urlSegment = this.router.url.split('/')[3];
         this.router.events
             .pipe(
-                filter((event) => event instanceof NavigationEnd),
+                filter(
+                    (event): event is NavigationEnd =>
+                        event instanceof NavigationEnd
+                ),
                 takeUntil(this.destroy$)
             )
             .subscribe((event: NavigationEnd) => {

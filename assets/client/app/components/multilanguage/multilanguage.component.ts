@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-multilanguage',
     templateUrl: './multilanguage.component.html',
     styleUrls: ['./multilanguage.component.scss'],
+    standalone: true,
+    imports: [CommonModule, TranslateModule],
 })
 export class MultilanguageComponent implements OnInit {
     langs = ['en', 'de'];
