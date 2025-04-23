@@ -25,12 +25,8 @@ jobs:
         run: |
           npm install
 
-      - uses: mansagroup/nrwl-nx-action@v3
-        with:
-          targets: lint,build #,test
-
       - name: Webpack Encore
-        run: npm run build:encore
+        run: npm run build
 
   server:
     name: Symfony Build
