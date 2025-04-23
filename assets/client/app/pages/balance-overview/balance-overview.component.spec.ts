@@ -22,33 +22,24 @@ describe('BalanceOverviewComponent', () => {
     let accountService: AccountService;
     let translateService: TranslateService;
     let mockAccountStorageService: Partial<AccountStorageService>;
-    let mockAccountService: any;
 
     beforeEach(async () => {
-        mockAccountService = {
-            currentAccount$: of({
+        const getCurrentAccountMock = jest.fn().mockReturnValue({
+            id: '1',
+            nextPayday: new Date(),
+            user: 'jasmine',
+            name: 'jasmine',
+            avatar: {
                 id: 1,
-                name: 'Test Account',
-                balance: 100,
-                avatar: 'test.png',
-                nextPayday: new Date(),
-            }),
-        };
+                url: 'www.test.de',
+            },
+            balance: 100,
+            allowance: 2,
+            firstPayday: new Date(),
+        });
 
         mockAccountStorageService = {
-            getCurrentAccount: jest.fn().mockReturnValue({
-                id: '1',
-                nextPayday: new Date(),
-                user: 'jasmine',
-                name: 'jasmine',
-                avatar: {
-                    id: 1,
-                    url: 'www.test.de',
-                },
-                balance: 100,
-                allowance: 2,
-                firstPayday: new Date(),
-            }),
+            getCurrentAccount: getCurrentAccountMock,
         };
 
         await TestBed.configureTestingModule({
@@ -63,7 +54,7 @@ describe('BalanceOverviewComponent', () => {
                     provide: AccountStorageService,
                     useValue: mockAccountStorageService,
                 },
-                { provide: AccountService, useValue: mockAccountService },
+                AccountService,
                 TranslateService,
                 DatePipe,
             ],
@@ -141,5 +132,4 @@ describe('BalanceOverviewComponent', () => {
             './assets/images/3d-cat-in-box.png'
         );
     });
-
 });

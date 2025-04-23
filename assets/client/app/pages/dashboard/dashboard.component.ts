@@ -4,7 +4,7 @@ import { Account } from '@/app/types/account';
 import { AccountService } from '@/app/services/account.service';
 import { RouterService } from '@/app/services/router.service';
 import { RoutePath } from '@/app/enum/routepath';
-import { filter } from 'rxjs/operators';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
@@ -22,10 +22,10 @@ interface Section {
     imports: [CommonModule, TranslateModule, PageHeaderComponent],
 })
 export class DashboardComponent implements OnInit {
-    name: string = '';
+    name: string;
     account$: Observable<Account>;
 
-    urlSegments: string = '';
+    urlSegments: string;
 
     sections: Section[] = [
         {
@@ -47,12 +47,7 @@ export class DashboardComponent implements OnInit {
     constructor(
         private readonly router: RouterService,
         private readonly accountService: AccountService
-    ) {
-        this.account$ = this.accountService.currentAccount$.pipe(
-            filter((account): account is Account => account !== null),
-            debounceTime(300)
-        );
-    }
+    ) {}
 
     ngOnInit() {
         this.sections;
@@ -61,13 +56,23 @@ export class DashboardComponent implements OnInit {
             this.name = urlSegments[2];
         });
 
-        this.account$.subscribe((account) => {
-            this.name = account.name || '';
-        });
+        this.account$ = this.accountService.currentAccount$.pipe(
+            filter((account): account is Account => account !== null),
+            debounceTime(300),
+            distinctUntilChanged((prev, curr) => {
+                return prev.id === curr.id;
+            })
+        );
 
         this.account$.subscribe((account) => {
             this.accountService.refreshAccount(account.id);
         });
+
+        this.accountService.currentAccount$.subscribe(
+            (account: Account | null) => {
+                this.name = account?.name || '';
+            }
+        );
     }
 
     goToSection(section: string) {

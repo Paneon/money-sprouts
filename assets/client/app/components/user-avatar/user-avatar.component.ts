@@ -49,7 +49,7 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
         }
     }
 
-    getAvatarPath(): string {
+    getAvatarFile() {
         return this.avatarFile;
     }
 

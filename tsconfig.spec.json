@@ -10,7 +10,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "module": "commonjs",
-    "target": "es2015"
+    "target": "es2015",
+    "paths": {
+      "@/*": ["assets/client/*"]
+    }
   },
   "files": [
     "assets/client/test.ts"

@@ -11,24 +11,8 @@ import { TranslateModule } from '@ngx-translate/core';
 describe('PlanEarningsComponent', () => {
     let component: PlanEarningsComponent;
     let fixture: ComponentFixture<PlanEarningsComponent>;
-    let mockAccountService: any;
-    let mockTransactionService: any;
 
     beforeEach(async () => {
-        mockAccountService = {
-            currentAccount$: of({
-                id: 1,
-                name: 'Test Account',
-                balance: 100,
-                avatar: 'test.png',
-            }),
-            getCurrentAccountId: jest.fn().mockReturnValue(1),
-        };
-
-        mockTransactionService = {
-            addTransaction: jest.fn(),
-        };
-
         await TestBed.configureTestingModule({
             imports: [
                 TranslateModule.forRoot(),
@@ -36,13 +20,7 @@ describe('PlanEarningsComponent', () => {
                 RouterTestingModule,
             ],
             declarations: [PlanEarningsComponent],
-            providers: [
-                { provide: AccountService, useValue: mockAccountService },
-                {
-                    provide: TransactionService,
-                    useValue: mockTransactionService,
-                },
-            ],
+            providers: [AccountService, TransactionService],
         }).compileComponents();
 
         fixture = TestBed.createComponent(PlanEarningsComponent);
@@ -96,10 +74,10 @@ describe('PlanEarningsComponent', () => {
 
                 if (testCase.expectedSelectedChoreId) {
                     expect(component.selectedChore).not.toBeNull();
-                    expect(component.selectedChore.id).toBe(
+                    expect(component.selectedChore!.id).toBe(
                         testCase.expectedSelectedChoreId
                     );
-                    expect(component.selectedChore.calculated).toBe(
+                    expect(component.selectedChore!.calculated).toBe(
                         testCase.expectedCalculated
                     );
                 } else {
@@ -173,7 +151,7 @@ describe('PlanEarningsComponent', () => {
                     testCase.selectedChoreIndex !== null &&
                     testCase.makeCalculated
                 ) {
-                    component.selectedChore.calculated = true;
+                    component.selectedChore!.calculated = true;
                 }
 
                 component.calculate();
@@ -186,7 +164,7 @@ describe('PlanEarningsComponent', () => {
 
                 if (testCase.expectedEmit) {
                     expect(calculateAmountSpy).toHaveBeenCalledWith(
-                        component.selectedChore.sum * 100
+                        component.selectedChore!.sum * 100
                     );
                 } else {
                     expect(calculateAmountSpy).not.toHaveBeenCalled();
