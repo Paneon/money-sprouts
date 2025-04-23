@@ -58,6 +58,10 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     public isExpanded = false;
     private destroy$ = new Subject<void>();
 
+    trackByTransaction(index: number, transaction: Transaction): number {
+        return transaction.id;
+    }
+
     constructor(
         private readonly accountService: AccountService,
         private readonly transactionService: TransactionService

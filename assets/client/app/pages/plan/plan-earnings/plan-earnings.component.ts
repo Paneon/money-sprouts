@@ -144,4 +144,8 @@ export class PlanEarningsComponent {
     onSubmit() {
         console.log('Form submitted!');
     }
+
+    trackByChore(index: number, chore: Chore): string {
+        return chore.name;
+    }
 }

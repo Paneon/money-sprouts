@@ -34,6 +34,10 @@ export class AccountSelectionComponent implements OnInit {
         private readonly accountService: AccountService
     ) {}
 
+    trackByAccount(index: number, account: Account): number {
+        return account.id;
+    }
+
     ngOnInit(): void {
         this.accounts$ = of(this.route.snapshot.data['accounts']);
     }

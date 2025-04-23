@@ -2,7 +2,7 @@
 <div id="account-selection" class="custom-container no-transparency">
     <div class="button-container">
         <money-sprouts-icon-with-text
-            *ngFor="let account of accounts$ | async; index as i"
+            *ngFor="let account of accounts$ | async; trackBy: trackByAccount"
             [avatarFile]="account.avatar.url | formatUrl"
             [name]="account.name"
             (accountSelected)="proceed($event)"

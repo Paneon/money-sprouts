@@ -1,5 +1,5 @@
 <form class="form-container" (ngSubmit)="onSubmit()" #earnForm="ngForm">
-    <div *ngFor="let chore of chores" class="chore-item">
+    <div *ngFor="let chore of chores; trackBy: trackByChore" class="chore-item">
         <input
             type="checkbox"
             class="checkbox"

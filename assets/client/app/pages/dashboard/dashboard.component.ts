@@ -42,6 +42,10 @@ export class DashboardComponent implements OnInit {
         },
     ];
 
+    trackBySection(index: number, section: Section): string {
+        return section.name;
+    }
+
     private destroy$ = new Subject<void>();
 
     constructor(
