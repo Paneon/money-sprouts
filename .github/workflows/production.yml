@@ -28,6 +28,9 @@ jobs:
           targets: build
           all: true
 
+      - name: 🛠 Build Webpack Encore
+        run: npm run build:encore
+
       - name: Remove not required files
         run: |
           rm -rf node_modules

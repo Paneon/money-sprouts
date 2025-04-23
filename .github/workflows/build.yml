@@ -1,4 +1,4 @@
-name: Build 🚀
+name: Build
 
 on:
   push:
@@ -28,6 +28,9 @@ jobs:
       - uses: mansagroup/nrwl-nx-action@v3
         with:
           targets: lint,build #,test
+
+      - name: Webpack Encore
+        run: npm run build:encore
 
   server:
     name: Symfony Build

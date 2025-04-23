@@ -6,8 +6,11 @@
     "start-all": "nx run-many --target=serve --projects=client,server",
     "start-client": "nx serve client",
     "start-server": "nx serve server",
-    "build:dev": "nx run client:build:development --watch",
+    "build:dev": "nx run client:build:development",
+    "dev": "encore dev",
+    "dev:watch": "encore dev --watch",
     "build": "nx run client:build:production",
+    "build:encore": "encore prod",
     "cypress:open": "cypress open",
     "jest:test": "nx test client",
     "generate:interfaces": "npm init @api-platform/client http://localhost:8101/api/ libs/shared/domain/src/ -- --generator typescript"
@@ -29,12 +32,14 @@
     "@ngx-translate/http-loader": "^8.0.0",
     "@nrwl/angular": "^16.5.5",
     "@popperjs/core": "^2.11.6",
+    "@symfony/webpack-encore": "^4.6.1",
     "axios": "^1.6.0",
     "bootstrap": "^5.2.3",
     "canvas-confetti": "^1.9.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
+    "webpack-notifier": "^1.15.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
