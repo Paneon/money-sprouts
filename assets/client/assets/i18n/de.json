@@ -34,8 +34,8 @@
   "OVERVIEW": {
     "ILLUSTRATION_SOURCE": "Illustration von Icons 8 von",
     "PAYDAY_WEEKDAY_LABEL": "Nächstes Taschengeld am:",
-    "PAYDAY_WEEKDAY_UNKOWN": "Frag Mama oder Papa!",
-    "PAYDAY_COUNTER_UNKOWN": "Frag Mama oder Papa!",
+    "PAYDAY_WEEKDAY_UNKNOWN": "Frag Mama oder Papa!",
+    "PAYDAY_COUNTER_UNKNOWN": "Frag Mama oder Papa!",
     "PAYDAY_COUNTER_LABEL": "Tage bis zur Zahlung:",
     "CONFETTI_TEXT": "Hurra, Du hast ein neues Level erreicht!! Neue Schätze wurden hinzugefügt.",
     "BUTTON_TEXT_LEVEL": "Gehe Zu Deinen Schätzen"
@@ -60,6 +60,7 @@
       "ERROR_MESSAGE": {
         "PRODUCT_INPUT": "Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche oder Punkte erlaubt.",
         "AMOUNT_INPUT": "Es sind nur ganze Zahlen oder Zahlen mit Kommas als Dezimaltrennung erlaubt.",
+        "EXPENSE_INPUT_INVALID": "Die Angabe für {{amount}} von {{title}} scheint ungültig zu sein. Bitte versuche es erneut.",
         "INPUTS_INVALID": {
           "PART_1": "Die Angabe für",
           "PART_2": "von",

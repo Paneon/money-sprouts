@@ -1,11 +1,31 @@
-@import '../../app/styles/abstract';
+@import "../../styles/abstract/variables";
 
 .pseudo-element {
-  display: none;
+  visibility: hidden;
+  width: 50px;
+  height: 50px;
 
   @media (min-width: 530px) {
-    display: block;
+    visibility: visible;
     flex: 1;
+  }
+
+  @media (max-width: 450px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.page-title {
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+
+  @media (max-width: 410px) {
+    font-size: 1.2rem;
+    padding-right: 0.8rem !important;
+    padding-left: 0.8rem !important;
   }
 }
 

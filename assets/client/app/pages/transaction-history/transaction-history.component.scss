@@ -1,4 +1,5 @@
-@import '../../styles/abstract';
+@import '../../../styles/abstract/variables';
+@import '../../../styles/abstract/mixins';
 
 .tablehead-image-wrapper {
   text-align: center;
@@ -89,36 +90,32 @@
     td {
       padding: 10px;
       vertical-align: top;
+      white-space: nowrap;
+    }
+  }
+}
 
-      .transaction-title {
-        font-size: 1.2rem;
-      }
+.transaction {
+  &__amount {
+    font-weight: bold;
+    margin-right: 5px;
+    color: $dark-green;
+  }
 
-      .income-amount,
-      .expense-amount {
-        font-weight: bold;
-        margin-right: 5px;
-      }
+  .transaction__title {
+    font-size: 1.2rem;
+  }
 
-      .income-amount {
-        color: $dark-green;
-      }
+  &.transaction--expense {
+    .transaction__amount {
+      color: $dark-red;
+    }
+  }
 
-      .expense-amount {
-        color: $dark-red;
-      }
-
-      &.not-applied {
-        .income-amount,
-        .expense-amount {
-          color: $grey;
-        }
-      }
-
-      .income-amount + .transaction-title,
-      .expense-amount + .transaction-title {
-        white-space: nowrap;
-      }
+  &.transaction--inactive {
+    .transaction__amount,
+    .transaction__title {
+      color: $grey;
     }
   }
 }
