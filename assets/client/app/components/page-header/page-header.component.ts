@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../../app/services/account.service';
 import { distinctUntilChanged, Observable, Subject } from 'rxjs';
-import { Account } from '@money-sprouts/shared/domain';
+import { Account } from '../../app/types/account';
 import { TranslateService } from '@ngx-translate/core';
 import { RoutePath } from '../../app/enum/routepath';
 import { RouterService } from '../../app/services/router.service';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -12,13 +14,13 @@ import { RouterService } from '../../app/services/router.service';
     styleUrls: ['./page-header.component.scss'],
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {
-    childClass: string;
-    name: string;
+    childClass: string = '';
+    name: string = '';
     account$: Observable<Account | null>;
-    urlSegment: string;
+    urlSegment: string = '';
     logout = 'Logout';
-    avatar: string;
-    id: number;
+    avatar: string = '';
+    id: number = 0;
     isLoading = false;
 
     private destroy$ = new Subject<void>();
@@ -26,24 +28,29 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     constructor(
         private readonly router: RouterService,
         public accountService: AccountService,
-        public translate: TranslateService
+        public translate: TranslateService,
+        private router: Router
     ) {
         this.accountService.loading.subscribe((loading) => {
             this.isLoading = loading;
         });
+        this.account$ = this.accountService.currentAccount$;
     }
 
     ngOnInit() {
-        const urlSegments = this.router.getURL().split('/');
-        this.urlSegment = urlSegments[urlSegments.length - 1];
-        this.name = urlSegments[2];
+        this.router.events
+            .pipe(filter((event) => event instanceof NavigationEnd))
+            .subscribe(() => {
+                const segments = this.router.url.split('/');
+                this.urlSegment = segments[segments.length - 1];
+            });
 
-        this.account$ = this.accountService.currentAccount$.pipe(
-            distinctUntilChanged()
-        );
-
-        this.accountService.currentAccount$.subscribe((account: Account) => {
-            this.name = account.name;
+        this.account$.subscribe((account) => {
+            if (account) {
+                this.name = account.name;
+                this.avatar = account.avatar;
+                this.id = account.id;
+            }
         });
     }
 

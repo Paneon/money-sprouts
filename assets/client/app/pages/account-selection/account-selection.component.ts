@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { Account } from '@money-sprouts/shared/domain';
-import { AccountService } from '../../services/account.service';
-import { RouterService } from '../../services/router.service';
-import { RoutePath } from '../../enum/routepath';
+import { Account } from '@/app/types/account';
+import { AccountService } from '@/app/services/account.service';
+import { RouterService } from '@/app/services/router.service';
+import { RoutePath } from '@/app/enum/routepath';
 
 @Component({
     selector: 'money-sprouts-account-selection',
@@ -12,7 +12,7 @@ import { RoutePath } from '../../enum/routepath';
     styleUrls: ['./account-selection.component.scss'],
 })
 export class AccountSelectionComponent implements OnInit {
-    accounts$: Observable<Account[]>;
+    accounts$: Observable<Account[]> = of([]);
 
     constructor(
         private readonly router: RouterService,

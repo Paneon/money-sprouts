@@ -1,20 +1,50 @@
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AccountService } from '@/app/services/account.service';
+import { TransactionService } from '@/app/services/transaction.service';
+import { of } from 'rxjs';
 
 import { PlanEarningsComponent } from './plan-earnings.component';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from '../../../../shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
 
 describe('PlanEarningsComponent', () => {
     let component: PlanEarningsComponent;
     let fixture: ComponentFixture<PlanEarningsComponent>;
+    let mockAccountService: any;
+    let mockTransactionService: any;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [SharedModule, TranslateModule.forRoot(), FormsModule],
+    beforeEach(async () => {
+        mockAccountService = {
+            currentAccount$: of({
+                id: 1,
+                name: 'Test Account',
+                balance: 100,
+                avatar: 'test.png',
+            }),
+            getCurrentAccountId: jest.fn().mockReturnValue(1),
+        };
+
+        mockTransactionService = {
+            addTransaction: jest.fn(),
+        };
+
+        await TestBed.configureTestingModule({
+            imports: [
+                TranslateModule.forRoot(),
+                FormsModule,
+                RouterTestingModule,
+            ],
             declarations: [PlanEarningsComponent],
-        });
+            providers: [
+                { provide: AccountService, useValue: mockAccountService },
+                {
+                    provide: TransactionService,
+                    useValue: mockTransactionService,
+                },
+            ],
+        }).compileComponents();
+
         fixture = TestBed.createComponent(PlanEarningsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
@@ -220,6 +250,51 @@ describe('PlanEarningsComponent', () => {
                     expect(applyChangesSpy).not.toHaveBeenCalled();
                 }
             });
+        });
+    });
+
+    describe('selectChore', () => {
+        it('should set the selected chore', () => {
+            const testChore = {
+                id: 1,
+                name: 'Test Chore',
+                sum: 10,
+                calculated: false,
+            };
+
+            component.selectChore(testChore);
+            expect(component.selectedChore?.id).toBe(testChore.id);
+            expect(component.selectedChore?.name).toBe(testChore.name);
+            expect(component.selectedChore?.sum).toBe(testChore.sum);
+            expect(component.selectedChore?.calculated).toBe(
+                testChore.calculated
+            );
+        });
+    });
+
+    describe('addTransaction', () => {
+        it('should add a transaction when a chore is selected', () => {
+            const testChore = {
+                id: 1,
+                name: 'Test Chore',
+                sum: 10,
+                calculated: false,
+            };
+
+            component.selectChore(testChore);
+
+            if (component.selectedChore) {
+                component.selectedChore.calculated = true;
+                component.addTransaction();
+
+                expect(
+                    mockTransactionService.addTransaction
+                ).toHaveBeenCalledWith(
+                    1,
+                    component.selectedChore.sum * 100,
+                    'Chore completed: Test Chore'
+                );
+            }
         });
     });
 });

@@ -1,13 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
-import {
-    Account,
-    PagedCollection,
-    Transaction,
-} from '@money-sprouts/shared/domain';
 import { environment } from '../../environments/environments';
 import { Loggable } from './loggable';
+import { Account } from '@/app/types/account';
+import { Transaction } from '@/app/types/transaction';
+import { PagedCollection } from '@/app/types/Collection';
 
 @Injectable({
     providedIn: 'root',
@@ -49,7 +47,7 @@ export class ApiService extends Loggable {
             .get<PagedCollection<Transaction>>(`${this.baseUrl}/transactions/`)
             .pipe(
                 map((response) => {
-                    this.transactionCache = response['hydra:member'];
+                    this.transactionCache = response['hydra:member']!;
                     return this.transactionCache;
                 })
             );

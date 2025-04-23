@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
-import { Account } from '../../types/account';
-import { AccountService } from '../../services/account.service';
-import { RouterService } from '../../services/router.service';
-import { RoutePath } from '../../enum/routepath';
+import { Account } from '@/app/types/account';
+import { AccountService } from '@/app/services/account.service';
+import { RouterService } from '@/app/services/router.service';
+import { RoutePath } from '@/app/enum/routepath';
+import { filter } from 'rxjs/operators';
 
 interface Section {
     name: string;
@@ -16,10 +17,10 @@ interface Section {
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-    name: string;
+    name: string = '';
     account$: Observable<Account>;
 
-    urlSegments: string;
+    urlSegments: string = '';
 
     sections: Section[] = [
         {
@@ -41,7 +42,12 @@ export class DashboardComponent implements OnInit {
     constructor(
         private readonly router: RouterService,
         private readonly accountService: AccountService
-    ) {}
+    ) {
+        this.account$ = this.accountService.currentAccount$.pipe(
+            filter((account): account is Account => account !== null),
+            debounceTime(300)
+        );
+    }
 
     ngOnInit() {
         this.sections;
@@ -50,19 +56,12 @@ export class DashboardComponent implements OnInit {
             this.name = urlSegments[2];
         });
 
-        this.account$ = this.accountService.currentAccount$.pipe(
-            debounceTime(300), // waits 300ms between emisssions
-            distinctUntilChanged((prev, curr) => {
-                return prev && curr ? prev.id === curr.id : prev === curr;
-            })
-        );
+        this.account$.subscribe((account) => {
+            this.name = account.name || '';
+        });
 
         this.account$.subscribe((account) => {
             this.accountService.refreshAccount(account.id);
-        });
-
-        this.accountService.currentAccount$.subscribe((account: Account) => {
-            this.name = account.name;
         });
     }
 

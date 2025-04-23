@@ -15,7 +15,9 @@ import { filter, Subject, takeUntil } from 'rxjs';
     styleUrls: ['./user-avatar.component.scss'],
 })
 export class UserAvatarComponent implements OnInit, OnDestroy {
-    @Input() avatarFile = '';
+    @Input() avatarFile: string = '';
+    @Input() name: string = '';
+    @Input() id: number = 0;
     @Output() classChange = new EventEmitter<string>();
     urlSegment = '';
     smallPaths: string[] = ['dashboard', 'overview', 'history', 'plan'];
@@ -43,8 +45,10 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
         }
     }
 
-    getAvatarFile() {
-        return this.avatarFile;
+    getAvatarPath(): string {
+        return this.avatarFile
+            ? `/assets/avatars/${this.avatarFile}`
+            : '/assets/avatars/default.png';
     }
 
     ngOnDestroy() {

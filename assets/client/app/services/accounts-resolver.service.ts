@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Account } from '@money-sprouts/shared/domain';
+import { Account } from '@/app/types/account';
 import { AccountService } from './account.service';
 
 @Injectable({ providedIn: 'root' })

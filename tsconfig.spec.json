@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "jest",
+      "node"
+    ],
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "target": "es2015"
+  },
+  "files": [
+    "assets/client/test.ts"
+  ],
+  "include": [
+    "assets/client/**/*.spec.ts",
+    "assets/client/**/*.d.ts"
+  ]
+}

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Account } from '@money-sprouts/shared/domain';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { AccountService } from '../../services/account.service';
-import { TransactionService } from '../../services/transaction.service';
+import { filter, map } from 'rxjs/operators';
+import { Account } from '@/app/types/account';
+import { AccountService } from '@/app/services/account.service';
+import { TransactionService } from '@/app/services/transaction.service';
 
 @Component({
     selector: 'money-sprouts-plan',
@@ -11,24 +11,40 @@ import { TransactionService } from '../../services/transaction.service';
     styleUrls: ['./plan.component.scss'],
 })
 export class PlanComponent implements OnInit {
-    account$: Observable<Account | null>;
+    account$: Observable<Account>;
+    name: string = '';
     activeTab: 'spend' | 'earn' = 'spend';
+    currentBalance: number = 0;
     originalBalance: number | null = null;
     temporaryBalance: number | null = null;
 
     constructor(
         private readonly accountService: AccountService,
-        private readonly transactionService: TransactionService,
-        private readonly http: HttpClient
-    ) {}
+        private readonly transactionService: TransactionService
+    ) {
+        this.account$ = this.accountService.currentAccount$.pipe(
+            filter((account): account is Account => account !== null),
+            map((account) => ({
+                ...account,
+                balance: account.balance || 0,
+            }))
+        );
+    }
 
     ngOnInit() {
-        this.account$ = this.accountService.currentAccount$;
-        this.originalBalance = this.accountService.getCurrentBalance();
+        this.account$.subscribe((account) => {
+            this.name = account.name || '';
+            this.currentBalance = account.balance || 0;
+            if (this.originalBalance === null) {
+                this.originalBalance = this.currentBalance;
+            }
+        });
     }
 
     get balance() {
-        return this.temporaryBalance ?? this.originalBalance;
+        return (
+            this.temporaryBalance ?? this.originalBalance ?? this.currentBalance
+        );
     }
 
     switchTab(tab: 'spend' | 'earn'): void {
@@ -37,11 +53,15 @@ export class PlanComponent implements OnInit {
     }
 
     onCalculateDeductionOfAmount(amount: number) {
-        this.temporaryBalance = this.originalBalance - amount;
+        if (this.originalBalance !== null) {
+            this.temporaryBalance = this.originalBalance - amount;
+        }
     }
 
     onCalculateAdditionOfAmount(amount: number) {
-        this.temporaryBalance = this.originalBalance + amount;
+        if (this.originalBalance !== null) {
+            this.temporaryBalance = this.originalBalance + amount;
+        }
     }
 
     onResetBalance(): void {
@@ -49,10 +69,9 @@ export class PlanComponent implements OnInit {
     }
 
     onApplyChanges(title: string, value: number) {
-        this.transactionService.addTransaction(
-            title,
-            value,
-            this.accountService.getCurrentAccountId()
-        );
+        const accountId = this.accountService.getCurrentAccountId();
+        if (accountId !== null) {
+            this.transactionService.addTransaction(title, value, accountId);
+        }
     }
 }

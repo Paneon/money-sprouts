@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Transaction } from '@money-sprouts/shared/domain';
+import { Transaction } from '@/app/types/transaction';
 import {
     catchError,
     Observable,
@@ -10,7 +10,8 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { ApiService } from './api.service';
+import { ApiService } from '@/app/services/api.service';
+import { Loggable } from '@/app/services/loggable';
 
 @Injectable({
     providedIn: 'root',

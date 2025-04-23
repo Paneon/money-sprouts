@@ -8,10 +8,11 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { Account } from '@money-sprouts/shared/domain';
+import { Account } from '../types/account';
 import { ApiService } from './api.service';
 import { AccountStorageService } from './account-storage.service';
 import { Loggable } from './loggable';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
@@ -93,7 +94,7 @@ export class AccountService extends Loggable {
         this.storage.saveSelectedAccount(account);
         this.currentAccountSubject.next(account);
 
-        this.setInitialBalance(account.balance);
+        this.setInitialBalance(account.balance || 0);
     }
 
     getAvatarForAccount(account: Account | null): string {
@@ -108,7 +109,7 @@ export class AccountService extends Loggable {
 
     getCurrentAccountId(): number | null {
         const currentAccount = this.currentAccountSubject.getValue();
-        return currentAccount?.id;
+        return currentAccount?.id ?? null;
     }
 
     logoutOrDeselectAccount() {

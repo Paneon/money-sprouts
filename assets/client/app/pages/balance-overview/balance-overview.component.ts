@@ -1,7 +1,7 @@
-import { ConfettiService } from './../../services/confetti.service';
+import { ConfettiService } from '@/app/services/confetti.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Account } from '../../types/account';
+import { Account } from '@/app/types/account';
 import {
     combineLatest,
     debounceTime,
@@ -9,10 +9,10 @@ import {
     map,
     Observable,
 } from 'rxjs';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from '@/app/services/account.service';
 import { DatePipe } from '@angular/common';
-import { Loggable } from '../../services/loggable';
-import { balanceImageMap } from '../../../shared/balance-image-map';
+import { Loggable } from '@/app/services/loggable';
+import { balanceImageMap } from '@/app/components/balance-image-map';
 
 interface CombinedDataOverview {
     account: Account | null; // Replace 'any' with your Account type

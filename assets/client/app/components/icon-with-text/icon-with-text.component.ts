@@ -6,12 +6,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     styleUrls: ['./icon-with-text.component.scss'],
 })
 export class IconWithTextComponent {
-    @Input() avatarFile: string;
-    @Input() name: string;
+    @Input() avatarFile: string = '';
+    @Input() name: string = '';
     @Output() accountSelected: EventEmitter<string> =
         new EventEmitter<string>();
 
     onSelectAccount(): void {
         this.accountSelected.emit(this.name);
+    }
+
+    getAvatarPath(): string {
+        return this.avatarFile
+            ? `/assets/avatars/${this.avatarFile}`
+            : '/assets/avatars/default.png';
     }
 }

@@ -8,6 +8,8 @@ import { AccountService } from '../../services/account.service';
 import { AccountStorageService } from '../../services/account-storage.service';
 import { ConfettiService } from '../../services/confetti.service';
 import { of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
+
 @Component({
     selector: 'money-sprouts-page-header',
     template: '<div></div>',
@@ -20,35 +22,48 @@ describe('BalanceOverviewComponent', () => {
     let accountService: AccountService;
     let translateService: TranslateService;
     let mockAccountStorageService: Partial<AccountStorageService>;
+    let mockAccountService: any;
 
     beforeEach(async () => {
-        const getCurrentAccountMock = jest.fn().mockReturnValue({
-            id: '1',
-            nextPayday: new Date(),
-            user: 'jasmine',
-            name: 'jasmine',
-            avatar: {
+        mockAccountService = {
+            currentAccount$: of({
                 id: 1,
-                url: 'www.test.de',
-            },
-            balance: 100,
-            allowance: 2,
-            firstPayday: new Date(),
-        });
+                name: 'Test Account',
+                balance: 100,
+                avatar: 'test.png',
+                nextPayday: new Date(),
+            }),
+        };
 
         mockAccountStorageService = {
-            getCurrentAccount: getCurrentAccountMock,
+            getCurrentAccount: jest.fn().mockReturnValue({
+                id: '1',
+                nextPayday: new Date(),
+                user: 'jasmine',
+                name: 'jasmine',
+                avatar: {
+                    id: 1,
+                    url: 'www.test.de',
+                },
+                balance: 100,
+                allowance: 2,
+                firstPayday: new Date(),
+            }),
         };
 
         await TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, TranslateModule.forRoot()],
+            imports: [
+                HttpClientTestingModule,
+                TranslateModule.forRoot(),
+                RouterTestingModule,
+            ],
             declarations: [BalanceOverviewComponent, MockPageHeaderComponent],
             providers: [
                 {
                     provide: AccountStorageService,
                     useValue: mockAccountStorageService,
                 },
-                AccountService,
+                { provide: AccountService, useValue: mockAccountService },
                 TranslateService,
                 DatePipe,
             ],
@@ -111,6 +126,7 @@ describe('BalanceOverviewComponent', () => {
         const daysUntilNextPayday = component.getDaysUntilNextPayday(null);
         expect(daysUntilNextPayday).toBe('OVERVIEW.PAYDAY_COUNTER_UNKOWN');
     });
+
     it('should return correct image path based on balance', () => {
         expect(component.getFunnyImage(undefined)).toBe(
             './assets/images/3d-dog-and-boy-jumping.png'
@@ -124,5 +140,38 @@ describe('BalanceOverviewComponent', () => {
         expect(component.getFunnyImage(250)).toBe(
             './assets/images/3d-cat-in-box.png'
         );
+    });
+
+    describe('getFormatedNextPayday', () => {
+        it('should handle null date', () => {
+            const formattedNextPayday =
+                component.getFormatedNextPayday(undefined);
+            expect(formattedNextPayday).toBe('');
+        });
+
+        it('should format date correctly', () => {
+            const testDate = new Date('2024-03-20');
+            const formattedNextPayday =
+                component.getFormatedNextPayday(testDate);
+            expect(formattedNextPayday).toBe('20.03.2024');
+        });
+    });
+
+    describe('getDaysUntilNextPayday', () => {
+        it('should handle null date', () => {
+            const daysUntilNextPayday =
+                component.getDaysUntilNextPayday(undefined);
+            expect(daysUntilNextPayday).toBe(0);
+        });
+
+        it('should calculate days correctly', () => {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            const daysUntilNextPayday =
+                component.getDaysUntilNextPayday(tomorrow);
+            expect(daysUntilNextPayday).toBe(1);
+        });
     });
 });

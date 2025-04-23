@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { FormattingHelperService } from '../../../services/formatting-helper.service';
+import { FormattingHelperService } from '@/app/services/formatting-helper.service';
 
 @Component({
     selector: 'money-sprouts-plan-expenses',

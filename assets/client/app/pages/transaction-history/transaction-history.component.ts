@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Account, Transaction } from '@money-sprouts/shared/domain';
+import { Account } from '@/app/types/account';
+import { Transaction } from '@/app/types/transaction';
 import {
     combineLatest,
     map,
@@ -35,18 +36,21 @@ interface CombinedDataTransaction {
     styleUrls: ['./transaction-history.component.scss'],
 })
 export class TransactionHistoryComponent implements OnInit, OnDestroy {
-    account$: Observable<Account | null>;
-
-    combinedDataTransaction$: Observable<CombinedDataTransaction>;
+    account$: Observable<Account | null> = of(null);
+    combinedDataTransaction$: Observable<CombinedDataTransaction> = of({
+        transactions: {
+            transactions: {
+                incomes: [],
+                expenses: [],
+            },
+        },
+        maxLength: 0,
+    });
     latestCombinedData: CombinedDataTransaction | null = null;
-
     initialItems = 5;
     displayedItems = this.initialItems;
-
     Math = Math;
-
     public isExpanded = false;
-
     private destroy$ = new Subject<void>();
 
     constructor(
