@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Account, Avatar } from '@money-sprouts/shared/domain';
+import { Account } from '../types/account';
+import { Avatar } from '../types/avatar';
 import { Loggable } from './loggable';
 
 enum LocalStorageField {

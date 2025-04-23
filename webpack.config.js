@@ -21,7 +21,7 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
-  .addEntry('app', './apps/client/src/main.ts')
+  .addEntry('angular', './assets/client/main.ts')
 
   .splitEntryChunks()
   .enableSingleRuntimeChunk()
@@ -47,7 +47,7 @@ Encore
   .enableSassLoader()
   .enableTypeScriptLoader()
   .addAliases({
-    '@': path.resolve(__dirname, 'apps/client/src'),
+    '@': path.resolve(__dirname, 'assets/client'),
   });
 
 // uncomment to get integrity="..." attributes on your script & link tags

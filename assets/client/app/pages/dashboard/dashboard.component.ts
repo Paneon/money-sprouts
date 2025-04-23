@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
-import { Account } from '@money-sprouts/shared/domain';
+import { Account } from '../../types/account';
 import { AccountService } from '../../services/account.service';
 import { RouterService } from '../../services/router.service';
 import { RoutePath } from '../../enum/routepath';

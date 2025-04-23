@@ -1,7 +1,7 @@
 import { ConfettiService } from './../../services/confetti.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Account } from '@money-sprouts/shared/domain';
+import { Account } from '../../types/account';
 import {
     combineLatest,
     debounceTime,
