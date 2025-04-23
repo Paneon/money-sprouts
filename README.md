@@ -65,8 +65,7 @@ docker-compose up -d --build
 5. To compile the frontend code run either
 
 ```bash
-nx run client:build:development
-nx run client:build:development --watch
+npm run dev
 ```
 
 ## Database Migration and seeding
