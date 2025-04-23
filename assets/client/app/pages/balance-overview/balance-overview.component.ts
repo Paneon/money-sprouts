@@ -11,11 +11,11 @@ import {
     tap,
 } from 'rxjs';
 import { AccountService } from '@/app/services/account.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { Loggable } from '@/app/services/loggable';
 import { balanceImageMap } from '@/app/components/balance-image-map';
-import { Transaction } from '@/app/types/transaction';
-import { TransactionService } from '@/app/services/transaction.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 
 interface CombinedDataOverview {
     account: Account | null;
@@ -28,6 +28,8 @@ interface CombinedDataOverview {
     selector: 'money-sprouts-balance-overview',
     templateUrl: './balance-overview.component.html',
     styleUrls: ['./balance-overview.component.scss'],
+    standalone: true,
+    imports: [CommonModule, TranslateModule, PageHeaderComponent],
 })
 export class BalanceOverviewComponent extends Loggable implements OnInit {
     private currentLang: string;
@@ -42,8 +44,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         private readonly datePipe: DatePipe,
         private readonly translate: TranslateService,
         private readonly cd: ChangeDetectorRef,
-        private readonly confettiService: ConfettiService,
-        private readonly transactionService: TransactionService
+        private readonly confettiService: ConfettiService
     ) {
         super();
         this.currentLang = this.translate.currentLang;

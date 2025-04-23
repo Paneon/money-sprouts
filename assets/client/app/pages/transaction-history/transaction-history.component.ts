@@ -10,13 +10,16 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
-import { AccountService } from '../../services/account.service';
-import { TransactionService } from '../../services/transaction.service';
+import { AccountService } from '@/app/services/account.service';
+import { TransactionService } from '@/app/services/transaction.service';
 import {
     debounceTime,
     distinctUntilChanged,
     shareReplay,
 } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 
 interface TransactionData {
     transactions: {
@@ -34,6 +37,8 @@ interface CombinedDataTransaction {
     selector: 'money-sprouts-transaction-history',
     templateUrl: './transaction-history.component.html',
     styleUrls: ['./transaction-history.component.scss'],
+    standalone: true,
+    imports: [CommonModule, TranslateModule, PageHeaderComponent],
 })
 export class TransactionHistoryComponent implements OnInit, OnDestroy {
     account$: Observable<Account | null> = of(null);

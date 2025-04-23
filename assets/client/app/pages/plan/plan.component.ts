@@ -11,40 +11,23 @@ import { TransactionService } from '@/app/services/transaction.service';
     styleUrls: ['./plan.component.scss'],
 })
 export class PlanComponent implements OnInit {
-    account$: Observable<Account>;
-    name: string = '';
+    account$: Observable<Account | null>;
     activeTab: 'spend' | 'earn' = 'spend';
-    currentBalance: number = 0;
     originalBalance: number | null = null;
     temporaryBalance: number | null = null;
 
     constructor(
         private readonly accountService: AccountService,
         private readonly transactionService: TransactionService
-    ) {
-        this.account$ = this.accountService.currentAccount$.pipe(
-            filter((account): account is Account => account !== null),
-            map((account) => ({
-                ...account,
-                balance: account.balance || 0,
-            }))
-        );
-    }
+    ) {}
 
     ngOnInit() {
-        this.account$.subscribe((account) => {
-            this.name = account.name || '';
-            this.currentBalance = account.balance || 0;
-            if (this.originalBalance === null) {
-                this.originalBalance = this.currentBalance;
-            }
-        });
+        this.account$ = this.accountService.currentAccount$;
+        this.originalBalance = this.accountService.getCurrentBalance();
     }
 
     get balance() {
-        return (
-            this.temporaryBalance ?? this.originalBalance ?? this.currentBalance
-        );
+        return this.temporaryBalance ?? this.originalBalance;
     }
 
     switchTab(tab: 'spend' | 'earn'): void {

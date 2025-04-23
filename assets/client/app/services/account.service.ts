@@ -76,27 +76,6 @@ export class AccountService extends Loggable {
         });
     }
 
-    getAccountByName(name: string): Observable<Account> {
-        return this.accounts$.pipe(
-            map((accounts) => {
-                const account = accounts.find((a: Account) => a.name === name);
-                if (!account) {
-                    throw new Error(`Account with name ${name} not found`);
-                }
-                // currentAccountSubject only emits new value if account is not the same as the current one
-                if (
-                    !this.currentAccountSubject.getValue() ||
-                    (account &&
-                        account.id !==
-                            this.currentAccountSubject.getValue()?.id)
-                ) {
-                    this.currentAccountSubject.next(account);
-                }
-                return account;
-            })
-        );
-    }
-
     setAccount(account: Account) {
         this.storage.saveSelectedAccount(account);
         this.currentAccountSubject.next(account);
@@ -104,31 +83,13 @@ export class AccountService extends Loggable {
         this.setInitialBalance(account.balance as number);
     }
 
-    getAvatarForAccount(account: Account): string {
-        if (typeof account.id !== 'number') {
-            return 'assets/images/avatars/default-0.png';
-        }
-
-        if (account.avatar?.url) {
-            return account.avatar.url;
-        }
-
-        return this.getDefaultAvatar(account.id as number);
+    getAvatarForAccount(account: Account | null): string {
+        return account?.avatar?.url ?? '';
     }
 
-    private getDefaultAvatar(id: number): string {
-        return `assets/images/avatars/default-${id % 5}.png`;
-    }
-
-    getCurrentBalance(): Observable<number | null> {
-        return this.currentAccountSubject.pipe(
-            map((account) => {
-                if (!account || typeof account.balance !== 'number') {
-                    return null;
-                }
-                return account.balance as number;
-            })
-        );
+    getCurrentBalance(): number | null {
+        const currentAccount = this.currentAccountSubject.getValue();
+        return currentAccount?.balance || null;
     }
 
     getCurrentAccountId(): number | null {

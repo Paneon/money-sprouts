@@ -33,8 +33,13 @@
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {}
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/template/use-track-by-function": "error",
+        "@angular-eslint/template/no-duplicate-attributes": "error"
+      }
     }
   ]
 }

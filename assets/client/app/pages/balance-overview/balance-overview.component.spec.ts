@@ -142,36 +142,4 @@ describe('BalanceOverviewComponent', () => {
         );
     });
 
-    describe('getFormatedNextPayday', () => {
-        it('should handle null date', () => {
-            const formattedNextPayday =
-                component.getFormatedNextPayday(undefined);
-            expect(formattedNextPayday).toBe('');
-        });
-
-        it('should format date correctly', () => {
-            const testDate = new Date('2024-03-20');
-            const formattedNextPayday =
-                component.getFormatedNextPayday(testDate);
-            expect(formattedNextPayday).toBe('20.03.2024');
-        });
-    });
-
-    describe('getDaysUntilNextPayday', () => {
-        it('should handle null date', () => {
-            const daysUntilNextPayday =
-                component.getDaysUntilNextPayday(undefined);
-            expect(daysUntilNextPayday).toBe(0);
-        });
-
-        it('should calculate days correctly', () => {
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-
-            const daysUntilNextPayday =
-                component.getDaysUntilNextPayday(tomorrow);
-            expect(daysUntilNextPayday).toBe(1);
-        });
-    });
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,23 +10,26 @@ import { TranslateModule } from '@ngx-translate/core';
     standalone: true,
     imports: [CommonModule, TranslateModule],
 })
-export class MultilanguageComponent implements OnInit {
-    langs = ['en', 'de'];
-    currentLang: string = 'en';
+export class MultilanguageComponent {
+    langs: string[] = ['de', 'en'];
 
-    constructor(private translate: TranslateService) {}
+    currentLang = 'de';
+    constructor(
+        public translateService: TranslateService,
+        private readonly cd: ChangeDetectorRef
+    ) {
+        const browserLang = this.translateService.getBrowserLang() ?? 'de';
+        this.currentLang = this.langs.includes(browserLang)
+            ? browserLang
+            : 'de';
 
-    ngOnInit() {
-        const browserLang = this.translate.getBrowserLang();
-        this.currentLang =
-            browserLang && this.langs.includes(browserLang)
-                ? browserLang
-                : this.langs[0];
-        this.translate.use(this.currentLang);
+        this.translateService.setDefaultLang(this.currentLang);
+        this.translateService.use(this.currentLang);
     }
 
-    switchLanguage(lang: string) {
+    switchLang(lang: string) {
+        this.translateService.use(lang);
         this.currentLang = lang;
-        this.translate.use(lang);
+        this.cd.detectChanges();
     }
 }

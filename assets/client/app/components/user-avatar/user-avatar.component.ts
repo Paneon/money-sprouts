@@ -18,9 +18,7 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule],
 })
 export class UserAvatarComponent implements OnInit, OnDestroy {
-    @Input() avatarFile: string = '';
-    @Input() name: string = '';
-    @Input() id: number = 0;
+    @Input() avatarFile = '';
     @Output() classChange = new EventEmitter<string>();
     urlSegment = '';
     smallPaths: string[] = ['dashboard', 'overview', 'history', 'plan'];
@@ -52,9 +50,7 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     }
 
     getAvatarPath(): string {
-        return this.avatarFile
-            ? `/assets/avatars/${this.avatarFile}`
-            : '/assets/avatars/default.png';
+        return this.avatarFile;
     }
 
     ngOnDestroy() {

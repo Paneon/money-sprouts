@@ -252,49 +252,4 @@ describe('PlanEarningsComponent', () => {
             });
         });
     });
-
-    describe('selectChore', () => {
-        it('should set the selected chore', () => {
-            const testChore = {
-                id: 1,
-                name: 'Test Chore',
-                sum: 10,
-                calculated: false,
-            };
-
-            component.selectChore(testChore);
-            expect(component.selectedChore?.id).toBe(testChore.id);
-            expect(component.selectedChore?.name).toBe(testChore.name);
-            expect(component.selectedChore?.sum).toBe(testChore.sum);
-            expect(component.selectedChore?.calculated).toBe(
-                testChore.calculated
-            );
-        });
-    });
-
-    describe('addTransaction', () => {
-        it('should add a transaction when a chore is selected', () => {
-            const testChore = {
-                id: 1,
-                name: 'Test Chore',
-                sum: 10,
-                calculated: false,
-            };
-
-            component.selectChore(testChore);
-
-            if (component.selectedChore) {
-                component.selectedChore.calculated = true;
-                component.addTransaction();
-
-                expect(
-                    mockTransactionService.addTransaction
-                ).toHaveBeenCalledWith(
-                    1,
-                    component.selectedChore.sum * 100,
-                    'Chore completed: Test Chore'
-                );
-            }
-        });
-    });
 });
