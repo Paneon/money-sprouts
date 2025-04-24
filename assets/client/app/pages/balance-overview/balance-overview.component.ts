@@ -30,6 +30,7 @@ interface CombinedDataOverview {
     styleUrls: ['./balance-overview.component.scss'],
     standalone: true,
     imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    providers: [ConfettiService],
 })
 export class BalanceOverviewComponent extends Loggable implements OnInit {
     private currentLang: string;
@@ -84,10 +85,10 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                     nextPayday,
                     formatedNextPayday: nextPayday
                         ? this.getFormatedNextPayday(nextPayday)
-                        : 'OVERVIEW.PAYDAY_WEEKDAY_UNKOWN',
+                        : 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN',
                     daysUntilNextPayday: nextPayday
                         ? this.getDaysUntilNextPayday(nextPayday)
-                        : 'OVERVIEW.PAYDAY_COUNTER_UNKOWN',
+                        : 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN',
                 };
             })
         );
@@ -115,7 +116,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getFormatedNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'OVERVIEW.PAYDAY_WEEKDAY_UNKOWN';
+            return 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN';
         }
         const currentLanguage = this.translate.currentLang;
         const datePipe = new DatePipe(currentLanguage);
