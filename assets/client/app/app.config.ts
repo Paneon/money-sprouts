@@ -19,19 +19,24 @@ import { pagesProviders } from './providers/pages.providers';
 
 export function appInitializerFactory(translate: TranslateService) {
     return () => {
+        // Disable automatic language detection
+        translate.addLangs(['de', 'en']);
         translate.setDefaultLang('de');
-        return translate.use('de').toPromise();
+        // Force German language regardless of browser settings
+        translate.use('de');
+        return Promise.resolve();
     };
 }
 
-registerLocaleData(localeDe);
-registerLocaleData(localeEn);
+registerLocaleData(localeDe, 'de');
+registerLocaleData(localeEn, 'en');
 
 export const appConfig = {
     providers: [
         importProvidersFrom(
             BrowserModule,
             TranslateModule.forRoot({
+                useDefaultLang: true,
                 loader: {
                     provide: TranslateLoader,
                     useClass: customTranslate,
@@ -39,7 +44,8 @@ export const appConfig = {
                 },
             })
         ),
-        { provide: LOCALE_ID, useValue: 'de' },
+        // Force German locale regardless of browser settings
+        { provide: LOCALE_ID, useValue: 'de-DE' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
         AccountsResolver,
         {

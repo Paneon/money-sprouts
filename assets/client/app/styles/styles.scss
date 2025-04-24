@@ -33,6 +33,11 @@ body {
   flex-direction: column;
 }
 
+label {
+  color: $tertiary-color;
+  padding-top: 5px;
+}
+
 .custom-container {
   @include ms-container(5rem, 4rem);
   @include make-flexbox();

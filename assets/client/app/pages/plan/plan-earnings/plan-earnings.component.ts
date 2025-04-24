@@ -78,8 +78,14 @@ export class PlanEarningsComponent {
                 }
             });
             this.selectedChore = chore;
+            const formatedAmount = chore.sum * 100;
+            this.calculateAmount.emit(formatedAmount);
+            this.icon = 'ℹ';
+            this.message = 'PLAN.TAB_EARN.MESSAGE_CONFIRM';
+            chore.calculated = true;
         } else {
             this.selectedChore = null;
+            this.clearAction();
         }
     }
 

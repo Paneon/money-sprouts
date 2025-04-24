@@ -3,6 +3,19 @@
     <div class="custom-text-box" *ngIf="account$ | async as account">
         <div class="balance-display">
             {{ balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
+            <span *ngIf="calculatedAmount">
+                →
+                <span
+                    [ngClass]="
+                        calculatedAmount > 0 ? 'text-success' : 'text-danger'
+                    "
+                >
+                    {{
+                        calculatedAmount / 100
+                            | currency : 'EUR' : 'symbol' : '1.2'
+                    }}
+                </span>
+            </span>
         </div>
         <div class="tabs">
             <div

@@ -28,6 +28,7 @@ export class PlanComponent implements OnInit {
     activeTab: 'spend' | 'earn' = 'spend';
     originalBalance: number | null = null;
     temporaryBalance: number | null = null;
+    calculatedAmount: number | null = null;
 
     constructor(
         private readonly accountService: AccountService,
@@ -51,17 +52,20 @@ export class PlanComponent implements OnInit {
     onCalculateDeductionOfAmount(amount: number) {
         if (this.originalBalance !== null) {
             this.temporaryBalance = this.originalBalance - amount;
+            this.calculatedAmount = -amount;
         }
     }
 
     onCalculateAdditionOfAmount(amount: number) {
         if (this.originalBalance !== null) {
             this.temporaryBalance = this.originalBalance + amount;
+            this.calculatedAmount = amount;
         }
     }
 
     onResetBalance(): void {
         this.temporaryBalance = null;
+        this.calculatedAmount = null;
     }
 
     onApplyChanges(title: string, value: number) {
