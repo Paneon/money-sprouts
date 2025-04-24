@@ -9,6 +9,6 @@ export class FormatUrlPipe implements PipeTransform {
         if (!value) {
             return '';
         }
-        return value.startsWith('http') ? value : `/${value}`;
+        return value;
     }
 }

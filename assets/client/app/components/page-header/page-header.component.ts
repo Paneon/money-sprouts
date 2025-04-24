@@ -4,8 +4,14 @@ import { distinctUntilChanged, Observable, Subject } from 'rxjs';
 import { Account } from '../../types/account';
 import { TranslateService } from '@ngx-translate/core';
 import { RoutePath } from '../../enum/routepath';
+import { RouteId } from '../../enum/route-id';
 import { RouterService } from '../../services/router.service';
-import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import {
+    Router,
+    NavigationEnd,
+    RouterModule,
+    ActivatedRoute,
+} from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -27,7 +33,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     childClass: string;
     name: string;
     account$: Observable<Account | null>;
-    urlSegment: string;
+    currentRouteId: RouteId;
     logout = 'Logout';
     avatar: string;
     id: number;
@@ -39,7 +45,9 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     constructor(
         private readonly routerService: RouterService,
         public accountService: AccountService,
-        public translate: TranslateService
+        public translate: TranslateService,
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.accountService.loading.subscribe((loading: boolean) => {
             this.isLoading = loading;
@@ -47,9 +55,20 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        const urlSegments = this.routerService.getURL().split('/');
-        this.urlSegment = urlSegments[urlSegments.length - 1];
-        this.name = urlSegments[2];
+        // Set initial route
+        this.updateRouteInfo();
+
+        this.router.events
+            .pipe(
+                filter(
+                    (event): event is NavigationEnd =>
+                        event instanceof NavigationEnd
+                ),
+                distinctUntilChanged()
+            )
+            .subscribe(() => {
+                this.updateRouteInfo();
+            });
 
         this.account$ = this.accountService.currentAccount$.pipe(
             distinctUntilChanged()
@@ -62,22 +81,33 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         );
     }
 
+    private updateRouteInfo() {
+        let currentRoute = this.route;
+        while (currentRoute.firstChild) {
+            currentRoute = currentRoute.firstChild;
+        }
+        this.currentRouteId = currentRoute.snapshot.data['routeId'] as RouteId;
+
+        // Get account name from URL
+        const urlSegments = this.router.url.split('/');
+        this.name = decodeURIComponent(urlSegments[2]);
+    }
+
     goBack() {
-        if (this.urlSegment === 'dashboard') {
+        console.log('goBack', this.currentRouteId);
+        if (this.currentRouteId === RouteId.AccountDashboard) {
             this.routerService.navigateToRoute(RoutePath.AccountSelection);
         } else if (
-            this.urlSegment === 'history' ||
-            this.urlSegment === 'plan' ||
-            this.urlSegment === 'overview'
+            this.currentRouteId === RouteId.History ||
+            this.currentRouteId === RouteId.Plan ||
+            this.currentRouteId === RouteId.Balance
         ) {
-            this.routerService.navigateToDashboard(this.name);
-        } else {
-            return;
+            this.routerService.navigateToAccountDashboard(this.name);
         }
     }
 
     isOnAccountSelectionPage(): boolean {
-        return this.urlSegment === RoutePath.AccountSelection;
+        return this.currentRouteId === RouteId.AccountSelection;
     }
 
     goToAccountSelection() {
@@ -85,15 +115,14 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     }
 
     get pageTitle(): string {
-        const pageName = this.routerService.getURL().split('/')[3];
-        switch (pageName) {
-            case 'dashboard':
+        switch (this.currentRouteId) {
+            case RouteId.AccountDashboard:
                 return 'PAGE_HEADER.PAGE_NAME.DASHBOARD';
-            case 'overview':
+            case RouteId.Balance:
                 return 'PAGE_HEADER.PAGE_NAME.OVERVIEW';
-            case 'history':
+            case RouteId.History:
                 return 'PAGE_HEADER.PAGE_NAME.HISTORY';
-            case 'plan':
+            case RouteId.Plan:
                 return 'PAGE_HEADER.PAGE_NAME.PLAN';
             default:
                 return '';

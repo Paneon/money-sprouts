@@ -70,7 +70,7 @@ describe('RouterService', () => {
         });
     });
 
-    describe('navigateToDashboard', () => {
+    describe('navigateToAccountDashboard', () => {
         it('should navigate to dashboard route for a given account name', () => {
             const routerService = new RouterService(mockRouter);
             const mockAccountName = 'testAccount';
@@ -80,10 +80,10 @@ describe('RouterService', () => {
                 'navigateToRouteForAccountName'
             );
 
-            routerService.navigateToDashboard(mockAccountName);
+            routerService.navigateToAccountDashboard(mockAccountName);
 
             expect(navigateSpy).toHaveBeenCalledWith(
-                RoutePath.Dashboard,
+                RoutePath.AccountDashboard,
                 mockAccountName
             );
         });

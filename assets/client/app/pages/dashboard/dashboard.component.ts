@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit {
         switch (section) {
             case 'DASHBOARD.SECTION_NAME.OVERVIEW':
                 this.router.navigateToRouteForAccountName(
-                    RoutePath.Overview,
+                    RoutePath.Balance,
                     this.name
                 );
                 break;

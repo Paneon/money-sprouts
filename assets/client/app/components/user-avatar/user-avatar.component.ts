@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule],
 })
 export class UserAvatarComponent implements OnInit, OnDestroy {
-    @Input() avatarFile = '';
+    @Input() avatarFile: string;
     @Output() classChange = new EventEmitter<string>();
     urlSegment = '';
     smallPaths: string[] = ['dashboard', 'overview', 'history', 'plan'];
