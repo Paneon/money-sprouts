@@ -1,26 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-
 import { MultilanguageComponent } from './multilanguage.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-class MockTranslateService {
-    currentLang = 'en';
-}
 describe('MultilanguageComponent', () => {
     let component: MultilanguageComponent;
     let fixture: ComponentFixture<MultilanguageComponent>;
-    let translateService: MockTranslateService;
+    let translateService: TranslateService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot()],
-            declarations: [MultilanguageComponent],
-            providers: [
-                { provide: translateService, useValue: MockTranslateService },
-            ],
-        });
+            imports: [TranslateModule.forRoot(), MultilanguageComponent],
+            providers: [TranslateService],
+        }).compileComponents();
+
         fixture = TestBed.createComponent(MultilanguageComponent);
         component = fixture.componentInstance;
+        translateService = TestBed.inject(TranslateService);
         fixture.detectChanges();
     });
 

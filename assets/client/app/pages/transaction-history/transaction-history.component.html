@@ -30,7 +30,12 @@
                         >
                             <tr>
                                 <td
-                                    [ngClass]="{ 'applied': data.transactions.transactions.incomes[i].applied,'not-applied': !data.transactions.transactions.incomes[i].applied, }"
+                                    class="transaction"
+                                    [ngClass]="{
+                                        'transaction--inactive':
+                                            !data.transactions.transactions
+                                                .incomes[i]?.applied
+                                    }"
                                     *ngIf="
                                         data.transactions.transactions.incomes[
                                             i
@@ -38,7 +43,7 @@
                                         else emptyCell
                                     "
                                 >
-                                    <span class="income-amount"
+                                    <span class="transaction__amount"
                                         >+{{
                                             data.transactions.transactions
                                                 .incomes[i].value / 100
@@ -49,20 +54,18 @@
                                         }}</span
                                     >
 
-                                    <span class="transaction-title">{{
+                                    <span class="transaction__title">{{
                                         data.transactions.transactions.incomes[
                                             i
                                         ].title
                                     }}</span>
                                 </td>
                                 <td
+                                    class="transaction transaction--expense"
                                     [ngClass]="{
-                                        applied:
-                                            data.transactions.transactions
-                                                .expenses[i].applied,
-                                        'not-applied':
+                                        'transaction--inactive':
                                             !data.transactions.transactions
-                                                .expenses[i].applied
+                                                .expenses[i]?.applied
                                     }"
                                     *ngIf="
                                         data.transactions.transactions.expenses[
@@ -71,7 +74,7 @@
                                         else emptyCell
                                     "
                                 >
-                                    <span class="expense-amount">{{
+                                    <span class="transaction__amount">{{
                                         data.transactions.transactions.expenses[
                                             i
                                         ].value / 100
@@ -80,7 +83,7 @@
                                                 : 'symbol'
                                                 : '1.2'
                                     }}</span>
-                                    <span class="transaction-title">{{
+                                    <span class="transaction__title">{{
                                         data.transactions.transactions.expenses[
                                             i
                                         ].title

@@ -1,18 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { StartComponent } from './pages/start/start.component';
-
-import { CommonModule } from '@angular/common';
 import { BalanceOverviewComponent } from './pages/balance-overview/balance-overview.component';
 import { TransactionHistoryComponent } from './pages/transaction-history/transaction-history.component';
-import { LoginComponent } from './pages/login/login.component';
 import { PlanComponent } from './pages/plan/plan.component';
 import { AccountSelectionComponent } from './pages/account-selection/account-selection.component';
 import { AccountsResolver } from './services/accounts-resolver.service';
 import { RoutePath } from './enum/routepath';
+import { RouteId } from './enum/route-id';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
-const routes: Routes = [
+export const routes: Routes = [
     {
         path: '',
         redirectTo: RoutePath.Home,
@@ -21,44 +18,36 @@ const routes: Routes = [
     {
         path: RoutePath.Home,
         component: StartComponent,
-    },
-    {
-        path: RoutePath.Login,
-        component: LoginComponent,
+        data: { routeId: RouteId.Home },
     },
     {
         path: RoutePath.AccountSelection,
         component: AccountSelectionComponent,
-        resolve: { accounts: AccountsResolver },
+        data: { routeId: RouteId.AccountSelection },
     },
     {
-        path: RoutePath.Dashboard,
+        path: RoutePath.AccountDashboard,
         component: DashboardComponent,
+        resolve: { accounts: AccountsResolver },
+        data: { routeId: RouteId.AccountDashboard },
     },
     {
-        path: RoutePath.Overview,
+        path: RoutePath.Balance,
         component: BalanceOverviewComponent,
+        data: { routeId: RouteId.Balance },
     },
     {
         path: RoutePath.History,
         component: TransactionHistoryComponent,
+        data: { routeId: RouteId.History },
     },
     {
         path: RoutePath.Plan,
         component: PlanComponent,
+        data: { routeId: RouteId.Plan },
     },
     {
         path: '**',
-        redirectTo: 'home',
+        redirectTo: RoutePath.Home,
     },
 ];
-
-@NgModule({
-    declarations: [],
-    imports: [
-        CommonModule,
-        RouterModule.forRoot(routes, { enableTracing: false }),
-    ],
-    exports: [RouterModule, CommonModule],
-})
-export class AppRoutingModule {}

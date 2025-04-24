@@ -1,10 +1,11 @@
-@import '../../../../styles/abstract/variables';
+@import '../../styles/abstract/variables';
 
 .balance-display {
   font-size: 2rem;
   color: $primary-color;
   margin-bottom: 20px;
 }
+
 
 .tabs {
   display: flex;

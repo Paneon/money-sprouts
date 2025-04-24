@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 @Component({
     selector: 'money-sprouts-page-header',
     template: '<div></div>',
+    standalone: true,
 })
 class MockPageHeaderComponent {}
 
@@ -61,8 +62,12 @@ describe('PlanComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, TranslateModule.forRoot()],
-            declarations: [PlanComponent, MockPageHeaderComponent],
+            imports: [
+                HttpClientTestingModule,
+                TranslateModule.forRoot(),
+                PlanComponent,
+                MockPageHeaderComponent,
+            ],
             providers: [
                 { provide: AccountService, useValue: mockAccountService },
                 {

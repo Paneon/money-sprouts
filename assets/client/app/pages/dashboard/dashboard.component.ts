@@ -87,22 +87,13 @@ export class DashboardComponent implements OnInit {
 
         switch (section) {
             case 'DASHBOARD.SECTION_NAME.OVERVIEW':
-                this.router.navigateToRouteForAccountName(
-                    RoutePath.Overview,
-                    this.name
-                );
+                this.router.navigateToOverview(this.name);
                 break;
             case 'DASHBOARD.SECTION_NAME.HISTORY':
-                this.router.navigateToRouteForAccountName(
-                    RoutePath.History,
-                    this.name
-                );
+                this.router.navigateToHistory(this.name);
                 break;
             case 'DASHBOARD.SECTION_NAME.PLAN':
-                this.router.navigateToRouteForAccountName(
-                    RoutePath.Plan,
-                    this.name
-                );
+                this.router.navigateToPlan(this.name);
                 break;
         }
     }

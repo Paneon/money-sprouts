@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Chore {
     id: string;
@@ -14,6 +16,8 @@ interface Chore {
     selector: 'money-sprouts-plan-earnings',
     templateUrl: './plan-earnings.component.html',
     styleUrls: ['./plan-earnings.component.scss'],
+    standalone: true,
+    imports: [CommonModule, TranslateModule, FormsModule],
 })
 export class PlanEarningsComponent {
     chores: Chore[] = [
@@ -74,8 +78,14 @@ export class PlanEarningsComponent {
                 }
             });
             this.selectedChore = chore;
+            const formatedAmount = chore.sum * 100;
+            this.calculateAmount.emit(formatedAmount);
+            this.icon = 'ℹ';
+            this.message = 'PLAN.TAB_EARN.MESSAGE_CONFIRM';
+            chore.calculated = true;
         } else {
             this.selectedChore = null;
+            this.clearAction();
         }
     }
 

@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { RoutePath } from '../enum/routepath';
 import { Router } from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+    providedIn: 'root',
+})
 export class RouterService {
     constructor(public router: Router) {}
 
@@ -27,12 +29,16 @@ export class RouterService {
         const target = path.replace(':name', encodeURI(name));
         return this.router.navigate([target]);
     }
-    navigateToDashboard(name: string) {
-        return this.navigateToRouteForAccountName(RoutePath.Dashboard, name);
+
+    navigateToAccountDashboard(name: string) {
+        return this.navigateToRouteForAccountName(
+            RoutePath.AccountDashboard,
+            name
+        );
     }
 
     navigateToOverview(name: string) {
-        return this.navigateToRouteForAccountName(RoutePath.Overview, name);
+        return this.navigateToRouteForAccountName(RoutePath.Balance, name);
     }
 
     navigateToHistory(name: string) {
