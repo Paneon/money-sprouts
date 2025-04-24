@@ -7,7 +7,10 @@ export class customTranslate implements TranslateLoader {
     constructor(private http: HttpClient) {}
     getTranslation(lang: string): Observable<unknown> {
         return this.http
-            .get(`/build/i18n/${lang}.json`)
-            .pipe(catchError((/*_*/) => this.http.get(`/build/i18n/en.json`)));
+            .get(`/build/translations/${lang}.json`)
+            .pipe(
+                catchError((/*_*/) =>
+                    this.http.get(`/build/translations/de.json`))
+            );
     }
 }

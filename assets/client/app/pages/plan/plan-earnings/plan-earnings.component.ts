@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Chore {
     id: string;
@@ -16,7 +17,7 @@ interface Chore {
     templateUrl: './plan-earnings.component.html',
     styleUrls: ['./plan-earnings.component.scss'],
     standalone: true,
-    imports: [CommonModule, TranslateModule],
+    imports: [CommonModule, TranslateModule, FormsModule],
 })
 export class PlanEarningsComponent {
     chores: Chore[] = [

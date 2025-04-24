@@ -9,13 +9,19 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { MultilanguageComponent } from '../multilanguage/multilanguage.component';
 
 @Component({
     selector: 'money-sprouts-page-header',
     templateUrl: './page-header.component.html',
     styleUrls: ['./page-header.component.scss'],
     standalone: true,
-    imports: [CommonModule, TranslateModule, RouterModule],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        RouterModule,
+        MultilanguageComponent,
+    ],
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {
     childClass: string;

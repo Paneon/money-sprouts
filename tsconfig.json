@@ -5,43 +5,53 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "strictNullChecks": false,
     "strictPropertyInitialization": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "ES2020",
+    "module": "ES2020",
     "useDefineForClassFields": false,
     "lib": [
-      "ES2022",
+      "ES2020",
       "dom"
     ],
     "paths": {
       "@/*": ["assets/client/*"]
-    }
+    },
+    "types": []
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": false,
+    "compilationMode": "full",
+    "skipTemplateCodegen": false,
+    "enableResourceInlining": true
   },
+  "include": [
+    "assets/client/main.ts",
+    "assets/client/polyfills.ts"
+  ],
   "exclude": [
     "**/*.spec.ts",
     "**/*.test.ts",
     "**/test.ts",
+    "**/cypress/**/*",
     "**/test-setup.ts",
     "**/setup-jest.ts",
     "**/jest.config.ts",
     "**/jest.config.js",
-    "**/cypress/**/*",
     "node_modules"
   ]
 }

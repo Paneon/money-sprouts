@@ -1,24 +1,89 @@
 {
-    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-    "version": 1,
-    "newProjectRoot": "projects",
-    "projects": {
-        "money-sprouts": {
-            "projectType": "application",
-            "root": "",
-            "sourceRoot": "assets/client",
-            "prefix": "money-sprouts",
-            "architect": {
-                "lint": {
-                    "builder": "@angular-eslint/builder:lint",
-                    "options": {
-                        "lintFilePatterns": [
-                            "assets/client/**/*.ts",
-                            "assets/client/**/*.html"
-                        ]
-                    }
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "money-sprouts": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "assets/client",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "public/build",
+            "index": "assets/client/index.html",
+            "main": "assets/client/main.ts",
+            "polyfills": "assets/client/polyfills.ts",
+            "tsConfig": "tsconfig.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "translations",
+                "output": "/translations"
+              }
+            ],
+            "styles": [
+              "assets/client/app/styles/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
                 }
+              ],
+              "outputHashing": "all",
+              "outputPath": "public/build"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "outputPath": "public/build"
             }
+          },
+          "defaultConfiguration": "development"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "money-sprouts:build:production"
+            },
+            "development": {
+              "browserTarget": "money-sprouts:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "assets/client/**/*.ts",
+              "assets/client/**/*.html"
+            ]
+          }
         }
+      }
     }
+  }
 }

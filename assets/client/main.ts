@@ -1,3 +1,5 @@
+import 'zone.js';
+import '@angular/compiler';
 import { enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { environment } from './environments/environments';

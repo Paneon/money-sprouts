@@ -1,6 +1,6 @@
 webpack_encore:
     # The path where Encore is building the assets - i.e. Encore.setOutputPath()
-    output_path: '%kernel.project_dir%/public/dist'
+    output_path: '%kernel.project_dir%/public/build'
     # If multiple builds are defined (as shown below), you can disable the default build:
     # output_path: false
 
@@ -21,7 +21,7 @@ webpack_encore:
     # preload: true
 
     # Throw an exception if the entrypoints.json file is missing or an entry is missing from the data
-    # strict_mode: false
+    strict_mode: false
 
     # If you have multiple builds:
     # builds:
@@ -32,14 +32,18 @@ webpack_encore:
 
 framework:
     assets:
-        json_manifest_path: '%kernel.project_dir%/public/dist/manifest.json'
+        json_manifest_path: null
 
-#when@prod:
-#    webpack_encore:
-#        # Cache the entrypoints.json (rebuild Symfony's cache when entrypoints.json changes)
-#        # Available in version 1.2
-#        cache: true
+when@prod:
+    webpack_encore:
+        output_path: '%kernel.project_dir%/public/dist'
+        # Cache the entrypoints.json (rebuild Symfony's cache when entrypoints.json changes)
+        # Available in version 1.2
+        cache: true
+    framework:
+        assets:
+            json_manifest_path: null
 
-#when@test:
-#    webpack_encore:
-#        strict_mode: false
+when@test:
+    webpack_encore:
+        strict_mode: false

@@ -7,13 +7,21 @@ import { TransactionService } from '@/app/services/transaction.service';
 import { CommonModule } from '@angular/common';
 import { PlanExpensesComponent } from './plan-expenses/plan-expenses.component';
 import { PlanEarningsComponent } from './plan-earnings/plan-earnings.component';
+import { PageHeaderComponent } from '../../components/page-header/page-header.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-plan',
     templateUrl: './plan.component.html',
     styleUrls: ['./plan.component.scss'],
     standalone: true,
-    imports: [CommonModule, PlanExpensesComponent, PlanEarningsComponent],
+    imports: [
+        CommonModule,
+        PlanExpensesComponent,
+        PlanEarningsComponent,
+        PageHeaderComponent,
+        TranslateModule,
+    ],
 })
 export class PlanComponent implements OnInit {
     account$: Observable<Account | null>;
