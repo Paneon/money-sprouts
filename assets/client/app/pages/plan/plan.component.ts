@@ -4,17 +4,31 @@ import { filter, map } from 'rxjs/operators';
 import { Account } from '@/app/types/account';
 import { AccountService } from '@/app/services/account.service';
 import { TransactionService } from '@/app/services/transaction.service';
+import { CommonModule } from '@angular/common';
+import { PlanExpensesComponent } from './plan-expenses/plan-expenses.component';
+import { PlanEarningsComponent } from './plan-earnings/plan-earnings.component';
+import { PageHeaderComponent } from '../../components/page-header/page-header.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-plan',
     templateUrl: './plan.component.html',
     styleUrls: ['./plan.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        PlanExpensesComponent,
+        PlanEarningsComponent,
+        PageHeaderComponent,
+        TranslateModule,
+    ],
 })
 export class PlanComponent implements OnInit {
     account$: Observable<Account | null>;
     activeTab: 'spend' | 'earn' = 'spend';
     originalBalance: number | null = null;
     temporaryBalance: number | null = null;
+    calculatedAmount: number | null = null;
 
     constructor(
         private readonly accountService: AccountService,
@@ -38,17 +52,20 @@ export class PlanComponent implements OnInit {
     onCalculateDeductionOfAmount(amount: number) {
         if (this.originalBalance !== null) {
             this.temporaryBalance = this.originalBalance - amount;
+            this.calculatedAmount = -amount;
         }
     }
 
     onCalculateAdditionOfAmount(amount: number) {
         if (this.originalBalance !== null) {
             this.temporaryBalance = this.originalBalance + amount;
+            this.calculatedAmount = amount;
         }
     }
 
     onResetBalance(): void {
         this.temporaryBalance = null;
+        this.calculatedAmount = null;
     }
 
     onApplyChanges(title: string, value: number) {

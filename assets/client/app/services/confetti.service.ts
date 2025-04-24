@@ -1,5 +1,9 @@
-import * as confetti from 'canvas-confetti';
+import { Injectable } from '@angular/core';
+import confetti from 'canvas-confetti';
 
+@Injectable({
+    providedIn: 'root',
+})
 export class ConfettiService {
     startConfetti() {
         confetti({

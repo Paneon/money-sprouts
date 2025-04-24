@@ -1,3 +1,5 @@
+/// <reference path="./tsconfig.cypress.json" />
+
 import { defineConfig } from 'cypress';
 import { exec } from 'child_process';
 

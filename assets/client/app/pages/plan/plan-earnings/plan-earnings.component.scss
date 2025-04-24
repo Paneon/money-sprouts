@@ -1,4 +1,4 @@
-@import '../../../../styles/abstract/variables';
+@import '../../../styles/abstract/variables';
 
 .checkbox {
   width: 20px;
@@ -27,3 +27,12 @@
   color: $dark-green;
 }
 
+.message {
+  margin-top: 20px;
+}
+
+.message__icon {
+  font-size: 24px;
+  color: $tertiary-color;
+  padding-right: 8px;
+}

@@ -27,10 +27,15 @@ body {
       rgba(219, 230, 219, 0.5),
       rgba(223, 235, 223, 0.5)
     ),
-    url(../images/background.jpg) center/cover repeat;
+    url(/assets/images/background.jpg) center/cover repeat;
 
   display: flex;
   flex-direction: column;
+}
+
+label {
+  color: $tertiary-color;
+  padding-top: 5px;
 }
 
 .custom-container {

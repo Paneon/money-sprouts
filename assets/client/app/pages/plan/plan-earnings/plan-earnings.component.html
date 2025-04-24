@@ -20,19 +20,16 @@
     </div>
 
     <div class="button-group--plan-page">
-        <button class="button" type="submit" (click)="calculate()">
-            {{ 'PLAN.TAB_EARN.BUTTON_LABEL.CALCULATE' | translate }}
-        </button>
         <button class="button" type="submit" (click)="apply()">
             {{ 'PLAN.TAB_EARN.BUTTON_LABEL.SUBMIT' | translate }}
         </button>
     </div>
 </form>
 <p *ngIf="message" class="message">
-    <span class="message-icon" *ngIf="icon">{{ icon }}</span>
+    <span class="message__icon" *ngIf="icon">{{ icon }}</span>
     {{ message | translate }}
 </p>
 <p *ngIf="errorMessage" class="error">
-    <span class="error-icon" *ngIf="icon">{{ icon }}</span>
+    <span class="error__icon" *ngIf="icon">{{ icon }}</span>
     <span class="error">{{ errorMessage | translate }}</span>
 </p>

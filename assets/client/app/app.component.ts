@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { fadeAnimation } from './animations';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -8,19 +8,14 @@ import { TranslateService } from '@ngx-translate/core';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     animations: [fadeAnimation],
+    standalone: true,
+    imports: [RouterOutlet],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
     title = 'Money Pig';
 
-    constructor(
-        private router: Router,
-        private translateService: TranslateService
-    ) {
+    constructor(private translateService: TranslateService) {
         translateService.setDefaultLang('de');
         translateService.use('de');
-    }
-
-    ngOnInit(): void {
-        this.router.initialNavigation();
     }
 }

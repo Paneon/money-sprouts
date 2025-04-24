@@ -7,7 +7,7 @@ describe('IconWithTextComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [IconWithTextComponent],
+            imports: [IconWithTextComponent],
         })
             .overrideComponent(IconWithTextComponent, {
                 set: { template: '<div></div>' }, // Use a simplified template

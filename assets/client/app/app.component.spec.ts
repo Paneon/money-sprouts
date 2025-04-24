@@ -1,30 +1,27 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { Router } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
     let component: AppComponent;
     let fixture: ComponentFixture<AppComponent>;
     let translateService: TranslateService;
-    let router: Router;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [
-                BrowserAnimationsModule,
-                RouterTestingModule,
+                AppComponent,
                 TranslateModule.forRoot(),
+                RouterTestingModule,
+                NoopAnimationsModule,
             ],
-            declarations: [AppComponent],
         }).compileComponents();
 
         fixture = TestBed.createComponent(AppComponent);
         component = fixture.componentInstance;
         translateService = TestBed.inject(TranslateService);
-        router = TestBed.inject(Router);
         fixture.detectChanges();
     });
 
@@ -32,8 +29,8 @@ describe('AppComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it(`should have as title 'Money Pig'`, () => {
-        expect(component.title).toEqual('Money Pig');
+    it('should have correct title', () => {
+        expect(component.title).toBe('Money Pig');
     });
 
     it('should set default language to German', () => {
@@ -42,11 +39,5 @@ describe('AppComponent', () => {
 
     it('should use German language for translations', () => {
         expect(translateService.currentLang).toBe('de');
-    });
-
-    it('should call initialNavigation on ngOnInit', () => {
-        const routerSpy = jest.spyOn(router, 'initialNavigation');
-        component.ngOnInit();
-        expect(routerSpy).toHaveBeenCalled();
     });
 });

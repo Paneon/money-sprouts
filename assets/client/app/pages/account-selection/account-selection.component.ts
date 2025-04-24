@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Account } from '@/app/types/account';
 import { AccountService } from '@/app/services/account.service';
 import { RouterService } from '@/app/services/router.service';
@@ -25,21 +25,19 @@ import { FormatUrlPipe } from '@/app/pipes/format-url.pipe';
         FormatUrlPipe,
     ],
 })
-export class AccountSelectionComponent implements OnInit {
-    accounts$: Observable<Account[]> = of([]);
+export class AccountSelectionComponent {
+    accounts$: Observable<Account[]>;
 
     constructor(
         private readonly router: RouterService,
         public readonly route: ActivatedRoute,
         private readonly accountService: AccountService
-    ) {}
+    ) {
+        this.accounts$ = this.accountService.getAccounts();
+    }
 
     trackByAccount(index: number, account: Account): number {
         return account.id;
-    }
-
-    ngOnInit(): void {
-        this.accounts$ = of(this.route.snapshot.data['accounts']);
     }
 
     proceed(name: string) {
@@ -47,19 +45,17 @@ export class AccountSelectionComponent implements OnInit {
             return;
         }
 
-        const accounts: Account[] = this.route.snapshot.data['accounts'];
-        const selectedAccount = accounts.find(
-            (account) => account.name === name
-        );
+        this.accounts$.subscribe((accounts) => {
+            const selectedAccount = accounts.find(
+                (account) => account.name === name
+            );
 
-        if (selectedAccount) {
-            this.accountService.setAccount(selectedAccount);
-            setTimeout(() => {
-                this.router.navigateToRouteForAccountName(
-                    RoutePath.Dashboard,
-                    name
-                );
-            });
-        }
+            if (selectedAccount) {
+                this.accountService.setAccount(selectedAccount);
+                setTimeout(() => {
+                    this.router.navigateToAccountDashboard(name);
+                });
+            }
+        });
     }
 }

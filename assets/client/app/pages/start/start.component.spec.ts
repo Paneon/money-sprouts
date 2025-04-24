@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StartComponent } from './start.component';
-import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'money-sprouts-multilanguage',
     template: '<div></div>',
+    standalone: true,
 })
 class MockMultilanguageComponent {}
 
@@ -15,8 +16,11 @@ describe('StartComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot()],
-            declarations: [StartComponent, MockMultilanguageComponent],
+            imports: [
+                TranslateModule.forRoot(),
+                StartComponent,
+                MockMultilanguageComponent,
+            ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(StartComponent);
