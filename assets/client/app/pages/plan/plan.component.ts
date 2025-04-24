@@ -4,11 +4,16 @@ import { filter, map } from 'rxjs/operators';
 import { Account } from '@/app/types/account';
 import { AccountService } from '@/app/services/account.service';
 import { TransactionService } from '@/app/services/transaction.service';
+import { CommonModule } from '@angular/common';
+import { PlanExpensesComponent } from './plan-expenses/plan-expenses.component';
+import { PlanEarningsComponent } from './plan-earnings/plan-earnings.component';
 
 @Component({
     selector: 'money-sprouts-plan',
     templateUrl: './plan.component.html',
     styleUrls: ['./plan.component.scss'],
+    standalone: true,
+    imports: [CommonModule, PlanExpensesComponent, PlanEarningsComponent],
 })
 export class PlanComponent implements OnInit {
     account$: Observable<Account | null>;

@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { FormattingHelperService } from '@/app/services/formatting-helper.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'money-sprouts-plan-expenses',
     templateUrl: './plan-expenses.component.html',
     styleUrls: ['./plan-expenses.component.scss'],
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class PlanExpensesComponent {
     message: string | null = '';
