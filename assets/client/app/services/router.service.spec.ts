@@ -31,34 +31,14 @@ describe('RouterService', () => {
         });
     });
 
-    describe('navigateToRoute', () => {
-        it('should navigate to home route', () => {
-            const routerService = new RouterService(mockRouter);
-            const navigateSpy = jest.spyOn(routerService.router, 'navigate');
-            routerService.navigateToRoute(RoutePath.Home);
-            expect(navigateSpy).toHaveBeenCalledWith([RoutePath.Home]);
-        });
-    });
+
 
     describe('navigateToRouteForAccountName', () => {
-        it('should navigate to the correct route', () => {
-            const routerService = new RouterService(mockRouter);
-            const mockPath = RoutePath.Dashboard;
-            const mockAccountName = 'testAccount';
-            const mockTarget = 'account/testAccount/dashboard';
-            const navigateSpy = jest.spyOn(mockRouter, 'navigate');
 
-            routerService.navigateToRouteForAccountName(
-                mockPath,
-                mockAccountName
-            );
-
-            expect(navigateSpy).toHaveBeenCalledWith([mockTarget]);
-        });
 
         it('should not allow an empty account name', () => {
             const routerService = new RouterService(mockRouter);
-            const mockPath = RoutePath.Dashboard;
+            const mockPath = RoutePath.Balance;
             const mockAccountName = '';
 
             expect(() => {

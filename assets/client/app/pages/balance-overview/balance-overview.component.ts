@@ -53,8 +53,6 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.translate.currentLang);
-
         this.account$
             .pipe(
                 debounceTime(300),
@@ -138,14 +136,14 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getDaysUntilNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'OVERVIEW.PAYDAY_COUNTER_UNKOWN';
+            return 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
         }
         try {
             const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
             return `${dayDifference}`;
         } catch (error) {
             this.log('Error calculating days until next payday:', error);
-            return 'OVERVIEW.PAYDAY_COUNTER_UNKOWN';
+            return 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
         }
     }
 

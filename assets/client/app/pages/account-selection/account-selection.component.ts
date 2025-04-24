@@ -25,7 +25,7 @@ import { FormatUrlPipe } from '@/app/pipes/format-url.pipe';
         FormatUrlPipe,
     ],
 })
-export class AccountSelectionComponent implements OnInit {
+export class AccountSelectionComponent {
     accounts$: Observable<Account[]>;
 
     constructor(
@@ -38,10 +38,6 @@ export class AccountSelectionComponent implements OnInit {
 
     trackByAccount(index: number, account: Account): number {
         return account.id;
-    }
-
-    ngOnInit(): void {
-        // No need to do anything here since we're using the service directly
     }
 
     proceed(name: string) {
