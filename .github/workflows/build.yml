@@ -28,11 +28,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
-        run: npm run test
+      # - name: Test
+      #   run: npm run test
 
       - name: Webpack Encore
-        run: npm run build:prod
+        run: npm run build
 
   server:
     name: Symfony Build

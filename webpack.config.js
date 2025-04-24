@@ -21,7 +21,7 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
-  .addEntry('app', './assets/client/main.tsx')
+  .addEntry('app', './assets/client/main.ts')
 
   .splitEntryChunks()
   .enableSingleRuntimeChunk()
@@ -39,9 +39,6 @@ Encore
   .enableVersioning(Encore.isProduction())
 
   // enables and configure @babel/preset-env polyfills
-  // .configureBabel((config) => {
-  //   config.plugins = ['@babel/plugin-proposal-class-properties'];
-  // })
   .configureBabelPresetEnv((config) => {
     config.useBuiltIns = 'usage';
     config.corejs = '3.23';
@@ -49,18 +46,8 @@ Encore
 
   .enableSassLoader()
   .enableTypeScriptLoader()
-  .enableReactPreset()
   .addAliases({
-    '@': path.resolve(__dirname, 'assets'),
-  })
-
-  // Asset modules (new in Webpack 5)
-  .configureImageRule({
-    type: 'asset',
-    maxSize: 4 * 1024, // 4kb
-  })
-  .configureFontRule({
-    type: 'asset',
+    '@': path.resolve(__dirname, 'assets/client'),
   });
 
 // uncomment to get integrity="..." attributes on your script & link tags

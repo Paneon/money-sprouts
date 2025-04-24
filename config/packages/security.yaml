@@ -38,7 +38,6 @@ security:
     - { path: ^/accounts/, roles: ROLE_USER }
     - { path: ^/user/, roles: ROLE_USER }
     - { path: ^/dashboard, roles: ROLE_USER }
-  # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
   security:

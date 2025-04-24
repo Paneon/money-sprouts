@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: 🛠 Build Webpack Encore
-        run: npm run build:prod
+        run: npm run build
 
       - name: Remove not required files
         run: |
@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
-          source: "./*"
+          source: './*'
           target: ${{ secrets.DEPLOYMENT_PATH }}
 
   clear-cache:

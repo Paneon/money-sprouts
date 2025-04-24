@@ -1,0 +1,14 @@
+<money-sprouts-page-header></money-sprouts-page-header>
+<div id="account-dashboard" class="custom-container no-transparency">
+    <div class="button-container">
+        <div *ngFor="let section of sections; trackBy: trackBySection">
+            <button
+                class="image-text-button"
+                (click)="goToSection(section.name)"
+            >
+                <img [src]="section.image" />
+                <label>{{ section.name | translate }}</label>
+            </button>
+        </div>
+    </div>
+</div>

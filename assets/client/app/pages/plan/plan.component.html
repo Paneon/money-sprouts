@@ -1,0 +1,56 @@
+<money-sprouts-page-header></money-sprouts-page-header>
+<div id="plan" class="custom-container">
+    <div class="custom-text-box" *ngIf="account$ | async as account">
+        <div class="balance-display">
+            {{ balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
+        </div>
+        <div class="tabs">
+            <div
+                (click)="switchTab('spend')"
+                [class.active]="activeTab === 'spend'"
+                class="tab"
+            >
+                <img
+                    src="assets/images/shopping-card_small.png"
+                    alt="spend-icon"
+                    class="tab-icon"
+                />
+                <span class="tab-title">{{
+                    'PLAN.TAB_SPENT.TITLE' | translate
+                }}</span>
+            </div>
+            <div
+                (click)="switchTab('earn')"
+                [class.active]="activeTab === 'earn'"
+                class="tab"
+            >
+                <img
+                    src="assets/images/money.png"
+                    alt="earn-icon"
+                    class="tab-icon"
+                />
+                <span class="tab-title">{{
+                    'PLAN.TAB_EARN.TITLE' | translate
+                }}</span>
+            </div>
+        </div>
+
+        <!-- Display content based on the active tab -->
+        <div class="tab-content">
+            <div *ngIf="activeTab === 'spend'">
+                <money-sprouts-plan-expenses
+                    (calculateAmount)="onCalculateDeductionOfAmount($event)"
+                    (applyChanges)="onApplyChanges($event.title, $event.amount)"
+                    (resetBalance)="onResetBalance()"
+                ></money-sprouts-plan-expenses>
+            </div>
+            <div *ngIf="activeTab === 'earn'">
+                <money-sprouts-plan-earnings
+                    (calculateAmount)="onCalculateAdditionOfAmount($event)"
+                    (applyChanges)="onApplyChanges($event.title, $event.amount)"
+                    (resetBalance)="onResetBalance()"
+                ></money-sprouts-plan-earnings>
+            </div>
+        </div>
+    </div>
+</div>

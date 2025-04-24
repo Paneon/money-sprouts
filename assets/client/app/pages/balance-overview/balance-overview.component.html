@@ -1,0 +1,36 @@
+<money-sprouts-page-header></money-sprouts-page-header>
+<div id="balance-overview" class="custom-container no-transparency">
+    <div class="custom-text-box" *ngIf="account$ | async as account">
+        <div class="balance-display">
+            {{ account.balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
+        </div>
+
+        <div class="funny-image-wrapper">
+            <figure>
+                <img [src]="getFunnyImage(account.balance)" alt="funny image" />
+            </figure>
+        </div>
+        <div class="payday-info" *ngIf="combinedDataOverview$ | async as data">
+            <div>
+                {{ 'OVERVIEW.PAYDAY_WEEKDAY_LABEL' | translate }}
+                <span class="bold-text">{{
+                    data.formatedNextPayday | translate
+                }}</span>
+            </div>
+            <div>
+                {{ 'OVERVIEW.PAYDAY_COUNTER_LABEL' | translate }}
+                <span class="bold-text">{{
+                    data.daysUntilNextPayday | translate
+                }}</span>
+            </div>
+        </div>
+        <div *ngIf="showConfettiText" class="confetti-text">
+            {{ ConfettiText | translate }}
+        </div>
+        <div *ngIf="showConfettiText || showTreasureButton">
+            <button class="button extra-margin" type="submit">
+                {{ 'OVERVIEW.BUTTON_TEXT_LEVEL' | translate }}
+            </button>
+        </div>
+    </div>
+</div>

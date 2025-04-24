@@ -1,0 +1,7 @@
+<button class="image-text-button" (click)="onSelectAccount()">
+    <money-sprouts-user-avatar
+        class="avatar-image"
+        [avatarFile]="avatarFile | formatUrl"
+    ></money-sprouts-user-avatar>
+    <label class="label pt-2">{{ name }}</label>
+</button>

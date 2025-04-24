@@ -25,9 +25,9 @@ class HomeController extends AbstractController
         '/account/{user}/{page}',
         name: 'app_user_page'
     )]
-    public function react(): Response
+    public function index(): Response
     {
-        return $this->render('home/index_react.html.twig', [
+        return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

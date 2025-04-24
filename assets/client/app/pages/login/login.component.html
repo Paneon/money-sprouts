@@ -1,0 +1,29 @@
+<div class="container">
+    <form class="mt-4">
+        <div class="mb-3">
+            <label for="username" class="form-label">{{
+                'LOGIN.USERNAME_LABEL' | translate
+            }}</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">{{
+                'LOGIN.PASSWORD_LABEL' | translate
+            }}</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+            />
+        </div>
+        <button type="submit" class="btn btn-success">
+            {{ 'LOGIN.BUTTON' | translate }}
+        </button>
+    </form>
+</div>
