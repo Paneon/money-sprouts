@@ -16,8 +16,7 @@ interface Chore {
     selector: 'money-sprouts-plan-earnings',
     templateUrl: './plan-earnings.component.html',
     styleUrls: ['./plan-earnings.component.scss'],
-    standalone: true,
-    imports: [CommonModule, TranslateModule, FormsModule],
+    imports: [CommonModule, TranslateModule, FormsModule]
 })
 export class PlanEarningsComponent {
     chores: Chore[] = [

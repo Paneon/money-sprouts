@@ -18,8 +18,7 @@ interface Section {
     selector: 'money-sprouts-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
-    standalone: true,
-    imports: [TranslateModule, PageHeaderComponent],
+    imports: [TranslateModule, PageHeaderComponent]
 })
 export class DashboardComponent implements OnInit {
     name: string;

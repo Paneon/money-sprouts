@@ -8,8 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     animations: [fadeAnimation],
-    standalone: true,
-    imports: [RouterOutlet],
+    imports: [RouterOutlet]
 })
 export class AppComponent {
     title = 'Money Pig';

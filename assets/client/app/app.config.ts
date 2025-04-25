@@ -1,4 +1,4 @@
-import { Injector, LOCALE_ID, importProvidersFrom } from '@angular/core';
+import { Injector, LOCALE_ID, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
 import {
     provideRouter,
     withDebugTracing,
@@ -18,7 +18,7 @@ import {
     TranslateService,
 } from '@ngx-translate/core';
 import { customTranslate } from './services/customTranslate.loader';
-import { APP_INITIALIZER } from '@angular/core';
+
 import { routes } from './routes';
 import { pagesProviders } from './providers/pages.providers';
 
@@ -53,12 +53,10 @@ export const appConfig = {
         { provide: LOCALE_ID, useValue: 'de-DE' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
         AccountsResolver,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: appInitializerFactory,
-            deps: [TranslateService, Injector],
-            multi: true,
-        },
+        provideAppInitializer(() => {
+        const initializerFn = (appInitializerFactory)(inject(TranslateService), inject(Injector));
+        return initializerFn();
+      }),
         provideHttpClient(),
         provideAnimations(),
         provideRouter(

@@ -28,9 +28,8 @@ interface CombinedDataOverview {
     selector: 'money-sprouts-balance-overview',
     templateUrl: './balance-overview.component.html',
     styleUrls: ['./balance-overview.component.scss'],
-    standalone: true,
     imports: [CommonModule, TranslateModule, PageHeaderComponent],
-    providers: [ConfettiService],
+    providers: [ConfettiService]
 })
 export class BalanceOverviewComponent extends Loggable implements OnInit {
     private currentLang: string;

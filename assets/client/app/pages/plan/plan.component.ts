@@ -14,14 +14,13 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'money-sprouts-plan',
     templateUrl: './plan.component.html',
     styleUrls: ['./plan.component.scss'],
-    standalone: true,
     imports: [
         CommonModule,
         PlanExpensesComponent,
         PlanEarningsComponent,
         PageHeaderComponent,
         TranslateModule,
-    ],
+    ]
 })
 export class PlanComponent implements OnInit {
     account$: Observable<Account | null>;

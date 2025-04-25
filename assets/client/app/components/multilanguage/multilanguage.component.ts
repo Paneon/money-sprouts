@@ -7,8 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'money-sprouts-multilanguage',
     templateUrl: './multilanguage.component.html',
     styleUrls: ['./multilanguage.component.scss'],
-    standalone: true,
-    imports: [TranslateModule],
+    imports: [TranslateModule]
 })
 export class MultilanguageComponent {
     langs: string[] = ['de', 'en'];

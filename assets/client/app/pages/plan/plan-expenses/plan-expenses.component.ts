@@ -8,8 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'money-sprouts-plan-expenses',
     templateUrl: './plan-expenses.component.html',
     styleUrls: ['./plan-expenses.component.scss'],
-    standalone: true,
-    imports: [FormsModule, TranslateModule],
+    imports: [FormsModule, TranslateModule]
 })
 export class PlanExpensesComponent {
     message: string | null = '';

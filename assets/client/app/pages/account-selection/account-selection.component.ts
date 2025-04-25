@@ -15,7 +15,6 @@ import { FormatUrlPipe } from '@/app/pipes/format-url.pipe';
     selector: 'money-sprouts-account-selection',
     templateUrl: './account-selection.component.html',
     styleUrls: ['./account-selection.component.scss'],
-    standalone: true,
     imports: [
         CommonModule,
         RouterModule,
@@ -23,7 +22,7 @@ import { FormatUrlPipe } from '@/app/pipes/format-url.pipe';
         PageHeaderComponent,
         IconWithTextComponent,
         FormatUrlPipe,
-    ],
+    ]
 })
 export class AccountSelectionComponent {
     accounts$: Observable<Account[]>;

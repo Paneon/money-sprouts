@@ -37,8 +37,7 @@ interface CombinedDataTransaction {
     selector: 'money-sprouts-transaction-history',
     templateUrl: './transaction-history.component.html',
     styleUrls: ['./transaction-history.component.scss'],
-    standalone: true,
-    imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    imports: [CommonModule, TranslateModule, PageHeaderComponent]
 })
 export class TransactionHistoryComponent implements OnInit, OnDestroy {
     account$: Observable<Account | null> = of(null);

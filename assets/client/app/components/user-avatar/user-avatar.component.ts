@@ -14,8 +14,7 @@ import { CommonModule } from '@angular/common';
     selector: 'money-sprouts-user-avatar',
     templateUrl: './user-avatar.component.html',
     styleUrls: ['./user-avatar.component.scss'],
-    standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule]
 })
 export class UserAvatarComponent implements OnInit, OnDestroy {
     @Input() avatarFile: string;

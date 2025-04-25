@@ -7,8 +7,7 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
     selector: 'money-sprouts-icon-with-text',
     templateUrl: './icon-with-text.component.html',
     styleUrls: ['./icon-with-text.component.scss'],
-    standalone: true,
-    imports: [FormatUrlPipe, UserAvatarComponent],
+    imports: [FormatUrlPipe, UserAvatarComponent]
 })
 export class IconWithTextComponent {
     @Input() avatarFile: string;

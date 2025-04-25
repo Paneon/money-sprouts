@@ -8,8 +8,7 @@ import { MultilanguageComponent } from '../../components/multilanguage/multilang
     selector: 'money-sprouts-start',
     templateUrl: './start.component.html',
     styleUrls: ['./start.component.scss'],
-    standalone: true,
-    imports: [TranslateModule, MultilanguageComponent],
+    imports: [TranslateModule, MultilanguageComponent]
 })
 export class StartComponent {
     constructor(private readonly router: Router) {}

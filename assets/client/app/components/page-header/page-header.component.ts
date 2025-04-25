@@ -21,13 +21,12 @@ import { MultilanguageComponent } from '../multilanguage/multilanguage.component
     selector: 'money-sprouts-page-header',
     templateUrl: './page-header.component.html',
     styleUrls: ['./page-header.component.scss'],
-    standalone: true,
     imports: [
         CommonModule,
         TranslateModule,
         RouterModule,
         MultilanguageComponent,
-    ],
+    ]
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {
     childClass: string;
