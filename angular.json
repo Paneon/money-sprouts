@@ -5,7 +5,12 @@
   "projects": {
     "money-sprouts": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@angular/core:component": {
+          "style": "scss",
+          "standalone": true
+        }
+      },
       "root": "",
       "sourceRoot": "assets/client",
       "prefix": "app",

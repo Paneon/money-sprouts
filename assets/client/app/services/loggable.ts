@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export abstract class Loggable {
     log(...args: unknown[]) {
         console.log(`[${this.constructor.name}]`, ...args);

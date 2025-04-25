@@ -1,45 +1,44 @@
 <form class="form-container" (ngSubmit)="onSubmit()" #earnForm="ngForm">
-  @for (chore of chores; track trackByChore($index, chore)) {
+    @for (chore of chores; track trackByChore($index, chore)) {
     <div class="chore-item">
-      <input
-        type="checkbox"
-        class="checkbox"
-        id="{{ chore.id }}"
-        [(ngModel)]="chore.selected"
-        name="chore-{{ chore.id }}"
-        (change)="onChoreSelect(chore)"
+        <input
+            type="checkbox"
+            class="checkbox"
+            id="{{ chore.id }}"
+            [(ngModel)]="chore.selected"
+            name="chore-{{ chore.id }}"
+            (change)="onChoreSelect(chore)"
         />
-      <label for="{{ chore.id }}">
-        <img
+        <label for="{{ chore.id }}">
+            <img
           src="{{ chore.iconPath }}"
-          alt="{{ chore.name | translate }}"
-          class="chore-icon"
-          />
-        <span class="chore-name">{{ chore.name | translate }}</span>
-        <span class="chore-sum">{{ chore.sum | currency : 'EUR' }}</span>
-      </label>
+                alt="{{ chore.name | translate }}"
+                class="chore-icon"
+            />
+            <span class="chore-name">{{ chore.name | translate }}</span>
+            <span class="chore-sum">{{ chore.sum | currency : 'EUR' }}</span>
+        </label>
     </div>
-  }
+    }
 
-  <div class="button-group--plan-page">
-    <button class="button" type="submit" (click)="apply()">
-      {{ 'PLAN.TAB_EARN.BUTTON_LABEL.SUBMIT' | translate }}
-    </button>
-  </div>
+    <div class="button-group--plan-page">
+        <button class="button" type="submit" (click)="apply()">
+            {{ 'PLAN.TAB_EARN.BUTTON_LABEL.SUBMIT' | translate }}
+        </button>
+    </div>
 </form>
 @if (message) {
-  <p class="message">
+<p class="message">
     @if (icon) {
-      <span class="message__icon">{{ icon }}</span>
+    <span class="message__icon">{{ icon }}</span>
     }
     {{ message | translate }}
-  </p>
-}
-@if (errorMessage) {
-  <p class="error">
+</p>
+} @if (errorMessage) {
+<p class="error">
     @if (icon) {
-      <span class="error__icon">{{ icon }}</span>
+    <span class="error__icon">{{ icon }}</span>
     }
     <span class="error">{{ errorMessage | translate }}</span>
-  </p>
+</p>
 }

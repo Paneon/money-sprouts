@@ -1,117 +1,93 @@
 <money-sprouts-page-header></money-sprouts-page-header>
 <div id="transaction-history" class="custom-container no-transparency">
-  <div class="custom-table-button-grid">
-    <!-- Table section -->
-    @if (combinedDataTransaction$ | async; as data) {
-      <table class="transaction-table">
-        <thead>
-          <tr>
-            <th class="tablehead-image-wrapper">
+    <div class="custom-table-button-grid">
+        <!-- Table section -->
+        @if (combinedDataTransaction$ | async; as data) {
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th class="tablehead-image-wrapper">
               <img src="assets/images/money.png" alt="Income" />
-            </th>
-            <th class="tablehead-image-wrapper">
-              <img
+                    </th>
+                    <th class="tablehead-image-wrapper">
+                        <img
                 src="assets/images/shopping-card_small.png"
-                alt="Expenses"
-                />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          @if (account$ | async) {
-            @for (
-              _ of [].constructor(
-              Math.min(displayedItems, data.maxLength)
-              ); track trackByTransaction(i,
-              _); let i = $index) {
-              <tr>
-                @if (
-                  data.transactions.transactions.incomes[
-                  i
-                  ]) {
-                  <td
-                    class="transaction"
-                                    [ngClass]="{
-                                        'transaction--inactive':
-                                            !data.transactions.transactions
-                                                .incomes[i]?.applied
-                                    }"
-                    >
-                    <span class="transaction__amount"
-                      >+{{
-                      data.transactions.transactions
-                      .incomes[i].value / 100
-                      | currency
-                      : 'EUR'
-                      : 'symbol'
-                      : '1.2'
-                      }}</span
-                      >
-                      <span class="transaction__title">{{
-                        data.transactions.transactions.incomes[
-                        i
-                        ].title
-                      }}</span>
-                    </td>
-                  } @else {
-                    <td></td>
-                  }
-                  @if (
-                    data.transactions.transactions.expenses[
-                    i
-                    ]) {
-                    <td
-                      class="transaction transaction--expense"
-                                    [ngClass]="{
-                                        'transaction--inactive':
-                                            !data.transactions.transactions
-                                                .expenses[i]?.applied
-                                    }"
-                      >
-                      <span class="transaction__amount">{{
-                        data.transactions.transactions.expenses[
-                        i
-                        ].value / 100
-                        | currency
-                        : 'EUR'
-                        : 'symbol'
-                        : '1.2'
-                      }}</span>
-                      <span class="transaction__title">{{
-                        data.transactions.transactions.expenses[
-                        i
-                        ].title
-                      }}</span>
-                    </td>
-                  } @else {
-                    <td></td>
-                  }
+                            alt="Expenses"
+                        />
+                    </th>
                 </tr>
-              }
-            }
-          </tbody>
+            </thead>
+            <tbody>
+                @if (account$ | async) { @for ( _ of [].constructor(
+                Math.min(displayedItems, data.maxLength) ); track
+                trackByTransaction(i, _); let i = $index) {
+                <tr>
+                    @if ( data.transactions.transactions.incomes[ i ]) {
+                    <td
+                        class="transaction"
+                        [ngClass]="{
+                            'transaction--inactive':
+                                !data.transactions.transactions.incomes[i]
+                                    ?.applied
+                        }"
+                    >
+                        <span class="transaction__amount"
+                            >+{{
+                                data.transactions.transactions.incomes[i]
+                                    .value / 100
+                                    | currency : 'EUR' : 'symbol' : '1.2'
+                            }}</span
+                        >
+                        <span class="transaction__title">{{
+                            data.transactions.transactions.incomes[i].title
+                        }}</span>
+                    </td>
+                    } @else {
+                    <td></td>
+                    } @if ( data.transactions.transactions.expenses[ i ]) {
+                    <td
+                        class="transaction transaction--expense"
+                        [ngClass]="{
+                            'transaction--inactive':
+                                !data.transactions.transactions.expenses[i]
+                                    ?.applied
+                        }"
+                    >
+                        <span class="transaction__amount">{{
+                            data.transactions.transactions.expenses[i].value /
+                                100 | currency : 'EUR' : 'symbol' : '1.2'
+                        }}</span>
+                        <span class="transaction__title">{{
+                            data.transactions.transactions.expenses[i].title
+                        }}</span>
+                    </td>
+                    } @else {
+                    <td></td>
+                    }
+                </tr>
+                } }
+            </tbody>
         </table>
         <!-- Button section -->
         <div>
-          @if (displayedItems < latestCombinedData?.maxLength) {
+            @if (displayedItems < latestCombinedData?.maxLength) {
             <button (click)="showMore()" class="toggle-content-button">
-              <span>{{ 'HISTORY.SHOW_MORE' | translate }}</span>
-              <img
+                <span>{{ 'HISTORY.SHOW_MORE' | translate }}</span>
+                <img
                 src="assets/images/arrow-down_small.png"
-                alt="Arrow"
+                    alt="Arrow"
                 />
             </button>
-          }
-          @if (displayedItems > initialItems) {
+            } @if (displayedItems > initialItems) {
             <button (click)="hideExtra()" class="toggle-content-button">
-              <img
+                <img
                 src="assets/images/arrow-up_small.png"
-                alt="Arrow"
+                    alt="Arrow"
                 />
-              <span>{{ 'HISTORY.SHOW_LESS' | translate }}</span>
+                <span>{{ 'HISTORY.SHOW_LESS' | translate }}</span>
             </button>
-          }
+            }
         </div>
-      }
+        }
     </div>
-  </div>
+</div>

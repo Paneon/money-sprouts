@@ -1,81 +1,73 @@
 <nav class="navbar navbar-light bg-light">
-  <div
-    class="container-fluid d-flex justify-content-between align-items-center"
+    <div
+        class="container-fluid d-flex justify-content-between align-items-center"
     >
-    @if (!isOnAccountSelectionPage()) {
-      <div
-        class="d-flex justify-content-start align-items-center"
-        >
-        <button
-          class="btn btn-link"
-          (click)="goBack()"
-          [title]="'PAGE_HEADER.BUTTONS.GO_BACK' | translate"
-          >
-          <img
-            src="/assets/images/go-back-arrow_small.png"
-            alt="Go back arrow"
-            class="image-50x50"
-            />
-        </button>
-      </div>
-    } @else {
-      <div class="pseudo-element"></div>
-    }
-
-    @if (!isOnAccountSelectionPage()) {
-      <div
-        class="d-flex justify-content-center"
-        >
-        <div class="d-flex align-items-center">
-          @if (!isLoading) {
+        @if (!isOnAccountSelectionPage()) {
+        <div class="d-flex justify-content-start align-items-center">
             <button
-              class="btn btn-link"
-              (click)="goToAccountSelection()"
+                class="btn btn-link"
+                (click)="goBack()"
+                [title]="'PAGE_HEADER.BUTTONS.GO_BACK' | translate"
+            >
+                <img
+            src="/assets/images/go-back-arrow_small.png"
+                    alt="Go back arrow"
+                    class="image-50x50"
+                />
+            </button>
+        </div>
+        } @else {
+        <div class="pseudo-element"></div>
+        } @if (!isOnAccountSelectionPage()) {
+        <div class="d-flex justify-content-center">
+            <div class="d-flex align-items-center">
+                @if (!isLoading) {
+                <button
+                    class="btn btn-link"
+                    (click)="goToAccountSelection()"
                     [title]="
                         'PAGE_HEADER.BUTTONS.GO_TO_ACCOUNT_SELECTION'
                             | translate
                     "
-              >
-              <img
+                >
+                    <img
                         [src]="
                             accountService.getAvatarForAccount(account$ | async)
                         "
-                alt="Account avatar"
-                class="image-50x50"
-                />
-            </button>
-          }
-          <div class="navbar-text page-title">
-            {{ pageTitle | translate }}
-          </div>
+                        alt="Account avatar"
+                        class="image-50x50"
+                    />
+                </button>
+                }
+                <div class="navbar-text page-title">
+                    {{ pageTitle | translate }}
+                </div>
+            </div>
         </div>
-      </div>
-    } @else {
-      <div class="navbar-text added-padding-left page-title">
-        {{ welcomeTitle | translate }}
-      </div>
-    }
+        } @else {
+        <div class="navbar-text added-padding-left page-title">
+            {{ welcomeTitle | translate }}
+        </div>
+        } @if (isOnAccountSelectionPage()) {
+        <div class="pseudo-element"></div>
+        }
 
-    @if (isOnAccountSelectionPage()) {
-      <div class="pseudo-element"></div>
-    }
-
-    <div class="d-flex justify-content-end align-items-center">
-      <div>
-        <money-sprouts-multilanguage></money-sprouts-multilanguage>
-      </div>
-      <a
-        href="/logout"
-        (click)="onLogout($event)"
-        class="btn btn-link"
-        [title]="'PAGE_HEADER.BUTTONS.LOGOUT' | translate"
-        >
-        <img
+        <div class="d-flex justify-content-end align-items-center">
+            <div>
+                <money-sprouts-multilanguage></money-sprouts-multilanguage>
+            </div>
+            <a
+                href="/logout"
+                (click)="onLogout($event)"
+                class="btn btn-link"
+                [title]="'PAGE_HEADER.BUTTONS.LOGOUT' | translate"
+            >
+                <img
           src="assets/images/logout-round-grey_small.png"
-          alt="logout button"
-          class="image-50x50"
-          />
-      </a>
+                    alt="logout button"
+                    class="image-50x50"
+                />
+            </a>
+        </div>
     </div>
-  </div>
 </nav>

@@ -1,5 +1,10 @@
 import { Injector, LOCALE_ID, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {
+    provideRouter,
+    withDebugTracing,
+    withInMemoryScrolling,
+    withRouterConfig,
+} from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { DatePipe, registerLocaleData } from '@angular/common';
@@ -56,7 +61,20 @@ export const appConfig = {
         },
         provideHttpClient(),
         provideAnimations(),
-        provideRouter(routes),
+        provideRouter(
+            routes,
+            withDebugTracing(),
+            withInMemoryScrolling({
+                scrollPositionRestoration: 'enabled',
+                anchorScrolling: 'enabled',
+            }),
+            withRouterConfig({
+                onSameUrlNavigation: 'reload',
+                paramsInheritanceStrategy: 'always',
+                urlUpdateStrategy: 'deferred',
+                canceledNavigationResolution: 'replace',
+            })
+        ),
         ...pagesProviders,
     ],
 };

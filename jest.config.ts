@@ -19,7 +19,9 @@ const config: Config.InitialOptions = {
     testEnvironment: 'jsdom',
     collectCoverage: true,
     coverageDirectory: 'coverage',
-    coverageReporters: ['text', 'lcov'],
+    coverageReporters: ['json', 'lcov', 'text-summary'],
+    verbose: true,
+    testFailureExitCode: 1,
 };
 
 export default config;
