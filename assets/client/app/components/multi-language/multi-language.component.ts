@@ -4,13 +4,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'money-sprouts-multilanguage',
-    templateUrl: './multilanguage.component.html',
-    styleUrls: ['./multilanguage.component.scss'],
+    selector: 'money-sprouts-multi-language',
+    templateUrl: './multi-language.component.html',
+    styleUrls: ['./multi-language.component.scss'],
     imports: [TranslateModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultilanguageComponent {
+export class MultiLanguageComponent {
     langs: string[] = ['de', 'en'];
 
     currentLang = 'de';

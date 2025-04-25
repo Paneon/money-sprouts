@@ -10,13 +10,13 @@ import { Router, NavigationEnd, RouterModule, ActivatedRoute } from '@angular/ro
 import { filter, takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { MultilanguageComponent } from '../multilanguage/multilanguage.component';
+import { MultiLanguageComponent } from '../multi-language/multi-language.component';
 
 @Component({
     selector: 'money-sprouts-page-header',
     templateUrl: './page-header.component.html',
     styleUrls: ['./page-header.component.scss'],
-    imports: [CommonModule, TranslateModule, RouterModule, MultilanguageComponent],
+    imports: [CommonModule, TranslateModule, RouterModule, MultiLanguageComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {
