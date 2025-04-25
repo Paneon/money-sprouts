@@ -38,7 +38,8 @@
       ],
       "rules": {
         "@angular-eslint/template/use-track-by-function": "error",
-        "@angular-eslint/template/no-duplicate-attributes": "error"
+        "@angular-eslint/template/no-duplicate-attributes": "error",
+        "@angular-eslint/template/prefer-control-flow": "error"
       }
     }
   ]

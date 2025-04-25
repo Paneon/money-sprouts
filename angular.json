@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "money-sprouts:build:production"
+              "buildTarget": "money-sprouts:build:production"
             },
             "development": {
-              "browserTarget": "money-sprouts:build:development"
+              "buildTarget": "money-sprouts:build:development"
             }
           },
           "defaultConfiguration": "development"
