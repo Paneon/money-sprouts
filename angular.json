@@ -19,11 +19,13 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "public/build"
+              "base": "public/build",
+              "browser": ""
             },
             "index": "assets/client/index.html",
             "polyfills": [
-              "assets/client/polyfills.ts"
+              "assets/client/polyfills.ts",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.json",
             "assets": [
@@ -58,7 +60,8 @@
               ],
               "outputHashing": "all",
               "outputPath": {
-                "base": "public/build"
+                "base": "public/build",
+                "browser": ""
               }
             },
             "development": {
@@ -67,7 +70,8 @@
               "sourceMap": true,
               "namedChunks": true,
               "outputPath": {
-                "base": "public/build"
+                "base": "public/build",
+                "browser": ""
               }
             }
           },
