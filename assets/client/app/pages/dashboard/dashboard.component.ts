@@ -5,7 +5,7 @@ import { AccountService } from '@/app/services/account.service';
 import { RouterService } from '@/app/services/router.service';
 import { RoutePath } from '@/app/enum/routepath';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 
@@ -19,7 +19,7 @@ interface Section {
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
     standalone: true,
-    imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    imports: [TranslateModule, PageHeaderComponent],
 })
 export class DashboardComponent implements OnInit {
     name: string;

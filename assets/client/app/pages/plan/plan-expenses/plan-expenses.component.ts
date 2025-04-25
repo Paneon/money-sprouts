@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { FormattingHelperService } from '@/app/services/formatting-helper.service';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
     templateUrl: './plan-expenses.component.html',
     styleUrls: ['./plan-expenses.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, TranslateModule],
+    imports: [FormsModule, TranslateModule],
 })
 export class PlanExpensesComponent {
     message: string | null = '';

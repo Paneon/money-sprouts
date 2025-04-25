@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
     templateUrl: './multilanguage.component.html',
     styleUrls: ['./multilanguage.component.scss'],
     standalone: true,
-    imports: [CommonModule, TranslateModule],
+    imports: [TranslateModule],
 })
 export class MultilanguageComponent {
     langs: string[] = ['de', 'en'];

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -7,6 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     standalone: true,
-    imports: [CommonModule, TranslateModule],
+    imports: [TranslateModule],
 })
 export class LoginComponent {}

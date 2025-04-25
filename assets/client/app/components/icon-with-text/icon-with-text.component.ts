@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormatUrlPipe } from '../../pipes/format-url.pipe';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 
@@ -8,7 +8,7 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
     templateUrl: './icon-with-text.component.html',
     styleUrls: ['./icon-with-text.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormatUrlPipe, UserAvatarComponent],
+    imports: [FormatUrlPipe, UserAvatarComponent],
 })
 export class IconWithTextComponent {
     @Input() avatarFile: string;
