@@ -9,7 +9,7 @@ import { RouteId } from '../../enum/route-id';
 import { AccountService } from '../../services/account.service';
 import { RouterService } from '../../services/router.service';
 import { Account } from '../../types/account';
-import { RoutePath } from '../../enum/routepath';
+import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
 
 @Component({
     selector: 'money-sprouts-multilanguage',
@@ -41,6 +41,8 @@ describe('PageHeaderComponent', () => {
             allowance: 2,
             firstPayday: new Date(),
         };
+
+        setupMockLocalStorage(mockAccount);
 
         mockAccountService = {
             currentAccount$: of(mockAccount),

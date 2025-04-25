@@ -48,10 +48,7 @@ export class DashboardComponent implements OnInit {
 
     private destroy$ = new Subject<void>();
 
-    constructor(
-        private readonly router: RouterService,
-        private readonly accountService: AccountService
-    ) {}
+    constructor(private readonly router: RouterService, private readonly accountService: AccountService) {}
 
     ngOnInit() {
         this.sections;
@@ -72,17 +69,14 @@ export class DashboardComponent implements OnInit {
             this.accountService.refreshAccount(account.id);
         });
 
-        this.accountService.currentAccount$.subscribe(
-            (account: Account | null) => {
-                this.name = account?.name || '';
-            }
-        );
+        this.accountService.currentAccount$.subscribe((account: Account | null) => {
+            this.name = account?.name || '';
+        });
     }
 
     goToSection(section: string) {
         if (!this.name) {
-            console.error('No account name available!');
-            return;
+            throw new Error('No account name available!');
         }
 
         switch (section) {

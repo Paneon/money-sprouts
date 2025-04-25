@@ -8,14 +8,10 @@ import { RouterService } from '../../services/router.service';
 import { AccountService } from '../../services/account.service';
 import { Account } from '../../types/account';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {
-    ActivatedRoute,
-    Router,
-    ActivatedRouteSnapshot,
-    ParamMap,
-} from '@angular/router';
+import { ActivatedRoute, Router, ActivatedRouteSnapshot, ParamMap } from '@angular/router';
 import { RouteId } from '../../enum/route-id';
 import { PageHeaderComponent } from '../../components/page-header/page-header.component';
+import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
 
 @Component({
     selector: 'money-sprouts-page-header',
@@ -48,18 +44,16 @@ describe('DashboardComponent', () => {
             firstPayday: new Date(),
         };
 
+        setupMockLocalStorage(mockAccount);
+
         mockAccountService = {
             currentAccount$: new BehaviorSubject<Account | null>(mockAccount),
             loading: new BehaviorSubject<boolean>(false),
             getAccounts: jest.fn().mockReturnValue(of([mockAccount])),
             getAccount: jest.fn().mockReturnValue(of(mockAccount)),
-            refreshAccount: jest
-                .fn()
-                .mockReturnValue(of(mockAccount).subscribe()),
+            refreshAccount: jest.fn().mockReturnValue(of(mockAccount).subscribe()),
             setAccount: jest.fn(),
-            getAvatarForAccount: jest
-                .fn()
-                .mockReturnValue(mockAccount.avatar?.url ?? ''),
+            getAvatarForAccount: jest.fn().mockReturnValue(mockAccount.avatar?.url ?? ''),
             getCurrentBalance: jest.fn().mockReturnValue(mockAccount.balance),
             getCurrentAccountId: jest.fn().mockReturnValue(mockAccount.id),
             logoutOrDeselectAccount: jest.fn(),
@@ -140,21 +134,15 @@ describe('DashboardComponent', () => {
 
     it('should have sections initialized', () => {
         expect(component.sections.length).toBe(3);
-        expect(component.sections[0].name).toBe(
-            'DASHBOARD.SECTION_NAME.OVERVIEW'
-        );
-        expect(component.sections[1].name).toBe(
-            'DASHBOARD.SECTION_NAME.HISTORY'
-        );
+        expect(component.sections[0].name).toBe('DASHBOARD.SECTION_NAME.OVERVIEW');
+        expect(component.sections[1].name).toBe('DASHBOARD.SECTION_NAME.HISTORY');
         expect(component.sections[2].name).toBe('DASHBOARD.SECTION_NAME.PLAN');
     });
 
     it('should subscribe and handle account data', (done) => {
         component.account$.subscribe((account) => {
             expect(account).toBeDefined();
-            expect(mockAccountService.refreshAccount).toHaveBeenCalledWith(
-                mockAccount.id
-            );
+            expect(mockAccountService.refreshAccount).toHaveBeenCalledWith(mockAccount.id);
             done();
         });
     });
@@ -167,30 +155,26 @@ describe('DashboardComponent', () => {
     it('should navigate to the correct section for Overview', () => {
         component.name = 'testAccount';
         component.goToSection('DASHBOARD.SECTION_NAME.OVERVIEW');
-        expect(mockRouterService.navigateToOverview).toHaveBeenCalledWith(
-            'testAccount'
-        );
+        expect(mockRouterService.navigateToOverview).toHaveBeenCalledWith('testAccount');
     });
 
     it('should navigate to the correct section for History', () => {
         component.name = 'testAccount';
         component.goToSection('DASHBOARD.SECTION_NAME.HISTORY');
-        expect(mockRouterService.navigateToHistory).toHaveBeenCalledWith(
-            'testAccount'
-        );
+        expect(mockRouterService.navigateToHistory).toHaveBeenCalledWith('testAccount');
     });
 
     it('should navigate to the correct section for Plan', () => {
         component.name = 'testAccount';
         component.goToSection('DASHBOARD.SECTION_NAME.PLAN');
-        expect(mockRouterService.navigateToPlan).toHaveBeenCalledWith(
-            'testAccount'
-        );
+        expect(mockRouterService.navigateToPlan).toHaveBeenCalledWith('testAccount');
     });
 
     it('should not navigate when name is not available', () => {
         component.name = '';
-        component.goToSection('DASHBOARD.SECTION_NAME.OVERVIEW');
+        expect(() => {
+            component.goToSection('DASHBOARD.SECTION_NAME.OVERVIEW');
+        }).toThrow('No account name available!');
         expect(mockRouterService.navigateToOverview).not.toHaveBeenCalled();
     });
 

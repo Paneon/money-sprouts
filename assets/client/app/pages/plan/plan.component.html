@@ -10,8 +10,7 @@
                 <span
                     [ngClass]="
                         calculatedAmount > 0 ? 'text-success' : 'text-danger'
-                    "
-                >
+                    ">
                     {{
                         calculatedAmount / 100
                             | currency : 'EUR' : 'symbol' : '1.2'
@@ -26,13 +25,8 @@
                 (keydown.enter)="switchTab('spend')"
                 [class.active]="activeTab === 'spend'"
                 class="tab"
-                tabindex="0"
-            >
-                <img
-                    [ngSrc]="'/assets/images/shopping-card_small.png'"
-                    alt="spend-icon"
-                    class="tab-icon"
-                />
+                tabindex="0">
+                <img [ngSrc]="'/assets/images/shopping-card_small.png'" alt="spend-icon" class="tab-icon" />
                 <span class="tab-title">{{
                     'PLAN.TAB_SPENT.TITLE' | translate
                 }}</span>
@@ -42,13 +36,8 @@
                 (keydown.enter)="switchTab('earn')"
                 [class.active]="activeTab === 'earn'"
                 class="tab"
-                tabindex="0"
-            >
-                <img
-                    [ngSrc]="'/assets/images/money.png'"
-                    alt="earn-icon"
-                    class="tab-icon"
-                />
+                tabindex="0">
+                <img [ngSrc]="'/assets/images/money.png'" alt="earn-icon" class="tab-icon" />
                 <span class="tab-title">{{
                     'PLAN.TAB_EARN.TITLE' | translate
                 }}</span>
@@ -61,16 +50,14 @@
                 <money-sprouts-plan-expenses
                     (calculateAmount)="onCalculateDeductionOfAmount($event)"
                     (applyChanges)="onApplyChanges($event.title, $event.amount)"
-                    (resetBalance)="onResetBalance()"
-                ></money-sprouts-plan-expenses>
+                    (resetBalance)="onResetBalance()"></money-sprouts-plan-expenses>
             </div>
             } @if (activeTab === 'earn') {
             <div>
                 <money-sprouts-plan-earnings
                     (calculateAmount)="onCalculateAdditionOfAmount($event)"
                     (applyChanges)="onApplyChanges($event.title, $event.amount)"
-                    (resetBalance)="onResetBalance()"
-                ></money-sprouts-plan-earnings>
+                    (resetBalance)="onResetBalance()"></money-sprouts-plan-earnings>
             </div>
             }
         </div>

@@ -16,12 +16,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "public/build",
+            "outputPath": {
+              "base": "public/build"
+            },
             "index": "assets/client/index.html",
-            "main": "assets/client/main.ts",
-            "polyfills": "assets/client/polyfills.ts",
+            "polyfills": [
+              "assets/client/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.json",
             "assets": [
               {
@@ -36,7 +39,8 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            ],
+            "browser": "assets/client/main.ts"
           },
           "configurations": {
             "production": {
@@ -53,22 +57,24 @@
                 }
               ],
               "outputHashing": "all",
-              "outputPath": "public/build"
+              "outputPath": {
+                "base": "public/build"
+              }
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "outputPath": "public/build"
+              "outputPath": {
+                "base": "public/build"
+              }
             }
           },
           "defaultConfiguration": "development"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "money-sprouts:build:production"

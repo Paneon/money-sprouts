@@ -1,15 +1,14 @@
-import 'jest-preset-angular/setup-jest';
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 import { TestBed } from '@angular/core/testing';
-import {
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { expect, jest } from '@jest/globals';
 
+// Setup Zone.js test environment first
+setupZoneTestEnv();
+
+// Initialize test environment
 try {
-    TestBed.initTestEnvironment(
-        BrowserDynamicTestingModule,
-        platformBrowserDynamicTesting()
-    );
+    TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 } catch (e) {
     // Test environment has already been initialized
 }
@@ -25,15 +24,10 @@ Object.defineProperty(window, 'getComputedStyle', {
 // Add custom matchers
 expect.extend({
     toHaveBeenCalledWith(received: jest.Mock, ...args: any[]) {
-        const pass = received.mock.calls.some((call) =>
-            args.every((arg, index) => call[index] === arg)
-        );
+        const pass = received.mock.calls.some((call) => args.every((arg, index) => call[index] === arg));
         return {
             pass,
-            message: () =>
-                `expected ${received.getMockName()} to have been called with ${args.join(
-                    ', '
-                )}`,
+            message: () => `expected ${received.getMockName()} to have been called with ${args.join(', ')}`,
         };
     },
 });

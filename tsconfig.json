@@ -6,6 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictNullChecks": false,
+    "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -13,7 +14,6 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": true,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
@@ -21,7 +21,6 @@
     "target": "ES2020",
     "module": "ES2020",
     "useDefineForClassFields": false,
-    "allowSyntheticDefaultImports": true,
     "lib": [
       "ES2020",
       "dom"

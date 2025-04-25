@@ -5,7 +5,10 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "paths": {
+      "@/*": ["assets/client/*"]
+    },
   },
   "include": [
     "**/*.spec.ts",
