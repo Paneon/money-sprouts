@@ -2,6 +2,9 @@
   "name": "@money-sprouts/source",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.11.1"
+  },
   "scripts": {
     "dev": "ng build --watch --configuration development",
     "dev:watch": "ng build --watch --configuration development",
