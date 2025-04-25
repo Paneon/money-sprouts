@@ -1,41 +1,39 @@
 <money-sprouts-page-header></money-sprouts-page-header>
 <div id="balance-overview" class="custom-container no-transparency">
     @if (account$ | async; as account) {
-    <div class="custom-text-box">
-        <div class="balance-display">
-            {{ account.balance / 100 | currency : 'EUR' : 'symbol' : '1.2' }}
-        </div>
-        <div class="funny-image-wrapper">
-            <figure>
-          <img [src]="getFunnyImage(account.balance)" alt="funny image" />
-            </figure>
-        </div>
-        @if (combinedDataOverview$ | async; as data) {
-        <div class="payday-info">
-            <div>
-                {{ 'OVERVIEW.PAYDAY_WEEKDAY_LABEL' | translate }}
-                <span class="bold-text">{{
-                    data.formatedNextPayday | translate
-                }}</span>
+        <div class="custom-text-box">
+            <div class="balance-display">
+                {{ account.balance / 100 | currency: 'EUR' : 'symbol' : '1.2' }}
             </div>
-            <div>
-                {{ 'OVERVIEW.PAYDAY_COUNTER_LABEL' | translate }}
-                <span class="bold-text">{{
-                    data.daysUntilNextPayday | translate
-                }}</span>
+            <div class="funny-image-wrapper">
+                <figure>
+                    <img [src]="funnyImage" alt="funny image" />
+                </figure>
             </div>
+            @if (combinedDataOverview$ | async; as data) {
+                <div class="payday-info">
+                    <div>
+                        {{ 'OVERVIEW.PAYDAY_WEEKDAY_LABEL' | translate }}
+                        <span class="bold-text">{{ data.formatedNextPayday | translate }}</span>
+                    </div>
+                    <div>
+                        {{ 'OVERVIEW.PAYDAY_COUNTER_LABEL' | translate }}
+                        <span class="bold-text">{{ data.daysUntilNextPayday | translate }}</span>
+                    </div>
+                </div>
+            }
+            @if (showConfettiText) {
+                <div class="confetti-text">
+                    {{ ConfettiText | translate }}
+                </div>
+            }
+            @if (showConfettiText || showTreasureButton) {
+                <div>
+                    <button class="button extra-margin" type="submit">
+                        {{ 'OVERVIEW.BUTTON_TEXT_LEVEL' | translate }}
+                    </button>
+                </div>
+            }
         </div>
-        } @if (showConfettiText) {
-        <div class="confetti-text">
-            {{ ConfettiText | translate }}
-        </div>
-        } @if (showConfettiText || showTreasureButton) {
-        <div>
-            <button class="button extra-margin" type="submit">
-                {{ 'OVERVIEW.BUTTON_TEXT_LEVEL' | translate }}
-            </button>
-        </div>
-        }
-    </div>
     }
 </div>

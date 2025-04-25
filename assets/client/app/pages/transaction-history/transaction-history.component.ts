@@ -1,22 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Account } from '@/app/types/account';
 import { Transaction } from '@/app/types/transaction';
-import {
-    combineLatest,
-    map,
-    Observable,
-    of,
-    Subject,
-    switchMap,
-    takeUntil,
-} from 'rxjs';
+import { combineLatest, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AccountService } from '@/app/services/account.service';
 import { TransactionService } from '@/app/services/transaction.service';
-import {
-    debounceTime,
-    distinctUntilChanged,
-    shareReplay,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
@@ -37,7 +25,8 @@ interface CombinedDataTransaction {
     selector: 'money-sprouts-transaction-history',
     templateUrl: './transaction-history.component.html',
     styleUrls: ['./transaction-history.component.scss'],
-    imports: [CommonModule, TranslateModule, PageHeaderComponent]
+    imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionHistoryComponent implements OnInit, OnDestroy {
     account$: Observable<Account | null> = of(null);
@@ -53,20 +42,25 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     latestCombinedData: CombinedDataTransaction | null = null;
     initialItems = 5;
     displayedItems = this.initialItems;
-    Math = Math;
-    public isExpanded = false;
     private destroy$ = new Subject<void>();
 
-    trackByTransaction(
-        index: number,
-        transaction: Transaction | undefined
-    ): number {
-        return transaction?.id ?? index;
+    get displayedItemsLength(): number {
+        if (!this.latestCombinedData) return 0;
+        return Math.min(this.displayedItems, this.latestCombinedData.maxLength);
+    }
+
+    get hasMoreItems(): boolean {
+        if (!this.latestCombinedData) return false;
+        return this.displayedItems < this.latestCombinedData.maxLength;
+    }
+
+    get displayRange(): number[] {
+        return Array.from({ length: this.displayedItemsLength }, (_, i) => i);
     }
 
     constructor(
         private readonly accountService: AccountService,
-        private readonly transactionService: TransactionService
+        private readonly transactionService: TransactionService,
     ) {}
 
     ngOnInit() {
@@ -74,35 +68,23 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
             distinctUntilChanged((prev, curr) => {
                 return prev && curr ? prev.id === curr.id : prev === curr;
             }),
-            debounceTime(300) // waits 300ms between emisssions
+            debounceTime(300), // waits 300ms between emisssions
         );
 
         const transactions$ = this.account$.pipe(
             switchMap((account) => {
-                console.log(
-                    'transaction-history, ngOnInit, switchMap, account$ emitted:',
-                    account
-                );
+                console.log('transaction-history, ngOnInit, switchMap, account$ emitted:', account);
 
                 if (account && account.id) {
-                    return this.transactionService.getTransactionsByAccountId(
-                        account.id
-                    );
+                    return this.transactionService.getTransactionsByAccountId(account.id);
                 } else {
                     return of([]);
                 }
             }),
             map((transactions) => {
-                console.log(
-                    'Loaded transactions in ngOnInit via account$:',
-                    transactions
-                );
-                const incomes = transactions.filter(
-                    (transaction) => transaction.type === 1
-                );
-                const expenses = transactions.filter(
-                    (transaction) => transaction.type === 2
-                );
+                console.log('Loaded transactions in ngOnInit via account$:', transactions);
+                const incomes = transactions.filter((transaction) => transaction.type === 1);
+                const expenses = transactions.filter((transaction) => transaction.type === 2);
 
                 return {
                     transactions: {
@@ -111,22 +93,16 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
                     },
                 };
             }),
-            shareReplay(1)
+            shareReplay(1),
         );
 
         const maxLength$ = transactions$.pipe(
             map((transactionData) =>
-                this.Math.max(
-                    transactionData.transactions.incomes.length,
-                    transactionData.transactions.expenses.length
-                )
-            )
+                Math.max(transactionData.transactions.incomes.length, transactionData.transactions.expenses.length),
+            ),
         );
 
-        this.combinedDataTransaction$ = combineLatest([
-            transactions$,
-            maxLength$,
-        ]).pipe(
+        this.combinedDataTransaction$ = combineLatest([transactions$, maxLength$]).pipe(
             map(([transactions, maxLength]) => {
                 return {
                     transactions,
@@ -134,24 +110,18 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
                 };
             }),
             shareReplay(1),
-            takeUntil(this.destroy$)
+            takeUntil(this.destroy$),
         );
 
         this.combinedDataTransaction$.subscribe((data) => {
-            console.log(
-                'subscribed to transactions to get latestCombinedData',
-                data
-            );
+            console.log('subscribed to transactions to get latestCombinedData', data);
             this.latestCombinedData = data;
         });
     }
 
-    showMore() {
+    showMore(): void {
         if (this.latestCombinedData) {
-            this.displayedItems = Math.min(
-                this.displayedItems + 5,
-                this.latestCombinedData.maxLength
-            );
+            this.displayedItems = Math.min(this.displayedItems + 5, this.latestCombinedData.maxLength);
         }
     }
 

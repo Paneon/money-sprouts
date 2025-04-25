@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
 import { DashboardComponent } from './dashboard.component';
 import { provideHttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -10,18 +9,11 @@ import { Account } from '../../types/account';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, ParamMap, Routes } from '@angular/router';
 import { RouteId } from '../../enum/route-id';
-import { PageHeaderComponent } from '../../components/page-header/page-header.component';
 import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
 import { provideRouter } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
 import { withComponentInputBinding } from '@angular/router';
-
-@Component({
-    selector: 'money-sprouts-page-header',
-    template: '<div></div>',
-    standalone: true,
-})
-class MockPageHeaderComponent {}
+import { MockPageHeaderComponent } from '../../testing/mocks/components/mock-page-header.component';
 
 const routes: Routes = [
     {
@@ -114,12 +106,7 @@ describe('DashboardComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [
-                DashboardComponent,
-                TranslateModule.forRoot(),
-                MockPageHeaderComponent,
-                NoopAnimationsModule,
-            ],
+            imports: [DashboardComponent, TranslateModule.forRoot(), MockPageHeaderComponent, NoopAnimationsModule],
             providers: [
                 provideHttpClient(),
                 provideRouter(routes, withComponentInputBinding()),
@@ -193,11 +180,5 @@ describe('DashboardComponent', () => {
             component.goToSection('DASHBOARD.SECTION_NAME.OVERVIEW');
         }).toThrow('No account name available!');
         expect(mockRouterService.navigateToOverview).not.toHaveBeenCalled();
-    });
-
-    it('should track sections by name', () => {
-        const section = component.sections[0];
-        const result = component.trackBySection(0, section);
-        expect(result).toBe(section.name);
     });
 });

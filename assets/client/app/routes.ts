@@ -4,10 +4,10 @@ import { BalanceOverviewComponent } from './pages/balance-overview/balance-overv
 import { TransactionHistoryComponent } from './pages/transaction-history/transaction-history.component';
 import { PlanComponent } from './pages/plan/plan.component';
 import { AccountSelectionComponent } from './pages/account-selection/account-selection.component';
-import { AccountsResolver } from './services/accounts-resolver.service';
 import { RoutePath } from './enum/routepath';
 import { RouteId } from './enum/route-id';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { accountsResolver } from './services/accounts-resolver.service';
 
 export const routes: Routes = [
     {
@@ -28,7 +28,7 @@ export const routes: Routes = [
     {
         path: RoutePath.AccountDashboard,
         component: DashboardComponent,
-        resolve: { accounts: AccountsResolver },
+        resolve: { accounts: accountsResolver },
         data: { routeId: RouteId.AccountDashboard },
     },
     {

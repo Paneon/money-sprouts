@@ -1,15 +1,8 @@
 import { ConfettiService } from '@/app/services/confetti.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Account } from '@/app/types/account';
-import {
-    combineLatest,
-    debounceTime,
-    distinctUntilChanged,
-    map,
-    Observable,
-    tap,
-} from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, tap } from 'rxjs';
 import { AccountService } from '@/app/services/account.service';
 import { DatePipe, CommonModule } from '@angular/common';
 import { Loggable } from '@/app/services/loggable';
@@ -29,10 +22,12 @@ interface CombinedDataOverview {
     templateUrl: './balance-overview.component.html',
     styleUrls: ['./balance-overview.component.scss'],
     imports: [CommonModule, TranslateModule, PageHeaderComponent],
-    providers: [ConfettiService]
+    providers: [ConfettiService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BalanceOverviewComponent extends Loggable implements OnInit {
     private currentLang: string;
+    protected currentAccount: Account | null = null;
     account$: Observable<Account | null>;
     nextPayday$: Observable<Date | null>;
     combinedDataOverview$: Observable<CombinedDataOverview>;
@@ -44,7 +39,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         private readonly datePipe: DatePipe,
         private readonly translate: TranslateService,
         private readonly cd: ChangeDetectorRef,
-        private readonly confettiService: ConfettiService
+        private readonly confettiService: ConfettiService,
     ) {
         super();
         this.currentLang = this.translate.currentLang;
@@ -56,10 +51,12 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
             .pipe(
                 debounceTime(300),
                 distinctUntilChanged((prev, current) => {
-                    return prev && current
-                        ? prev.id === current.id
-                        : prev === current;
-                })
+                    return prev && current ? prev.id === current.id : prev === current;
+                }),
+                tap((account) => {
+                    this.currentAccount = account;
+                    this.cd.markForCheck();
+                }),
             )
             .subscribe((account) => {
                 if (account) {
@@ -68,14 +65,9 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                 }
             });
 
-        this.nextPayday$ = this.account$.pipe(
-            map((account) => account?.nextPayday ?? null)
-        );
+        this.nextPayday$ = this.account$.pipe(map((account) => account?.nextPayday ?? null));
 
-        this.combinedDataOverview$ = combineLatest([
-            this.account$,
-            this.nextPayday$,
-        ]).pipe(
+        this.combinedDataOverview$ = combineLatest([this.account$, this.nextPayday$]).pipe(
             map(([account, nextPayday]) => {
                 return {
                     account,
@@ -87,28 +79,21 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                         ? this.getDaysUntilNextPayday(nextPayday)
                         : 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN',
                 };
-            })
+            }),
         );
     }
 
-    getFunnyImage(balance: number | undefined): string {
-        if (typeof balance === 'undefined') {
+    get funnyImage(): string {
+        if (!this.currentAccount || typeof this.currentAccount.balance === 'undefined') {
             return balanceImageMap[balanceImageMap.length - 1].imagePath;
         }
 
-        if (balance === 0) {
-            return (
-                balanceImageMap.find((item) => item.threshold === 0)
-                    ?.imagePath || ''
-            );
+        if (this.currentAccount.balance === 0) {
+            return balanceImageMap.find((item) => item.threshold === 0)?.imagePath || '';
         }
 
-        const imagePath = balanceImageMap.find(
-            (item) => balance <= item.threshold
-        )?.imagePath;
-        return (
-            imagePath || balanceImageMap[balanceImageMap.length - 1].imagePath
-        );
+        const imagePath = balanceImageMap.find((item) => this.currentAccount!.balance <= item.threshold)?.imagePath;
+        return imagePath || balanceImageMap[balanceImageMap.length - 1].imagePath;
     }
 
     getFormatedNextPayday(nextPayday: Date): string {
@@ -118,18 +103,8 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         const currentLanguage = this.translate.currentLang;
         const datePipe = new DatePipe(currentLanguage);
 
-        const formattedDate = datePipe.transform(
-            nextPayday,
-            'dd. MMMM yyyy',
-            undefined,
-            currentLanguage
-        );
-        const dayName = datePipe.transform(
-            nextPayday,
-            'EEEE',
-            undefined,
-            currentLanguage
-        );
+        const formattedDate = datePipe.transform(nextPayday, 'dd. MMMM yyyy', undefined, currentLanguage);
+        const dayName = datePipe.transform(nextPayday, 'EEEE', undefined, currentLanguage);
         return `${dayName} (${formattedDate})`;
     }
 
@@ -172,8 +147,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
             const confettiTriggeredKey = `confettiTriggeredFor${item.threshold}`;
 
             if (balance >= item.threshold) {
-                const hasConfettiBeenTriggered =
-                    localStorage.getItem(confettiTriggeredKey);
+                const hasConfettiBeenTriggered = localStorage.getItem(confettiTriggeredKey);
 
                 if (!hasConfettiBeenTriggered) {
                     this.resetOtherConfettiTriggerKeys(confettiTriggeredKey);

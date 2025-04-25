@@ -1,4 +1,4 @@
-@import "../../styles/abstract/variables";
+@use "../../styles/abstract/variables" as *;
 
 .balance-display {
   font-size: 2rem;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, computed } from '@angular/core';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +16,8 @@ interface Chore {
     selector: 'money-sprouts-plan-earnings',
     templateUrl: './plan-earnings.component.html',
     styleUrls: ['./plan-earnings.component.scss'],
-    imports: [CommonModule, TranslateModule, FormsModule]
+    imports: [CommonModule, TranslateModule, FormsModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanEarningsComponent {
     chores: Chore[] = [
@@ -58,12 +59,19 @@ export class PlanEarningsComponent {
     message: string | null = '';
     errorMessage: string | null = '';
     icon: string | null = null;
-    @Output() calculateAmount = new EventEmitter<number>();
-    @Output() applyChanges = new EventEmitter<{
+    @Output() readonly calculateAmount = new EventEmitter<number>();
+    @Output() readonly applyChanges = new EventEmitter<{
         title: string;
         amount: number;
     }>();
-    @Output() resetBalance = new EventEmitter<void>();
+    @Output() readonly resetBalance = new EventEmitter<void>();
+
+    // Computed properties
+    readonly hasSelectedChore = computed(() => this.selectedChore !== null);
+    readonly hasCalculatedChore = computed(() => this.selectedChore?.calculated ?? false);
+    readonly hasMessages = computed(() => this.message !== '' || this.errorMessage !== '');
+    readonly isValidForCalculation = computed(() => this.hasSelectedChore() && !this.hasCalculatedChore());
+    readonly isValidForApplication = computed(() => this.hasSelectedChore() && this.hasCalculatedChore());
 
     constructor(private readonly translate: TranslateService) {}
 
@@ -100,14 +108,13 @@ export class PlanEarningsComponent {
     }
 
     calculate() {
-        if (this.selectedChore && !this.selectedChore.calculated) {
-            console.log('selected Sum:', this.selectedChore.sum);
-            const formatedAmount = this.selectedChore.sum * 100;
+        if (this.isValidForCalculation()) {
+            const formatedAmount = this.selectedChore!.sum * 100;
             this.calculateAmount.emit(formatedAmount);
             this.icon = 'ℹ';
             this.message = 'PLAN.TAB_EARN.MESSAGE_CONFIRM';
-            this.selectedChore.calculated = true;
-        } else if (this.selectedChore && this.selectedChore.calculated) {
+            this.selectedChore!.calculated = true;
+        } else if (this.hasCalculatedChore()) {
             this.message = '';
             this.errorMessage = 'PLAN.TAB_EARN.MESSAGE_DENY';
             this.icon = '⚠';
@@ -119,23 +126,15 @@ export class PlanEarningsComponent {
     }
 
     apply() {
-        if (this.selectedChore) {
+        if (this.isValidForApplication()) {
             this.clearMessages();
-            this.translate
-                .get(this.selectedChore.name)
-                .subscribe((translatedTitle) => {
-                    const title = translatedTitle;
-                    const amount = this.selectedChore!.sum * 100;
+            this.translate.get(this.selectedChore!.name).subscribe((translatedTitle) => {
+                const title = translatedTitle;
+                const amount = this.selectedChore!.sum * 100;
 
-                    console.log(
-                        'selected name & sum:',
-                        translatedTitle,
-                        amount
-                    );
-
-                    this.applyChanges.emit({ title, amount });
-                    this.resetChoreSelection();
-                });
+                this.applyChanges.emit({ title, amount });
+                this.resetChoreSelection();
+            });
 
             this.message = 'PLAN.TAB_EARN.MESSAGE_SUCCESS';
             this.icon = '✔';
@@ -152,9 +151,5 @@ export class PlanEarningsComponent {
 
     onSubmit() {
         console.log('Form submitted!');
-    }
-
-    trackByChore(index: number, chore: Chore): string {
-        return chore.name;
     }
 }

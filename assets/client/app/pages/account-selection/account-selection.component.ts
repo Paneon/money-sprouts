@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Account } from '@/app/types/account';
@@ -15,14 +15,8 @@ import { FormatUrlPipe } from '@/app/pipes/format-url.pipe';
     selector: 'money-sprouts-account-selection',
     templateUrl: './account-selection.component.html',
     styleUrls: ['./account-selection.component.scss'],
-    imports: [
-        CommonModule,
-        RouterModule,
-        TranslateModule,
-        PageHeaderComponent,
-        IconWithTextComponent,
-        FormatUrlPipe,
-    ]
+    imports: [CommonModule, RouterModule, TranslateModule, PageHeaderComponent, IconWithTextComponent, FormatUrlPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountSelectionComponent {
     accounts$: Observable<Account[]>;
@@ -30,13 +24,9 @@ export class AccountSelectionComponent {
     constructor(
         private readonly router: RouterService,
         public readonly route: ActivatedRoute,
-        private readonly accountService: AccountService
+        private readonly accountService: AccountService,
     ) {
         this.accounts$ = this.accountService.getAccounts();
-    }
-
-    trackByAccount(index: number, account: Account): number {
-        return account.id;
     }
 
     proceed(name: string) {
@@ -45,9 +35,7 @@ export class AccountSelectionComponent {
         }
 
         this.accounts$.subscribe((accounts) => {
-            const selectedAccount = accounts.find(
-                (account) => account.name === name
-            );
+            const selectedAccount = accounts.find((account) => account.name === name);
 
             if (selectedAccount) {
                 this.accountService.setAccount(selectedAccount);

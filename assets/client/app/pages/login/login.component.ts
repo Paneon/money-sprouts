@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'money-sprouts-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    standalone: true,
     imports: [TranslateModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {}

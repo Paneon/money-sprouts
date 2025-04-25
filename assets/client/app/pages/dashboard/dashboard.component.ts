@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { debounceTime, Observable, Subject } from 'rxjs';
 import { Account } from '@/app/types/account';
 import { AccountService } from '@/app/services/account.service';
@@ -18,7 +18,8 @@ interface Section {
     selector: 'money-sprouts-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
-    imports: [TranslateModule, PageHeaderComponent]
+    imports: [TranslateModule, PageHeaderComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
     name: string;
@@ -41,13 +42,12 @@ export class DashboardComponent implements OnInit {
         },
     ];
 
-    trackBySection(index: number, section: Section): string {
-        return section.name;
-    }
-
     private destroy$ = new Subject<void>();
 
-    constructor(private readonly router: RouterService, private readonly accountService: AccountService) {}
+    constructor(
+        private readonly router: RouterService,
+        private readonly accountService: AccountService,
+    ) {}
 
     ngOnInit() {
         this.sections;
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
             debounceTime(300),
             distinctUntilChanged((prev, curr) => {
                 return prev.id === curr.id;
-            })
+            }),
         );
 
         this.account$.subscribe((account) => {

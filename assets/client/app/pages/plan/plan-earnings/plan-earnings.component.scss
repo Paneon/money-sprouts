@@ -1,4 +1,4 @@
-@import '../../../styles/abstract/variables';
+@use '../../../styles/abstract/variables' as *;
 
 .checkbox {
   width: 20px;

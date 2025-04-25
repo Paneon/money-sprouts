@@ -16,13 +16,7 @@ import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock'
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { expect, describe, beforeEach, it } from '@jest/globals';
-
-@Component({
-    selector: 'money-sprouts-page-header',
-    template: '<div></div>',
-    standalone: true,
-})
-class MockPageHeaderComponent {}
+import { MockPageHeaderComponent } from '../../testing/mocks/components/mock-page-header.component';
 
 describe('BalanceOverviewComponent', () => {
     let component: BalanceOverviewComponent;
@@ -117,7 +111,10 @@ describe('BalanceOverviewComponent', () => {
 
     it('should get funny image', () => {
         const balance = 100;
-        const imagePath = component.getFunnyImage(balance);
+        const accountWithBalance = { ...mockAccount, balance };
+        currentAccountSubject.next(accountWithBalance);
+        fixture.detectChanges();
+        const imagePath = component.funnyImage;
         expect(imagePath).toBeTruthy();
     });
 });

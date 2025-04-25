@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StartComponent } from './start.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
 import { provideRouter } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
@@ -9,7 +9,7 @@ import { provideLocationMocks } from '@angular/common/testing';
 @Component({
     selector: 'money-sprouts-multilanguage',
     template: '<div></div>',
-    standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class MockMultilanguageComponent {}
 
