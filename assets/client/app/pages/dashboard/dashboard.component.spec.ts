@@ -1,28 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
 import { DashboardComponent } from './dashboard.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { of, BehaviorSubject, Observable } from 'rxjs';
+import { of, BehaviorSubject } from 'rxjs';
 import { RouterService } from '../../services/router.service';
 import { AccountService } from '../../services/account.service';
 import { Account } from '../../types/account';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {
-    ActivatedRoute,
-    Router,
-    ActivatedRouteSnapshot,
-    ParamMap,
-} from '@angular/router';
+import { ActivatedRoute, Router, ActivatedRouteSnapshot, ParamMap, Routes } from '@angular/router';
 import { RouteId } from '../../enum/route-id';
-import { PageHeaderComponent } from '../../components/page-header/page-header.component';
+import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
+import { provideRouter } from '@angular/router';
+import { provideLocationMocks } from '@angular/common/testing';
+import { withComponentInputBinding } from '@angular/router';
+import { MockPageHeaderComponent } from '../../testing/mocks/components/mock-page-header.component';
 
-@Component({
-    selector: 'money-sprouts-page-header',
-    template: '<div></div>',
-    standalone: true,
-})
-class MockPageHeaderComponent {}
+const routes: Routes = [
+    {
+        path: 'account/:name/dashboard',
+        component: DashboardComponent,
+    },
+];
 
 describe('DashboardComponent', () => {
     let component: DashboardComponent;
@@ -33,7 +31,7 @@ describe('DashboardComponent', () => {
     let mockRouter: Partial<Router>;
     let mockActivatedRoute: Partial<ActivatedRoute>;
 
-    beforeEach(async () => {
+    beforeEach(() => {
         mockAccount = {
             id: 1,
             nextPayday: new Date(),
@@ -48,18 +46,16 @@ describe('DashboardComponent', () => {
             firstPayday: new Date(),
         };
 
+        setupMockLocalStorage(mockAccount);
+
         mockAccountService = {
             currentAccount$: new BehaviorSubject<Account | null>(mockAccount),
             loading: new BehaviorSubject<boolean>(false),
             getAccounts: jest.fn().mockReturnValue(of([mockAccount])),
             getAccount: jest.fn().mockReturnValue(of(mockAccount)),
-            refreshAccount: jest
-                .fn()
-                .mockReturnValue(of(mockAccount).subscribe()),
+            refreshAccount: jest.fn().mockReturnValue(of(mockAccount).subscribe()),
             setAccount: jest.fn(),
-            getAvatarForAccount: jest
-                .fn()
-                .mockReturnValue(mockAccount.avatar?.url ?? ''),
+            getAvatarForAccount: jest.fn().mockReturnValue(mockAccount.avatar?.url ?? ''),
             getCurrentBalance: jest.fn().mockReturnValue(mockAccount.balance),
             getCurrentAccountId: jest.fn().mockReturnValue(mockAccount.id),
             logoutOrDeselectAccount: jest.fn(),
@@ -109,29 +105,23 @@ describe('DashboardComponent', () => {
             firstChild: null,
         };
 
-        await TestBed.configureTestingModule({
-            imports: [
-                DashboardComponent,
-                HttpClientTestingModule,
-                TranslateModule.forRoot(),
-                MockPageHeaderComponent,
-                NoopAnimationsModule,
-            ],
+        TestBed.configureTestingModule({
+            imports: [DashboardComponent, TranslateModule.forRoot(), MockPageHeaderComponent, NoopAnimationsModule],
             providers: [
+                provideHttpClient(),
+                provideRouter(routes, withComponentInputBinding()),
+                provideLocationMocks(),
                 { provide: AccountService, useValue: mockAccountService },
                 { provide: RouterService, useValue: mockRouterService },
                 { provide: Router, useValue: mockRouter },
                 { provide: ActivatedRoute, useValue: mockActivatedRoute },
                 TranslateService,
             ],
-        }).compileComponents();
+        });
 
         fixture = TestBed.createComponent(DashboardComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-
-        // Wait for async operations to complete
-        await fixture.whenStable();
     });
 
     it('should create', () => {
@@ -140,63 +130,55 @@ describe('DashboardComponent', () => {
 
     it('should have sections initialized', () => {
         expect(component.sections.length).toBe(3);
-        expect(component.sections[0].name).toBe(
-            'DASHBOARD.SECTION_NAME.OVERVIEW'
-        );
-        expect(component.sections[1].name).toBe(
-            'DASHBOARD.SECTION_NAME.HISTORY'
-        );
+        expect(component.sections[0].name).toBe('DASHBOARD.SECTION_NAME.OVERVIEW');
+        expect(component.sections[1].name).toBe('DASHBOARD.SECTION_NAME.HISTORY');
         expect(component.sections[2].name).toBe('DASHBOARD.SECTION_NAME.PLAN');
     });
 
-    it('should subscribe and handle account data', (done) => {
+    it('should subscribe and handle account data', () => {
         component.account$.subscribe((account) => {
             expect(account).toBeDefined();
-            expect(mockAccountService.refreshAccount).toHaveBeenCalledWith(
-                mockAccount.id
-            );
-            done();
+            expect(mockAccountService.refreshAccount).toHaveBeenCalledWith(mockAccount.id);
         });
     });
 
-    it('should set name from URL on init', () => {
+    it('should set name from URL on init', (done) => {
+        // Use fakeAsync and tick to handle setTimeout
+        jest.useFakeTimers();
+        fixture = TestBed.createComponent(DashboardComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+
+        jest.runAllTimers();
+
         expect(component.name).toBe('jasmine');
         expect(mockRouterService.getURL).toHaveBeenCalled();
+        done();
     });
 
     it('should navigate to the correct section for Overview', () => {
         component.name = 'testAccount';
         component.goToSection('DASHBOARD.SECTION_NAME.OVERVIEW');
-        expect(mockRouterService.navigateToOverview).toHaveBeenCalledWith(
-            'testAccount'
-        );
+        expect(mockRouterService.navigateToOverview).toHaveBeenCalledWith('testAccount');
     });
 
     it('should navigate to the correct section for History', () => {
         component.name = 'testAccount';
         component.goToSection('DASHBOARD.SECTION_NAME.HISTORY');
-        expect(mockRouterService.navigateToHistory).toHaveBeenCalledWith(
-            'testAccount'
-        );
+        expect(mockRouterService.navigateToHistory).toHaveBeenCalledWith('testAccount');
     });
 
     it('should navigate to the correct section for Plan', () => {
         component.name = 'testAccount';
         component.goToSection('DASHBOARD.SECTION_NAME.PLAN');
-        expect(mockRouterService.navigateToPlan).toHaveBeenCalledWith(
-            'testAccount'
-        );
+        expect(mockRouterService.navigateToPlan).toHaveBeenCalledWith('testAccount');
     });
 
     it('should not navigate when name is not available', () => {
         component.name = '';
-        component.goToSection('DASHBOARD.SECTION_NAME.OVERVIEW');
+        expect(() => {
+            component.goToSection('DASHBOARD.SECTION_NAME.OVERVIEW');
+        }).toThrow('No account name available!');
         expect(mockRouterService.navigateToOverview).not.toHaveBeenCalled();
-    });
-
-    it('should track sections by name', () => {
-        const section = component.sections[0];
-        const result = component.trackBySection(0, section);
-        expect(result).toBe(section.name);
     });
 });

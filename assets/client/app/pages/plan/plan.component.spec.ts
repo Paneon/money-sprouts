@@ -1,26 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlanComponent } from './plan.component';
-import { Component } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AccountStorageService } from '../../services/account-storage.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccountService } from '../../services/account.service';
 import { TransactionService } from '../../services/transaction.service';
 import { of } from 'rxjs';
-
-@Component({
-    selector: 'money-sprouts-page-header',
-    template: '<div></div>',
-    standalone: true,
-})
-class MockPageHeaderComponent {}
+import { MockPageHeaderComponent } from '../../testing/mocks/components/mock-page-header.component';
+import { Account } from '../../types/account';
 
 describe('PlanComponent', () => {
     let component: PlanComponent;
     let fixture: ComponentFixture<PlanComponent>;
     let mockAccountService: Partial<AccountService>;
-    let mockTransactionService: Partial<TransactionService>;
-    let mockAccountStorageService: Partial<AccountStorageService>;
+    let mockTransactionService: Required<Pick<TransactionService, 'addTransaction'>>;
+    let mockAccountStorageService: Required<Pick<AccountStorageService, 'getCurrentAccount'>>;
 
     beforeEach(async () => {
         mockAccountService = {
@@ -45,6 +39,7 @@ describe('PlanComponent', () => {
         mockTransactionService = {
             addTransaction: jest.fn(),
         };
+
         mockAccountStorageService = {
             getCurrentAccount: jest.fn().mockReturnValue({
                 id: '1',
@@ -62,12 +57,7 @@ describe('PlanComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule,
-                TranslateModule.forRoot(),
-                PlanComponent,
-                MockPageHeaderComponent,
-            ],
+            imports: [HttpClientTestingModule, TranslateModule.forRoot(), PlanComponent, MockPageHeaderComponent],
             providers: [
                 { provide: AccountService, useValue: mockAccountService },
                 {
@@ -140,19 +130,13 @@ describe('PlanComponent', () => {
 
     describe('onApplyChanges', () => {
         it('should apply changes using the TransactionService', () => {
-            const transactionSpy = jest.spyOn(
-                mockTransactionService,
-                'addTransaction'
-            );
+            const transactionSpy = jest.spyOn(mockTransactionService, 'addTransaction');
             const title = 'Test Transaction';
             const value = 50;
+            const mockAccount = mockAccountStorageService.getCurrentAccount() as NonNullable<Account>;
 
             component.onApplyChanges(title, value);
-            expect(transactionSpy).toHaveBeenCalledWith(
-                title,
-                value,
-                mockAccountStorageService.getCurrentAccount().id
-            );
+            expect(transactionSpy).toHaveBeenCalledWith(title, value, mockAccount.id);
         });
     });
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { Account } from '@/app/types/account';
@@ -14,14 +14,8 @@ import { TranslateModule } from '@ngx-translate/core';
     selector: 'money-sprouts-plan',
     templateUrl: './plan.component.html',
     styleUrls: ['./plan.component.scss'],
-    standalone: true,
-    imports: [
-        CommonModule,
-        PlanExpensesComponent,
-        PlanEarningsComponent,
-        PageHeaderComponent,
-        TranslateModule,
-    ],
+    imports: [CommonModule, PlanExpensesComponent, PlanEarningsComponent, PageHeaderComponent, TranslateModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanComponent implements OnInit {
     account$: Observable<Account | null>;
@@ -32,7 +26,7 @@ export class PlanComponent implements OnInit {
 
     constructor(
         private readonly accountService: AccountService,
-        private readonly transactionService: TransactionService
+        private readonly transactionService: TransactionService,
     ) {}
 
     ngOnInit() {

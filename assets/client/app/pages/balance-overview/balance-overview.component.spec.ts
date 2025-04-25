@@ -12,13 +12,11 @@ import { RouteId } from '../../enum/route-id';
 import { RouterService } from '../../services/router.service';
 import { Account } from '../../types/account';
 import { mockRouter } from '../../testing/mocks/router.mock';
-
-@Component({
-    selector: 'money-sprouts-page-header',
-    template: '<div></div>',
-    standalone: true,
-})
-class MockPageHeaderComponent {}
+import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { expect, describe, beforeEach, it } from '@jest/globals';
+import { MockPageHeaderComponent } from '../../testing/mocks/components/mock-page-header.component';
 
 describe('BalanceOverviewComponent', () => {
     let component: BalanceOverviewComponent;
@@ -48,9 +46,8 @@ describe('BalanceOverviewComponent', () => {
             navigateToAccountDashboard: jest.fn(),
         };
 
-        currentAccountSubject = new BehaviorSubject<Account | null>(
-            mockAccount
-        );
+        currentAccountSubject = new BehaviorSubject<Account | null>(mockAccount);
+        setupMockLocalStorage(mockAccount);
 
         mockAccountService = {
             currentAccount$: currentAccountSubject.asObservable(),
@@ -61,15 +58,14 @@ describe('BalanceOverviewComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule,
-                TranslateModule.forRoot(),
-                RouterModule,
-                BalanceOverviewComponent,
-                MockPageHeaderComponent,
-            ],
+            imports: [TranslateModule.forRoot(), RouterModule, BalanceOverviewComponent, MockPageHeaderComponent],
             providers: [
-                { provide: AccountService, useValue: mockAccountService },
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
+                {
+                    provide: AccountService,
+                    useValue: mockAccountService,
+                },
                 { provide: Router, useValue: mockRouter },
                 { provide: RouterService, useValue: mockRouterService },
                 {
@@ -110,14 +106,15 @@ describe('BalanceOverviewComponent', () => {
     });
 
     it('should get avatar for account', () => {
-        expect(mockAccountService.getAvatarForAccount).toHaveBeenCalledWith(
-            mockAccount
-        );
+        expect(mockAccountService.getAvatarForAccount).toHaveBeenCalledWith(mockAccount);
     });
 
     it('should get funny image', () => {
         const balance = 100;
-        const imagePath = component.getFunnyImage(balance);
+        const accountWithBalance = { ...mockAccount, balance };
+        currentAccountSubject.next(accountWithBalance);
+        fixture.detectChanges();
+        const imagePath = component.funnyImage;
         expect(imagePath).toBeTruthy();
     });
 });

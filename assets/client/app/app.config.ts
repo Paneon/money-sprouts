@@ -1,19 +1,20 @@
-import { Injector, LOCALE_ID, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { Injector, LOCALE_ID, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
+import {
+    provideRouter,
+    withDebugTracing,
+    withInMemoryScrolling,
+    withRouterConfig,
+    withNavigationErrorHandler,
+    NavigationError,
+} from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { AccountsResolver } from './services/accounts-resolver.service';
-import {
-    TranslateLoader,
-    TranslateModule,
-    TranslateService,
-} from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { customTranslate } from './services/customTranslate.loader';
-import { APP_INITIALIZER } from '@angular/core';
 import { routes } from './routes';
 import { pagesProviders } from './providers/pages.providers';
 
@@ -26,6 +27,12 @@ export function appInitializerFactory(translate: TranslateService) {
         translate.use('de');
         return Promise.resolve();
     };
+}
+
+function navigationErrorHandler(error: NavigationError): void {
+    console.error('Navigation Error:', error);
+    // You can add custom error handling logic here
+    // For example, redirect to an error page or show a notification
 }
 
 registerLocaleData(localeDe, 'de');
@@ -42,21 +49,32 @@ export const appConfig = {
                     useClass: customTranslate,
                     deps: [HttpClient],
                 },
-            })
+            }),
         ),
         // Force German locale regardless of browser settings
         { provide: LOCALE_ID, useValue: 'de-DE' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
-        AccountsResolver,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: appInitializerFactory,
-            deps: [TranslateService, Injector],
-            multi: true,
-        },
+        provideAppInitializer(() => {
+            const translate = inject(TranslateService);
+            return appInitializerFactory(translate)();
+        }),
         provideHttpClient(),
         provideAnimations(),
-        provideRouter(routes),
+        provideRouter(
+            routes,
+            withDebugTracing(),
+            withInMemoryScrolling({
+                scrollPositionRestoration: 'enabled',
+                anchorScrolling: 'enabled',
+            }),
+            withRouterConfig({
+                onSameUrlNavigation: 'reload',
+                paramsInheritanceStrategy: 'always',
+                urlUpdateStrategy: 'deferred',
+                canceledNavigationResolution: 'replace',
+            }),
+            withNavigationErrorHandler(navigationErrorHandler),
+        ),
         ...pagesProviders,
     ],
 };

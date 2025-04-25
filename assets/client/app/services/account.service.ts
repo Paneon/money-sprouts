@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-    BehaviorSubject,
-    catchError,
-    Observable,
-    shareReplay,
-    tap,
-    throwError,
-    map,
-} from 'rxjs';
+import { BehaviorSubject, catchError, Observable, shareReplay, tap, throwError, map, distinctUntilChanged } from 'rxjs';
 import { Account } from '../types/account';
 import { ApiService } from './api.service';
 import { AccountStorageService } from './account-storage.service';
@@ -19,10 +11,7 @@ import { Loggable } from './loggable';
 })
 export class AccountService extends Loggable {
     private currentAccountSubject = new BehaviorSubject<Account | null>(null);
-    currentAccount$ = this.currentAccountSubject.asObservable().pipe(
-        tap((account) => this.log('Emission from currentAccount$: ', account)),
-        shareReplay(1)
-    );
+    currentAccount$ = this.currentAccountSubject.asObservable().pipe(shareReplay(1));
     loading = new BehaviorSubject<boolean>(false);
 
     // Declare accounts$ as an Observable using shareReplay and cache last emitted value
@@ -46,11 +35,7 @@ export class AccountService extends Loggable {
     private balanceUpdateStatus = new BehaviorSubject<string>('');
     public balanceUpdateStatus$ = this.balanceUpdateStatus.asObservable();
 
-    constructor(
-        private http: HttpClient,
-        private api: ApiService,
-        private storage: AccountStorageService
-    ) {
+    constructor(private http: HttpClient, private api: ApiService, private storage: AccountStorageService) {
         super();
         const savedAccount = this.storage.getCurrentAccount();
         if (savedAccount) {

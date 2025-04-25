@@ -1,5 +1,5 @@
-@import '../../styles/abstract/variables';
-@import '../../styles/abstract/mixins';
+@use '../../styles/abstract/variables' as *;
+@use '../../styles/abstract/mixins' as *;
 
 .tablehead-image-wrapper {
   text-align: center;

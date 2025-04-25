@@ -1,26 +1,26 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { FormattingHelperService } from '@/app/services/formatting-helper.service';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-plan-expenses',
     templateUrl: './plan-expenses.component.html',
     styleUrls: ['./plan-expenses.component.scss'],
-    standalone: true,
-    imports: [CommonModule, FormsModule, TranslateModule],
+    imports: [FormsModule, TranslateModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanExpensesComponent {
     message: string | null = '';
     icon: string | null = null;
 
-    @Output() calculateAmount = new EventEmitter<number>();
-    @Output() applyChanges = new EventEmitter<{
+    @Output() readonly calculateAmount = new EventEmitter<number>();
+    @Output() readonly applyChanges = new EventEmitter<{
         title: string;
         amount: number;
     }>();
-    @Output() resetBalance = new EventEmitter<void>();
+    @Output() readonly resetBalance = new EventEmitter<void>();
 
     constructor(public formattingHelperService: FormattingHelperService) {}
 
@@ -29,10 +29,7 @@ export class PlanExpensesComponent {
             return;
         } else if (spendingForm.valid) {
             const displayAmount = spendingForm.value.amount;
-            const enteredAmount =
-                this.formattingHelperService.germanFormatToNumber(
-                    displayAmount
-                ) * 100;
+            const enteredAmount = this.formattingHelperService.germanFormatToNumber(displayAmount) * 100;
             console.log('enteredAmount: ', enteredAmount);
             this.calculateAmount.emit(enteredAmount);
             this.icon = 'ℹ';
@@ -54,10 +51,7 @@ export class PlanExpensesComponent {
         } else if (spendingForm.valid) {
             const title = spendingForm.value.title;
             const enteredAmount = spendingForm.value.amount;
-            const formattedAmount =
-                this.formattingHelperService.germanFormatToNumber(
-                    enteredAmount
-                );
+            const formattedAmount = this.formattingHelperService.germanFormatToNumber(enteredAmount);
             const amount = formattedAmount * -100;
             console.log('selected name & sum:', title, amount);
 

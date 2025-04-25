@@ -1,4 +1,5 @@
-@import '../../styles/abstract/variables';
+@use '../../styles/abstract/variables' as *;
+@use "sass:color";
 
 .balance-display {
   font-size: 2rem;
@@ -22,7 +23,7 @@
 }
 
 .tab.active {
-  color: darken($tertiary-color, 5%);
+  color: color.adjust($tertiary-color, $lightness: -5%);
   border: 2px solid $tertiary-color;
   border-bottom: none;
   border-top-left-radius: 10px;

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageHeaderComponent } from './page-header.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -9,14 +10,8 @@ import { RouteId } from '../../enum/route-id';
 import { AccountService } from '../../services/account.service';
 import { RouterService } from '../../services/router.service';
 import { Account } from '../../types/account';
-import { RoutePath } from '../../enum/routepath';
-
-@Component({
-    selector: 'money-sprouts-multilanguage',
-    template: '<div></div>',
-    standalone: true,
-})
-class MockMultilanguageComponent {}
+import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
+import { MockMultiLanguageComponent } from '../../testing/mocks/components/mock-multi-language.component';
 
 describe('PageHeaderComponent', () => {
     let component: PageHeaderComponent;
@@ -42,6 +37,8 @@ describe('PageHeaderComponent', () => {
             firstPayday: new Date(),
         };
 
+        setupMockLocalStorage(mockAccount);
+
         mockAccountService = {
             currentAccount$: of(mockAccount),
             logoutOrDeselectAccount: jest.fn().mockResolvedValue(undefined),
@@ -62,13 +59,10 @@ describe('PageHeaderComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule,
-                TranslateModule.forRoot(),
-                PageHeaderComponent,
-                MockMultilanguageComponent,
-            ],
+            imports: [TranslateModule.forRoot(), PageHeaderComponent, MockMultiLanguageComponent],
             providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 TranslateService,
                 {
                     provide: ActivatedRoute,

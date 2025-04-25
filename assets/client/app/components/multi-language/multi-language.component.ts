@@ -1,27 +1,25 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'money-sprouts-multilanguage',
-    templateUrl: './multilanguage.component.html',
-    styleUrls: ['./multilanguage.component.scss'],
-    standalone: true,
-    imports: [CommonModule, TranslateModule],
+    selector: 'money-sprouts-multi-language',
+    templateUrl: './multi-language.component.html',
+    styleUrls: ['./multi-language.component.scss'],
+    imports: [TranslateModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultilanguageComponent {
+export class MultiLanguageComponent {
     langs: string[] = ['de', 'en'];
 
     currentLang = 'de';
     constructor(
         public translateService: TranslateService,
-        private readonly cd: ChangeDetectorRef
+        private readonly cd: ChangeDetectorRef,
     ) {
         const browserLang = this.translateService.getBrowserLang() ?? 'de';
-        this.currentLang = this.langs.includes(browserLang)
-            ? browserLang
-            : 'de';
+        this.currentLang = this.langs.includes(browserLang) ? browserLang : 'de';
 
         this.translateService.setDefaultLang(this.currentLang);
         this.translateService.use(this.currentLang);

@@ -1,10 +1,10 @@
 /* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap';
 
-@import './abstract/variables';
-@import './abstract/css-variables';
-@import './abstract/mixins';
-@import './vendors/bootstrap';
+@use './abstract/variables' as *;
+@use './abstract/css-variables' as *;
+@use './abstract/mixins' as *;
+@use './vendors/bootstrap' as *;
 
 * {
   font-family: $font-family;

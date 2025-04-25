@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
-import { MultilanguageComponent } from '../../components/multilanguage/multilanguage.component';
+import { MultiLanguageComponent } from '../../components/multi-language/multi-language.component';
 
 @Component({
     selector: 'money-sprouts-start',
     templateUrl: './start.component.html',
     styleUrls: ['./start.component.scss'],
-    standalone: true,
-    imports: [CommonModule, TranslateModule, MultilanguageComponent],
+    imports: [TranslateModule, MultiLanguageComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StartComponent {
     constructor(private readonly router: Router) {}

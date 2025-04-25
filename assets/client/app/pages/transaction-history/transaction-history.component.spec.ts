@@ -9,15 +9,8 @@ import { RouteId } from '../../enum/route-id';
 import { Account } from '../../types/account';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
-import { Component } from '@angular/core';
 import { mockRouter } from '../../testing/mocks/router.mock';
-
-@Component({
-    selector: 'money-sprouts-page-header',
-    template: '<div></div>',
-    standalone: true,
-})
-class MockPageHeaderComponent {}
+import { MockPageHeaderComponent } from '../../testing/mocks/components/mock-page-header.component';
 
 describe('TransactionHistoryComponent', () => {
     let component: TransactionHistoryComponent;

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { debounceTime, Observable, Subject } from 'rxjs';
 import { Account } from '@/app/types/account';
 import { AccountService } from '@/app/services/account.service';
 import { RouterService } from '@/app/services/router.service';
 import { RoutePath } from '@/app/enum/routepath';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 
@@ -18,8 +18,8 @@ interface Section {
     selector: 'money-sprouts-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
-    standalone: true,
-    imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    imports: [TranslateModule, PageHeaderComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
     name: string;
@@ -42,15 +42,11 @@ export class DashboardComponent implements OnInit {
         },
     ];
 
-    trackBySection(index: number, section: Section): string {
-        return section.name;
-    }
-
     private destroy$ = new Subject<void>();
 
     constructor(
         private readonly router: RouterService,
-        private readonly accountService: AccountService
+        private readonly accountService: AccountService,
     ) {}
 
     ngOnInit() {
@@ -65,24 +61,21 @@ export class DashboardComponent implements OnInit {
             debounceTime(300),
             distinctUntilChanged((prev, curr) => {
                 return prev.id === curr.id;
-            })
+            }),
         );
 
         this.account$.subscribe((account) => {
             this.accountService.refreshAccount(account.id);
         });
 
-        this.accountService.currentAccount$.subscribe(
-            (account: Account | null) => {
-                this.name = account?.name || '';
-            }
-        );
+        this.accountService.currentAccount$.subscribe((account: Account | null) => {
+            this.name = account?.name || '';
+        });
     }
 
     goToSection(section: string) {
         if (!this.name) {
-            console.error('No account name available!');
-            return;
+            throw new Error('No account name available!');
         }
 
         switch (section) {

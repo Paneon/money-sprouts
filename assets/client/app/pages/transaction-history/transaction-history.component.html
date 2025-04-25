@@ -2,7 +2,7 @@
 <div id="transaction-history" class="custom-container no-transparency">
     <div class="custom-table-button-grid">
         <!-- Table section -->
-        <ng-container *ngIf="combinedDataTransaction$ | async as data">
+        @if (combinedDataTransaction$ | async; as data) {
             <table class="transaction-table">
                 <thead>
                     <tr>
@@ -10,117 +10,72 @@
                             <img src="assets/images/money.png" alt="Income" />
                         </th>
                         <th class="tablehead-image-wrapper">
-                            <img
-                                src="assets/images/shopping-card_small.png"
-                                alt="Expenses"
-                            />
+                            <img src="assets/images/shopping-card_small.png" alt="Expenses" />
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngIf="account$ | async">
-                        <ng-container
-                            *ngFor="
-                                let _ of [].constructor(
-                                    Math.min(displayedItems, data.maxLength)
-                                );
-                                let i = index;
-                                trackBy: trackByTransaction
-                            "
-                        >
+                    @if (account$ | async) {
+                        @for (index of displayRange; track index) {
                             <tr>
-                                <td
-                                    class="transaction"
-                                    [ngClass]="{
-                                        'transaction--inactive':
-                                            !data.transactions.transactions
-                                                .incomes[i]?.applied
-                                    }"
-                                    *ngIf="
-                                        data.transactions.transactions.incomes[
-                                            i
-                                        ];
-                                        else emptyCell
-                                    "
-                                >
-                                    <span class="transaction__amount"
-                                        >+{{
-                                            data.transactions.transactions
-                                                .incomes[i].value / 100
-                                                | currency
-                                                    : 'EUR'
-                                                    : 'symbol'
-                                                    : '1.2'
-                                        }}</span
-                                    >
-
-                                    <span class="transaction__title">{{
-                                        data.transactions.transactions.incomes[
-                                            i
-                                        ].title
-                                    }}</span>
-                                </td>
-                                <td
-                                    class="transaction transaction--expense"
-                                    [ngClass]="{
-                                        'transaction--inactive':
-                                            !data.transactions.transactions
-                                                .expenses[i]?.applied
-                                    }"
-                                    *ngIf="
-                                        data.transactions.transactions.expenses[
-                                            i
-                                        ];
-                                        else emptyCell
-                                    "
-                                >
-                                    <span class="transaction__amount">{{
-                                        data.transactions.transactions.expenses[
-                                            i
-                                        ].value / 100
-                                            | currency
-                                                : 'EUR'
-                                                : 'symbol'
-                                                : '1.2'
-                                    }}</span>
-                                    <span class="transaction__title">{{
-                                        data.transactions.transactions.expenses[
-                                            i
-                                        ].title
-                                    }}</span>
-                                </td>
+                                @if (data.transactions.transactions.incomes[index]) {
+                                    <td
+                                        class="transaction"
+                                        [ngClass]="{
+                                            'transaction--inactive':
+                                                !data.transactions.transactions.incomes[index]?.applied,
+                                        }">
+                                        <span class="transaction__amount"
+                                            >+{{
+                                                data.transactions.transactions.incomes[index].value / 100
+                                                    | currency: 'EUR' : 'symbol' : '1.2'
+                                            }}</span
+                                        >
+                                        <span class="transaction__title">{{
+                                            data.transactions.transactions.incomes[index].title
+                                        }}</span>
+                                    </td>
+                                } @else {
+                                    <td></td>
+                                }
+                                @if (data.transactions.transactions.expenses[index]) {
+                                    <td
+                                        class="transaction transaction--expense"
+                                        [ngClass]="{
+                                            'transaction--inactive':
+                                                !data.transactions.transactions.expenses[index]?.applied,
+                                        }">
+                                        <span class="transaction__amount">{{
+                                            data.transactions.transactions.expenses[index].value / 100
+                                                | currency: 'EUR' : 'symbol' : '1.2'
+                                        }}</span>
+                                        <span class="transaction__title">{{
+                                            data.transactions.transactions.expenses[index].title
+                                        }}</span>
+                                    </td>
+                                } @else {
+                                    <td></td>
+                                }
                             </tr>
-                        </ng-container>
-
-                        <ng-template #emptyCell><td></td></ng-template>
-                    </ng-container>
+                        }
+                    }
                 </tbody>
             </table>
-
             <!-- Button section -->
             <div>
-                <ng-container
-                    *ngIf="displayedItems < latestCombinedData?.maxLength"
-                >
+                @if (hasMoreItems) {
                     <button (click)="showMore()" class="toggle-content-button">
                         <span>{{ 'HISTORY.SHOW_MORE' | translate }}</span>
-                        <img
-                            src="assets/images/arrow-down_small.png"
-                            alt="Arrow"
-                        />
+                        <img src="assets/images/arrow-down_small.png" alt="Arrow" />
                     </button>
-                </ng-container>
-
-                <ng-container *ngIf="displayedItems > initialItems">
+                }
+                @if (displayedItems > initialItems) {
                     <button (click)="hideExtra()" class="toggle-content-button">
-                        <img
-                            src="assets/images/arrow-up_small.png"
-                            alt="Arrow"
-                        />
+                        <img src="assets/images/arrow-up_small.png" alt="Arrow" />
                         <span>{{ 'HISTORY.SHOW_LESS' | translate }}</span>
                     </button>
-                </ng-container>
+                }
             </div>
-        </ng-container>
+        }
     </div>
 </div>

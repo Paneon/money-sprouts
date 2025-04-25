@@ -1,18 +1,23 @@
 <div class="form-group">
+    @if (currentLang === 'de') {
     <img
-        *ngIf="currentLang === 'de'"
         src="assets/images/usa-flag.png"
         alt="usa-flag"
         [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
         class="flag-icon"
         (click)="switchLang('en')"
+        (keydown.enter)="switchLang('en')"
+        tabindex="0"
     />
+    } @if (currentLang === 'en') {
     <img
-        *ngIf="currentLang === 'en'"
         src="assets/images/germany-flag.png"
         alt="germany-flag"
         [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
         class="flag-icon"
         (click)="switchLang('de')"
+        (keydown.enter)="switchLang('de')"
+        tabindex="0"
     />
+    }
 </div>

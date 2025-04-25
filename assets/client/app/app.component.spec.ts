@@ -1,27 +1,40 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Router, provideRouter } from '@angular/router';
+import { provideLocationMocks } from '@angular/common/testing';
+import { expect, describe, beforeEach, it } from '@jest/globals';
+import { setupMockLocalStorage } from './testing/mocks/account-storage.mock';
 
 describe('AppComponent', () => {
     let component: AppComponent;
     let fixture: ComponentFixture<AppComponent>;
     let translateService: TranslateService;
+    let router: Router;
 
     beforeEach(async () => {
+        setupMockLocalStorage();
+
         await TestBed.configureTestingModule({
-            imports: [
-                AppComponent,
-                TranslateModule.forRoot(),
-                RouterTestingModule,
-                NoopAnimationsModule,
+            imports: [AppComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+            providers: [
+                provideRouter([
+                    {
+                        path: 'account/:name/dashboard',
+                        component: AppComponent,
+                        data: { animation: 'dashboard' },
+                    },
+                ]),
+                provideLocationMocks(),
             ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(AppComponent);
         component = fixture.componentInstance;
         translateService = TestBed.inject(TranslateService);
+        router = TestBed.inject(Router);
+
         fixture.detectChanges();
     });
 

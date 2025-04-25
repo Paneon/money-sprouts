@@ -5,18 +5,28 @@
   "projects": {
     "money-sprouts": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@angular/core:component": {
+          "style": "scss",
+          "standalone": true
+        }
+      },
       "root": "",
       "sourceRoot": "assets/client",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "public/build",
+            "outputPath": {
+              "base": "public/build",
+              "browser": ""
+            },
             "index": "assets/client/index.html",
-            "main": "assets/client/main.ts",
-            "polyfills": "assets/client/polyfills.ts",
+            "polyfills": [
+              "assets/client/polyfills.ts",
+              "@angular/localize/init"
+            ],
             "tsConfig": "tsconfig.json",
             "assets": [
               {
@@ -31,7 +41,8 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            ],
+            "browser": "assets/client/main.ts"
           },
           "configurations": {
             "production": {
@@ -48,28 +59,32 @@
                 }
               ],
               "outputHashing": "all",
-              "outputPath": "public/build"
+              "outputPath": {
+                "base": "public/build",
+                "browser": ""
+              }
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "outputPath": "public/build"
+              "outputPath": {
+                "base": "public/build",
+                "browser": ""
+              }
             }
           },
           "defaultConfiguration": "development"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "money-sprouts:build:production"
+              "buildTarget": "money-sprouts:build:production"
             },
             "development": {
-              "browserTarget": "money-sprouts:build:development"
+              "buildTarget": "money-sprouts:build:development"
             }
           },
           "defaultConfiguration": "development"

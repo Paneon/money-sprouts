@@ -1,33 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../../services/account.service';
-import { distinctUntilChanged, Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Account } from '../../types/account';
 import { TranslateService } from '@ngx-translate/core';
 import { RoutePath } from '../../enum/routepath';
 import { RouteId } from '../../enum/route-id';
 import { RouterService } from '../../services/router.service';
-import {
-    Router,
-    NavigationEnd,
-    RouterModule,
-    ActivatedRoute,
-} from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Router, NavigationEnd, RouterModule, ActivatedRoute } from '@angular/router';
+import { filter, takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { MultilanguageComponent } from '../multilanguage/multilanguage.component';
+import { MultiLanguageComponent } from '../multi-language/multi-language.component';
 
 @Component({
     selector: 'money-sprouts-page-header',
     templateUrl: './page-header.component.html',
     styleUrls: ['./page-header.component.scss'],
-    standalone: true,
-    imports: [
-        CommonModule,
-        TranslateModule,
-        RouterModule,
-        MultilanguageComponent,
-    ],
+    imports: [CommonModule, TranslateModule, RouterModule, MultiLanguageComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {
     childClass: string;
@@ -37,8 +27,9 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     logout = 'Logout';
     avatar: string;
     id: number;
-
     isLoading = false;
+    isOnAccountSelection = false;
+    private currentAccount = new BehaviorSubject<Account | null>(null);
 
     private destroy$ = new Subject<void>();
 
@@ -47,7 +38,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         public accountService: AccountService,
         public translate: TranslateService,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {
         this.accountService.loading.subscribe((loading: boolean) => {
             this.isLoading = loading;
@@ -60,25 +51,19 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
 
         this.router.events
             .pipe(
-                filter(
-                    (event): event is NavigationEnd =>
-                        event instanceof NavigationEnd
-                ),
-                distinctUntilChanged()
+                filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+                distinctUntilChanged(),
             )
             .subscribe(() => {
                 this.updateRouteInfo();
             });
 
-        this.account$ = this.accountService.currentAccount$.pipe(
-            distinctUntilChanged()
-        );
+        this.account$ = this.accountService.currentAccount$.pipe(distinctUntilChanged());
 
-        this.accountService.currentAccount$.subscribe(
-            (account: Account | null) => {
-                this.name = account?.name ?? '';
-            }
-        );
+        this.accountService.currentAccount$.pipe(takeUntil(this.destroy$)).subscribe((account) => {
+            this.name = account?.name ?? '';
+            this.currentAccount.next(account);
+        });
     }
 
     private updateRouteInfo() {
@@ -87,6 +72,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
             currentRoute = currentRoute.firstChild;
         }
         this.currentRouteId = currentRoute.snapshot.data['routeId'] as RouteId;
+        this.isOnAccountSelection = this.currentRouteId === RouteId.AccountSelection;
 
         // Get account name from URL
         const urlSegments = this.router.url.split('/');
@@ -106,10 +92,6 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
         }
     }
 
-    isOnAccountSelectionPage(): boolean {
-        return this.currentRouteId === RouteId.AccountSelection;
-    }
-
     goToAccountSelection() {
         this.routerService.navigateToRoute(RoutePath.AccountSelection);
     }
@@ -127,6 +109,7 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
             default:
                 return '';
         }
+        return '';
     }
 
     get welcomeTitle(): string {
@@ -136,7 +119,11 @@ export class PageHeaderComponent implements OnInit, OnDestroy {
     onLogout(event: Event) {
         event.preventDefault();
         this.accountService.logoutOrDeselectAccount();
-        this.routerService.navigateToRoute(RoutePath.Logout);
+    }
+
+    get avatarUrl(): string {
+        const account = this.currentAccount.value;
+        return account ? this.accountService.getAvatarForAccount(account) : '';
     }
 
     ngOnDestroy(): void {

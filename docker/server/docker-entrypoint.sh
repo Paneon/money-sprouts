@@ -20,9 +20,9 @@ echo "Running database migrations..."
 php bin/console doctrine:migrations:migrate --no-interaction
 
 # Install and build Angular app using Encore
-echo "Installing and building Angular app..."
-npm install
-npm run build
+#echo "Installing and building Angular app..."
+#npm install
+#npm run build
 
 # Start Apache
 echo "Starting Apache..."

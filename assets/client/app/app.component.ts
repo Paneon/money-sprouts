@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { fadeAnimation } from './animations';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,8 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     animations: [fadeAnimation],
-    standalone: true,
     imports: [RouterOutlet],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
     title = 'Money Pig';

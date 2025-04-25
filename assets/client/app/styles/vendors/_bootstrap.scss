@@ -1,4 +1,4 @@
-@import "../abstract/variables";
+@use "../abstract/variables" as *;
 
 // Overrides for Bootstrap defaults
 $primary: #c3d87e;
@@ -7,5 +7,5 @@ $link-decoration: none;
 
 // See more variables here:
 // @import "bootstrap/scss/variables";
-@import 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap';
 

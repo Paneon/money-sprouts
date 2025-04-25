@@ -1,23 +1,20 @@
 <form class="form-container" (ngSubmit)="onSubmit()" #earnForm="ngForm">
-    <div *ngFor="let chore of chores; trackBy: trackByChore" class="chore-item">
-        <input
-            type="checkbox"
-            class="checkbox"
-            id="{{ chore.id }}"
-            [(ngModel)]="chore.selected"
-            name="chore-{{ chore.id }}"
-            (change)="onChoreSelect(chore)"
-        />
-        <label for="{{ chore.id }}">
-            <img
-                src="{{ chore.iconPath }}"
-                alt="{{ chore.name | translate }}"
-                class="chore-icon"
-            />
-            <span class="chore-name">{{ chore.name | translate }}</span>
-            <span class="chore-sum">{{ chore.sum | currency : 'EUR' }}</span>
-        </label>
-    </div>
+    @for (chore of chores; track chore.name) {
+        <div class="chore-item">
+            <input
+                type="checkbox"
+                class="checkbox"
+                id="{{ chore.id }}"
+                [(ngModel)]="chore.selected"
+                name="chore-{{ chore.id }}"
+                (change)="onChoreSelect(chore)" />
+            <label for="{{ chore.id }}">
+                <img src="{{ chore.iconPath }}" alt="{{ chore.name | translate }}" class="chore-icon" />
+                <span class="chore-name">{{ chore.name | translate }}</span>
+                <span class="chore-sum">{{ chore.sum | currency: 'EUR' }}</span>
+            </label>
+        </div>
+    }
 
     <div class="button-group--plan-page">
         <button class="button" type="submit" (click)="apply()">
@@ -25,11 +22,19 @@
         </button>
     </div>
 </form>
-<p *ngIf="message" class="message">
-    <span class="message__icon" *ngIf="icon">{{ icon }}</span>
-    {{ message | translate }}
-</p>
-<p *ngIf="errorMessage" class="error">
-    <span class="error__icon" *ngIf="icon">{{ icon }}</span>
-    <span class="error">{{ errorMessage | translate }}</span>
-</p>
+@if (message) {
+    <p class="message">
+        @if (icon) {
+            <span class="message__icon">{{ icon }}</span>
+        }
+        {{ message | translate }}
+    </p>
+}
+@if (errorMessage) {
+    <p class="error">
+        @if (icon) {
+            <span class="error__icon">{{ icon }}</span>
+        }
+        <span class="error">{{ errorMessage | translate }}</span>
+    </p>
+}
