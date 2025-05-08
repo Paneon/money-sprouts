@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: 🛠 Build Webpack Encore
-        run: npm run build
+        run: npm run build:prod
 
       - name: Remove not required files
         run: |

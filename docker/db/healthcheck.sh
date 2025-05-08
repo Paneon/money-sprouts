@@ -1,2 +1,2 @@
 #!/bin/bash
-mysqladmin ping -h db_server -u root -p"${MYSQL_ROOT_PASSWORD}"
+mysqladmin ping -h db_server -u app -p"${MYSQL_ROOT_PASSWORD}"
