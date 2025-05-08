@@ -16,17 +16,10 @@
     {% endblock %}
 
     {% block javascripts %}
-        {% if app.environment == 'dev' %}
-            <script src="{{ asset('build/runtime.js') }}" defer></script>
-            <script src="{{ asset('build/polyfills.js') }}" defer></script>
-            <script src="{{ asset('build/vendor.js') }}" defer></script>
-            <script src="{{ asset('build/main.js') }}" defer></script>
-        {% else %}
-            <script src="{{ asset('build/runtime.' ~ asset_version ~ '.js') }}" defer></script>
-            <script src="{{ asset('build/polyfills.' ~ asset_version ~ '.js') }}" defer></script>
-            <script src="{{ asset('build/vendor.' ~ asset_version ~ '.js') }}" defer></script>
-            <script src="{{ asset('build/main.' ~ asset_version ~ '.js') }}" defer></script>
-        {% endif %}
+        <script src="{{ asset('build/runtime.js') }}" defer></script>
+        <script src="{{ asset('build/polyfills.js') }}" defer></script>
+        <script src="{{ asset('build/vendor.js') }}" defer></script>
+        <script src="{{ asset('build/main.js') }}" defer></script>
     {% endblock %}
 </head>
 <body>
