@@ -46,6 +46,7 @@
           },
           "configurations": {
             "production": {
+              "namedChunks": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -58,11 +59,17 @@
                   "maximumError": "8kb"
                 }
               ],
-              "outputHashing": "all",
               "outputPath": {
                 "base": "public/build",
                 "browser": ""
-              }
+              },
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "translations",
+                  "output": "/translations"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -73,6 +80,28 @@
                 "base": "public/build",
                 "browser": ""
               }
+            },
+            "proxy": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "outputPath": {
+                "base": "public/build",
+                "browser": ""
+              },
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "translations",
+                  "output": "/build/translations"
+                },
+                {
+                  "glob": "assets/**/*",
+                  "input": "public",
+                  "output": "/"
+                }
+              ]
             }
           },
           "defaultConfiguration": "development"
@@ -85,6 +114,9 @@
             },
             "development": {
               "buildTarget": "money-sprouts:build:development"
+            },
+            "proxy": {
+              "buildTarget": "money-sprouts:build:proxy"
             }
           },
           "defaultConfiguration": "development"

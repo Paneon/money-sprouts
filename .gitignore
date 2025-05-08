@@ -69,3 +69,5 @@ public/*.php
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+proxy.conf.json
+.env.development

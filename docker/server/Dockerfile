@@ -2,7 +2,7 @@ FROM php:8.1-apache
 
 RUN a2enmod rewrite
 
-RUN apt-get update && apt-get install -y git unzip zip
+RUN apt-get update && apt-get install -y git unzip zip mariadb-client
 
 # Add Symfony CLI
 #RUN apk add --no-cache bash
