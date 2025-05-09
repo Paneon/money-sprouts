@@ -1,23 +1,22 @@
 <div class="form-group">
-    @if (currentLang === 'de') {
-    <img
-        src="assets/images/usa-flag.png"
-        alt="usa-flag"
-        [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
-        class="flag-icon"
-        (click)="switchLang('en')"
-        (keydown.enter)="switchLang('en')"
-        tabindex="0"
-    />
-    } @if (currentLang === 'en') {
-    <img
-        src="assets/images/germany-flag.png"
-        alt="germany-flag"
-        [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
-        class="flag-icon"
-        (click)="switchLang('de')"
-        (keydown.enter)="switchLang('de')"
-        tabindex="0"
-    />
+    @if (currentLang === Locale.DE) {
+        <img
+            src="assets/images/usa-flag.png"
+            alt="usa-flag"
+            [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
+            class="flag-icon"
+            (click)="switchLang(Locale.EN)"
+            (keydown.enter)="switchLang(Locale.EN)"
+            tabindex="0" />
+    }
+    @if (currentLang === Locale.EN) {
+        <img
+            src="assets/images/germany-flag.png"
+            alt="germany-flag"
+            [title]="'PAGE_HEADER.BUTTONS.MULTILANGUAGE' | translate"
+            class="flag-icon"
+            (click)="switchLang(Locale.DE)"
+            (keydown.enter)="switchLang(Locale.DE)"
+            tabindex="0" />
     }
 </div>

@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AccountStorageService } from '../../services/account-storage.service';
+import { Locale } from '../../enum/Locale';
 
 @Component({
     selector: 'money-sprouts-multi-language',
@@ -9,23 +11,28 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiLanguageComponent {
-    langs: string[] = ['de', 'en'];
+    readonly Locale = Locale;
+    langs: Locale[] = [Locale.DE, Locale.EN];
+    currentLang: Locale = Locale.DE;
 
-    currentLang = 'de';
     constructor(
         public translateService: TranslateService,
         private readonly cd: ChangeDetectorRef,
+        private readonly accountStorageService: AccountStorageService,
     ) {
-        const browserLang = this.translateService.getBrowserLang() ?? 'de';
-        this.currentLang = this.langs.includes(browserLang) ? browserLang : 'de';
+        const storedLang = this.accountStorageService.getSelectedLanguage();
+        const browserLang = this.translateService.getBrowserLang() ?? Locale.DE;
+        this.currentLang =
+            storedLang ?? (this.langs.includes(browserLang as Locale) ? (browserLang as Locale) : Locale.DE);
 
         this.translateService.setDefaultLang(this.currentLang);
         this.translateService.use(this.currentLang);
     }
 
-    switchLang(lang: string) {
+    switchLang(lang: Locale) {
         this.translateService.use(lang);
         this.currentLang = lang;
+        this.accountStorageService.saveSelectedLanguage(lang);
         this.cd.detectChanges();
     }
 }
