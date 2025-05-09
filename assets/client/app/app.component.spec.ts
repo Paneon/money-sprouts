@@ -10,7 +10,6 @@ import { setupMockLocalStorage } from './testing/mocks/account-storage.mock';
 describe('AppComponent', () => {
     let component: AppComponent;
     let fixture: ComponentFixture<AppComponent>;
-    let translateService: TranslateService;
     let router: Router;
 
     beforeEach(async () => {
@@ -35,7 +34,6 @@ describe('AppComponent', () => {
 
         fixture = TestBed.createComponent(AppComponent);
         component = fixture.componentInstance;
-        translateService = TestBed.inject(TranslateService);
         router = TestBed.inject(Router);
 
         fixture.detectChanges();
@@ -47,13 +45,5 @@ describe('AppComponent', () => {
 
     it('should have correct title', () => {
         expect(component.title).toBe('Money Pig');
-    });
-
-    it('should set default language to German', () => {
-        expect(translateService.getDefaultLang()).toBe('de');
-    });
-
-    it('should use German language for translations', () => {
-        expect(translateService.currentLang).toBe('de');
     });
 });

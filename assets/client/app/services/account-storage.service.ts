@@ -18,7 +18,6 @@ export class AccountStorageService extends Loggable {
         const account = JSON.parse(storedValue);
 
         if (!this.isValidAccount(account)) {
-            this.error('Invalid account stored in LocalStorage');
             return null;
         }
 
