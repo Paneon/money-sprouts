@@ -139,9 +139,10 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     }
 
     private handleConfetti(account: Account): void {
-        if (this.confettiService.shouldTriggerConfetti(account)) {
+        const check = this.confettiService.shouldTriggerConfetti(account);
+        if (check.shouldTrigger) {
             this.showConfettiText = true;
-            this.confettiService.triggerConfettiForAccount(account);
+            this.confettiService.triggerConfettiForAccount(account, check);
             setTimeout(() => {
                 this.showConfettiText = false;
             }, 4000);

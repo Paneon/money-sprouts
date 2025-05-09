@@ -29,19 +29,25 @@ describe('ConfettiService', () => {
     });
 
     it('should not trigger confetti for null account', () => {
-        expect(service.shouldTriggerConfetti(null)).toBeFalsy();
+        const check = service.shouldTriggerConfetti(null);
+        expect(check.shouldTrigger).toBeFalsy();
+        expect(check.crossedThreshold).toBeNull();
     });
 
     it('should not trigger confetti for account with undefined balance', () => {
         const accountWithUndefinedBalance = { ...mockAccount, balance: undefined as unknown as number };
-        expect(service.shouldTriggerConfetti(accountWithUndefinedBalance)).toBeFalsy();
+        const check = service.shouldTriggerConfetti(accountWithUndefinedBalance);
+        expect(check.shouldTrigger).toBeFalsy();
+        expect(check.crossedThreshold).toBeNull();
     });
 
     it('should trigger confetti for first threshold', () => {
         const firstThreshold = balanceImageMap.find((item) => item.threshold !== Infinity)?.threshold;
         const account = { ...mockAccount, balance: firstThreshold || 0 };
 
-        expect(service.shouldTriggerConfetti(account)).toBeTruthy();
+        const check = service.shouldTriggerConfetti(account);
+        expect(check.shouldTrigger).toBeTruthy();
+        expect(check.crossedThreshold?.threshold).toBe(firstThreshold);
     });
 
     it('should not trigger confetti for same threshold twice', () => {
@@ -49,10 +55,13 @@ describe('ConfettiService', () => {
         const account = { ...mockAccount, balance: firstThreshold || 0 };
 
         // First trigger
-        service.triggerConfettiForAccount(account);
+        const firstCheck = service.shouldTriggerConfetti(account);
+        service.triggerConfettiForAccount(account, firstCheck);
 
         // Second check
-        expect(service.shouldTriggerConfetti(account)).toBeFalsy();
+        const secondCheck = service.shouldTriggerConfetti(account);
+        expect(secondCheck.shouldTrigger).toBeFalsy();
+        expect(secondCheck.crossedThreshold?.threshold).toBe(firstThreshold);
     });
 
     it('should trigger confetti for higher threshold', () => {
@@ -68,7 +77,9 @@ describe('ConfettiService', () => {
         // Set lower threshold as triggered
         localStorage.setItem(`confettiFor${account.id}`, lowerThreshold.toString());
 
-        expect(service.shouldTriggerConfetti(account)).toBeTruthy();
+        const check = service.shouldTriggerConfetti(account);
+        expect(check.shouldTrigger).toBeTruthy();
+        expect(check.crossedThreshold?.threshold).toBe(higherThreshold);
     });
 
     it('should not trigger confetti for lower threshold', () => {
@@ -84,14 +95,17 @@ describe('ConfettiService', () => {
         // Set higher threshold as triggered
         localStorage.setItem(`confettiFor${account.id}`, higherThreshold.toString());
 
-        expect(service.shouldTriggerConfetti(account)).toBeFalsy();
+        const check = service.shouldTriggerConfetti(account);
+        expect(check.shouldTrigger).toBeFalsy();
+        expect(check.crossedThreshold?.threshold).toBe(lowerThreshold);
     });
 
     it('should store last triggered threshold in localStorage', () => {
         const firstThreshold = balanceImageMap.find((item) => item.threshold !== Infinity)?.threshold;
         const account = { ...mockAccount, balance: firstThreshold || 0 };
 
-        service.triggerConfettiForAccount(account);
+        const check = service.shouldTriggerConfetti(account);
+        service.triggerConfettiForAccount(account, check);
 
         const storedValue = localStorage.getItem(`confettiFor${account.id}`);
         expect(storedValue).toBe(firstThreshold?.toString());
@@ -103,9 +117,27 @@ describe('ConfettiService', () => {
         const account2 = { ...mockAccount, id: 2, balance: firstThreshold || 0 };
 
         // Trigger for first account
-        service.triggerConfettiForAccount(account1);
+        const check1 = service.shouldTriggerConfetti(account1);
+        service.triggerConfettiForAccount(account1, check1);
 
         // Should still trigger for second account
-        expect(service.shouldTriggerConfetti(account2)).toBeTruthy();
+        const check2 = service.shouldTriggerConfetti(account2);
+        expect(check2.shouldTrigger).toBeTruthy();
+        expect(check2.crossedThreshold?.threshold).toBe(firstThreshold);
+    });
+
+    it('should reuse threshold check when provided', () => {
+        const firstThreshold = balanceImageMap.find((item) => item.threshold !== Infinity)?.threshold;
+        const account = { ...mockAccount, balance: firstThreshold || 0 };
+
+        const check = service.shouldTriggerConfetti(account);
+        expect(check.shouldTrigger).toBeTruthy();
+
+        // Spy on shouldTriggerConfetti to ensure it's not called again
+        const spy = jest.spyOn(service, 'shouldTriggerConfetti');
+        service.triggerConfettiForAccount(account, check);
+
+        expect(spy).not.toHaveBeenCalled();
+        spy.mockRestore();
     });
 });
