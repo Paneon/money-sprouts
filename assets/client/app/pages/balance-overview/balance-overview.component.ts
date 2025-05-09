@@ -32,10 +32,10 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     combinedDataOverview$: Observable<CombinedDataOverview>;
     showConfettiText = false;
     showTreasureButton = false;
+    readonly ConfettiText: TranslationKey = 'OVERVIEW.CONFETTI_TEXT';
 
     private readonly PAYDAY_WEEKDAY_UNKNOWN: TranslationKey = 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN';
     private readonly PAYDAY_COUNTER_UNKNOWN: TranslationKey = 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
-    private readonly CONFETTI_TEXT: TranslationKey = 'OVERVIEW.CONFETTI_TEXT';
 
     constructor(
         private readonly accountService: AccountService,
@@ -62,7 +62,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
             .subscribe((account) => {
                 if (account) {
                     this.accountService.refreshAccount(account.id);
-                    this.triggerConfettiIfNeeded(account);
+                    this.handleConfetti(account);
                 }
             });
 
@@ -138,43 +138,19 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         return Math.round(diffMilliseconds / (24 * 60 * 60 * 1000));
     }
 
-    private triggerConfettiIfNeeded(account: Account | null): void {
-        if (!account || account.balance === undefined) return;
-        const balance = account.balance;
-
-        balanceImageMap.forEach((item) => {
-            if (item.threshold === Infinity) return;
-
-            const confettiTriggeredKey = `confettiTriggeredFor${item.threshold}`;
-
-            if (balance >= item.threshold) {
-                const hasConfettiBeenTriggered = localStorage.getItem(confettiTriggeredKey);
-
-                if (!hasConfettiBeenTriggered) {
-                    this.resetOtherConfettiTriggerKeys(confettiTriggeredKey);
-
-                    this.showConfettiText = true;
-                    this.confettiService.startConfetti();
-                    localStorage.setItem(confettiTriggeredKey, 'true');
-                    setTimeout(() => {
-                        this.showConfettiText = false;
-                    }, 4000);
-                    this.showTreasureButton = true;
-                }
-            }
-        });
+    private handleConfetti(account: Account): void {
+        if (this.confettiService.shouldTriggerConfetti(account)) {
+            this.showConfettiText = true;
+            this.confettiService.triggerConfettiForAccount(account);
+            setTimeout(() => {
+                this.showConfettiText = false;
+            }, 4000);
+            this.showTreasureButton = true;
+        }
     }
 
-    private resetOtherConfettiTriggerKeys(exceptKey: string): void {
-        balanceImageMap.forEach((item) => {
-            const key = `confettiTriggeredFor${item.threshold}`;
-            if (key !== exceptKey && item.threshold !== Infinity) {
-                localStorage.removeItem(key);
-            }
-        });
-    }
-
-    get ConfettiText(): TranslationKey {
-        return this.CONFETTI_TEXT;
+    hideConfettiElements(): void {
+        this.showConfettiText = false;
+        this.showTreasureButton = false;
     }
 }

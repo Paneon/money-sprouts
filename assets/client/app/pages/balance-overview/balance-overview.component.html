@@ -23,17 +23,17 @@
                 </div>
             }
             @if (showConfettiText) {
-                <div class="confetti-text">
+                <div class="confetti-text" (click)="hideConfettiElements()">
                     {{ ConfettiText | translate }}
                 </div>
             }
-            @if (showConfettiText || showTreasureButton) {
+            <!-- @if (showConfettiText || showTreasureButton) {
                 <div>
                     <button class="button extra-margin" type="submit">
                         {{ 'OVERVIEW.BUTTON_TEXT_LEVEL' | translate }}
                     </button>
                 </div>
-            }
+            } -->
         </div>
     }
 </div>
