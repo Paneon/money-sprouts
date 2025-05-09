@@ -3,10 +3,9 @@ import { debounceTime, Observable, Subject } from 'rxjs';
 import { Account } from '@/app/types/account';
 import { AccountService } from '@/app/services/account.service';
 import { RouterService } from '@/app/services/router.service';
-import { RoutePath } from '@/app/enum/routepath';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 
 interface Section {
@@ -18,7 +17,7 @@ interface Section {
     selector: 'money-sprouts-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
-    imports: [TranslateModule, PageHeaderComponent],
+    imports: [TranslatePipe, PageHeaderComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {

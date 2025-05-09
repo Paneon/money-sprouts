@@ -1,13 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-multi-language',
     templateUrl: './multi-language.component.html',
     styleUrls: ['./multi-language.component.scss'],
-    imports: [TranslateModule],
+    imports: [TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiLanguageComponent {

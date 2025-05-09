@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, provideRouter } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
@@ -17,8 +17,11 @@ describe('AppComponent', () => {
         setupMockLocalStorage();
 
         await TestBed.configureTestingModule({
-            imports: [AppComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+            imports: [AppComponent, NoopAnimationsModule],
             providers: [
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
                 provideRouter([
                     {
                         path: 'account/:name/dashboard',

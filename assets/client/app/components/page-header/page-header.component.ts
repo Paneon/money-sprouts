@@ -2,21 +2,20 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { AccountService } from '../../services/account.service';
 import { distinctUntilChanged, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Account } from '../../types/account';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { RoutePath } from '../../enum/routepath';
 import { RouteId } from '../../enum/route-id';
 import { RouterService } from '../../services/router.service';
 import { Router, NavigationEnd, RouterModule, ActivatedRoute } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { MultiLanguageComponent } from '../multi-language/multi-language.component';
 
 @Component({
     selector: 'money-sprouts-page-header',
     templateUrl: './page-header.component.html',
     styleUrls: ['./page-header.component.scss'],
-    imports: [CommonModule, TranslateModule, RouterModule, MultiLanguageComponent],
+    imports: [CommonModule, RouterModule, MultiLanguageComponent, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageHeaderComponent implements OnInit, OnDestroy {

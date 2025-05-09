@@ -6,7 +6,7 @@ import { AccountService } from '@/app/services/account.service';
 import { RouterService } from '@/app/services/router.service';
 import { RoutePath } from '@/app/enum/routepath';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 import { IconWithTextComponent } from '@/app/components/icon-with-text/icon-with-text.component';
 import { FormatUrlPipe } from '@/app/pipes/format-url.pipe';
@@ -15,7 +15,7 @@ import { FormatUrlPipe } from '@/app/pipes/format-url.pipe';
     selector: 'money-sprouts-account-selection',
     templateUrl: './account-selection.component.html',
     styleUrls: ['./account-selection.component.scss'],
-    imports: [CommonModule, RouterModule, TranslateModule, PageHeaderComponent, IconWithTextComponent, FormatUrlPipe],
+    imports: [CommonModule, RouterModule, TranslatePipe, PageHeaderComponent, IconWithTextComponent, FormatUrlPipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountSelectionComponent {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { PlanEarningsComponent } from './plan-earnings.component';
 
 describe('PlanEarningsComponent', () => {
@@ -9,10 +9,12 @@ describe('PlanEarningsComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [
-                FormsModule,
-                TranslateModule.forRoot(),
-                PlanEarningsComponent,
+            imports: [FormsModule, PlanEarningsComponent],
+            providers: [
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
             ],
         }).compileComponents();
 

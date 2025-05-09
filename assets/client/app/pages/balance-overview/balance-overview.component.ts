@@ -1,5 +1,5 @@
 import { ConfettiService } from '@/app/services/confetti.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Account } from '@/app/types/account';
 import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, tap } from 'rxjs';
@@ -7,7 +7,6 @@ import { AccountService } from '@/app/services/account.service';
 import { DatePipe, CommonModule } from '@angular/common';
 import { Loggable } from '@/app/services/loggable';
 import { balanceImageMap } from '@/app/components/balance-image-map';
-import { TranslateModule } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 
 interface CombinedDataOverview {
@@ -21,7 +20,7 @@ interface CombinedDataOverview {
     selector: 'money-sprouts-balance-overview',
     templateUrl: './balance-overview.component.html',
     styleUrls: ['./balance-overview.component.scss'],
-    imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    imports: [CommonModule, TranslatePipe, PageHeaderComponent],
     providers: [ConfettiService],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

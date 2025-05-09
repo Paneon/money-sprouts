@@ -8,9 +8,6 @@ export class customTranslate implements TranslateLoader {
     getTranslation(lang: string): Observable<unknown> {
         return this.http
             .get(`/build/translations/${lang}.json`)
-            .pipe(
-                catchError((/*_*/) =>
-                    this.http.get(`/build/translations/de.json`))
-            );
+            .pipe(catchError((/*_*/) => this.http.get(`/build/translations/de.json`)));
     }
 }

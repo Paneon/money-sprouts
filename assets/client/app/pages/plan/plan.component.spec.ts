@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlanComponent } from './plan.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AccountStorageService } from '../../services/account-storage.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { AccountService } from '../../services/account.service';
 import { TransactionService } from '../../services/transaction.service';
 import { of } from 'rxjs';
@@ -57,8 +57,12 @@ describe('PlanComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, TranslateModule.forRoot(), PlanComponent, MockPageHeaderComponent],
+            imports: [HttpClientTestingModule, PlanComponent, MockPageHeaderComponent],
             providers: [
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
                 { provide: AccountService, useValue: mockAccountService },
                 {
                     provide: TransactionService,

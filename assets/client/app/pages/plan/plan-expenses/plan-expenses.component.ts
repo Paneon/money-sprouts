@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
 import { NgForm, FormsModule } from '@angular/forms';
 import { FormattingHelperService } from '@/app/services/formatting-helper.service';
 
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-plan-expenses',
     templateUrl: './plan-expenses.component.html',
     styleUrls: ['./plan-expenses.component.scss'],
-    imports: [FormsModule, TranslateModule],
+    imports: [FormsModule, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanExpensesComponent {

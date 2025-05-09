@@ -6,7 +6,7 @@ import { AccountService } from '@/app/services/account.service';
 import { TransactionService } from '@/app/services/transaction.service';
 import { debounceTime, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
 
 interface TransactionData {
@@ -25,7 +25,7 @@ interface CombinedDataTransaction {
     selector: 'money-sprouts-transaction-history',
     templateUrl: './transaction-history.component.html',
     styleUrls: ['./transaction-history.component.scss'],
-    imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    imports: [CommonModule, TranslatePipe, PageHeaderComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionHistoryComponent implements OnInit, OnDestroy {

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccountSelectionComponent } from './account-selection.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientTestingModule, provideHttpClientTesting } from '@angular/common/http/testing';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { AccountService } from '../../services/account.service';
 import { RouterService } from '../../services/router.service';
 import { Account } from '../../types/account';
@@ -49,13 +49,13 @@ describe('AccountSelectionComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule,
-                TranslateModule.forRoot(),
-                NoopAnimationsModule,
-                AccountSelectionComponent,
-            ],
+            imports: [NoopAnimationsModule, AccountSelectionComponent],
             providers: [
+                provideHttpClientTesting(),
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
                 { provide: AccountService, useValue: mockAccountService },
                 { provide: RouterService, useValue: mockRouterService },
                 {
@@ -81,8 +81,6 @@ describe('AccountSelectionComponent', () => {
 
     it('should not proceed when name is not provided', () => {
         component.proceed('');
-        expect(
-            mockRouterService.navigateToAccountDashboard
-        ).not.toHaveBeenCalled();
+        expect(mockRouterService.navigateToAccountDashboard).not.toHaveBeenCalled();
     });
 });

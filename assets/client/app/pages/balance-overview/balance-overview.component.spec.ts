@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BalanceOverviewComponent } from './balance-overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { AccountService } from '../../services/account.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { DatePipe } from '@angular/common';
@@ -58,10 +58,14 @@ describe('BalanceOverviewComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot(), RouterModule, BalanceOverviewComponent, MockPageHeaderComponent],
+            imports: [RouterModule, BalanceOverviewComponent, MockPageHeaderComponent],
             providers: [
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
                 {
                     provide: AccountService,
                     useValue: mockAccountService,

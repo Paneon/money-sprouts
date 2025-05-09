@@ -8,13 +8,13 @@ import { CommonModule } from '@angular/common';
 import { PlanExpensesComponent } from './plan-expenses/plan-expenses.component';
 import { PlanEarningsComponent } from './plan-earnings/plan-earnings.component';
 import { PageHeaderComponent } from '../../components/page-header/page-header.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'money-sprouts-plan',
     templateUrl: './plan.component.html',
     styleUrls: ['./plan.component.scss'],
-    imports: [CommonModule, PlanExpensesComponent, PlanEarningsComponent, PageHeaderComponent, TranslateModule],
+    imports: [CommonModule, PlanExpensesComponent, PlanEarningsComponent, PageHeaderComponent, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanComponent implements OnInit {
