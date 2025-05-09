@@ -23,7 +23,7 @@
                 </div>
             }
             @if (showConfettiText) {
-                <div class="confetti-text" (click)="hideConfettiElements()">
+                <div class="confetti-text" (click)="hideConfettiElements()" (keydown)="hideConfettiElements()">
                     {{ ConfettiText | translate }}
                 </div>
             }
