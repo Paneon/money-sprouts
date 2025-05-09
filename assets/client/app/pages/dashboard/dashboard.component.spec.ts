@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { provideHttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { of, BehaviorSubject } from 'rxjs';
 import { RouterService } from '../../services/router.service';
 import { AccountService } from '../../services/account.service';
@@ -106,16 +106,19 @@ describe('DashboardComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [DashboardComponent, TranslateModule.forRoot(), MockPageHeaderComponent, NoopAnimationsModule],
+            imports: [DashboardComponent, MockPageHeaderComponent, NoopAnimationsModule],
             providers: [
                 provideHttpClient(),
                 provideRouter(routes, withComponentInputBinding()),
                 provideLocationMocks(),
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
                 { provide: AccountService, useValue: mockAccountService },
                 { provide: RouterService, useValue: mockRouterService },
                 { provide: Router, useValue: mockRouter },
                 { provide: ActivatedRoute, useValue: mockActivatedRoute },
-                TranslateService,
             ],
         });
 

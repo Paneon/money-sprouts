@@ -21,7 +21,7 @@ export class AccountService extends Loggable {
             this.error('Error fetching accounts:', err);
             return throwError(() => err);
         }),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     private originalBalance: number | null = null;
@@ -35,7 +35,11 @@ export class AccountService extends Loggable {
     private balanceUpdateStatus = new BehaviorSubject<string>('');
     public balanceUpdateStatus$ = this.balanceUpdateStatus.asObservable();
 
-    constructor(private http: HttpClient, private api: ApiService, private storage: AccountStorageService) {
+    constructor(
+        private http: HttpClient,
+        private api: ApiService,
+        private storage: AccountStorageService,
+    ) {
         super();
         const savedAccount = this.storage.getCurrentAccount();
         if (savedAccount) {

@@ -1,5 +1,5 @@
 import { ConfettiService } from '@/app/services/confetti.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Account } from '@/app/types/account';
 import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, tap } from 'rxjs';
@@ -7,8 +7,8 @@ import { AccountService } from '@/app/services/account.service';
 import { DatePipe, CommonModule } from '@angular/common';
 import { Loggable } from '@/app/services/loggable';
 import { balanceImageMap } from '@/app/components/balance-image-map';
-import { TranslateModule } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
+import { TranslationKey } from '@/app/enum/TranslationKey';
 
 interface CombinedDataOverview {
     account: Account | null;
@@ -21,28 +21,29 @@ interface CombinedDataOverview {
     selector: 'money-sprouts-balance-overview',
     templateUrl: './balance-overview.component.html',
     styleUrls: ['./balance-overview.component.scss'],
-    imports: [CommonModule, TranslateModule, PageHeaderComponent],
+    imports: [CommonModule, TranslatePipe, PageHeaderComponent],
     providers: [ConfettiService],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BalanceOverviewComponent extends Loggable implements OnInit {
-    private currentLang: string;
     protected currentAccount: Account | null = null;
     account$: Observable<Account | null>;
     nextPayday$: Observable<Date | null>;
     combinedDataOverview$: Observable<CombinedDataOverview>;
     showConfettiText = false;
     showTreasureButton = false;
+    readonly ConfettiText: TranslationKey = 'OVERVIEW.CONFETTI_TEXT';
+
+    private readonly PAYDAY_WEEKDAY_UNKNOWN: TranslationKey = 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN';
+    private readonly PAYDAY_COUNTER_UNKNOWN: TranslationKey = 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
 
     constructor(
         private readonly accountService: AccountService,
-        private readonly datePipe: DatePipe,
         private readonly translate: TranslateService,
         private readonly cd: ChangeDetectorRef,
         private readonly confettiService: ConfettiService,
     ) {
         super();
-        this.currentLang = this.translate.currentLang;
         this.account$ = this.accountService.currentAccount$;
     }
 
@@ -61,7 +62,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
             .subscribe((account) => {
                 if (account) {
                     this.accountService.refreshAccount(account.id);
-                    this.triggerConfettiIfNeeded(account);
+                    this.handleConfetti(account);
                 }
             });
 
@@ -74,10 +75,10 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                     nextPayday,
                     formatedNextPayday: nextPayday
                         ? this.getFormatedNextPayday(nextPayday)
-                        : 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN',
+                        : this.PAYDAY_WEEKDAY_UNKNOWN,
                     daysUntilNextPayday: nextPayday
                         ? this.getDaysUntilNextPayday(nextPayday)
-                        : 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN',
+                        : this.PAYDAY_COUNTER_UNKNOWN,
                 };
             }),
         );
@@ -98,7 +99,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getFormatedNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN';
+            return this.PAYDAY_WEEKDAY_UNKNOWN;
         }
         const currentLanguage = this.translate.currentLang;
         const datePipe = new DatePipe(currentLanguage);
@@ -110,14 +111,14 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getDaysUntilNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
+            return this.PAYDAY_COUNTER_UNKNOWN;
         }
         try {
             const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
             return `${dayDifference}`;
         } catch (error) {
             this.log('Error calculating days until next payday:', error);
-            return 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
+            return this.PAYDAY_COUNTER_UNKNOWN;
         }
     }
 
@@ -137,43 +138,20 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         return Math.round(diffMilliseconds / (24 * 60 * 60 * 1000));
     }
 
-    private triggerConfettiIfNeeded(account: Account | null): void {
-        if (!account || account.balance === undefined) return;
-        const balance = account.balance;
-
-        balanceImageMap.forEach((item) => {
-            if (item.threshold === Infinity) return;
-
-            const confettiTriggeredKey = `confettiTriggeredFor${item.threshold}`;
-
-            if (balance >= item.threshold) {
-                const hasConfettiBeenTriggered = localStorage.getItem(confettiTriggeredKey);
-
-                if (!hasConfettiBeenTriggered) {
-                    this.resetOtherConfettiTriggerKeys(confettiTriggeredKey);
-
-                    this.showConfettiText = true;
-                    this.confettiService.startConfetti();
-                    localStorage.setItem(confettiTriggeredKey, 'true');
-                    setTimeout(() => {
-                        this.showConfettiText = false;
-                    }, 4000);
-                    this.showTreasureButton = true;
-                }
-            }
-        });
+    private handleConfetti(account: Account): void {
+        const check = this.confettiService.shouldTriggerConfetti(account);
+        if (check.shouldTrigger) {
+            this.showConfettiText = true;
+            this.confettiService.triggerConfettiForAccount(account, check);
+            setTimeout(() => {
+                this.showConfettiText = false;
+            }, 4000);
+            this.showTreasureButton = true;
+        }
     }
 
-    private resetOtherConfettiTriggerKeys(exceptKey: string): void {
-        balanceImageMap.forEach((item) => {
-            const key = `confettiTriggeredFor${item.threshold}`;
-            if (key !== exceptKey && item.threshold !== Infinity) {
-                localStorage.removeItem(key);
-            }
-        });
-    }
-
-    get ConfettiText(): string {
-        return 'OVERVIEW.CONFETTI_TEXT';
+    hideConfettiElements(): void {
+        this.showConfettiText = false;
+        this.showTreasureButton = false;
     }
 }

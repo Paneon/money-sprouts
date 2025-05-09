@@ -13,26 +13,14 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
+
 import { customTranslate } from './services/customTranslate.loader';
 import { routes } from './routes';
 import { pagesProviders } from './providers/pages.providers';
 
-export function appInitializerFactory(translate: TranslateService) {
-    return () => {
-        // Disable automatic language detection
-        translate.addLangs(['de', 'en']);
-        translate.setDefaultLang('de');
-        // Force German language regardless of browser settings
-        translate.use('de');
-        return Promise.resolve();
-    };
-}
-
 function navigationErrorHandler(error: NavigationError): void {
     console.error('Navigation Error:', error);
-    // You can add custom error handling logic here
-    // For example, redirect to an error page or show a notification
 }
 
 registerLocaleData(localeDe, 'de');
@@ -40,24 +28,17 @@ registerLocaleData(localeEn, 'en');
 
 export const appConfig = {
     providers: [
-        importProvidersFrom(
-            BrowserModule,
-            TranslateModule.forRoot({
-                useDefaultLang: true,
-                loader: {
-                    provide: TranslateLoader,
-                    useClass: customTranslate,
-                    deps: [HttpClient],
-                },
-            }),
-        ),
-        // Force German locale regardless of browser settings
+        importProvidersFrom(BrowserModule),
+        provideTranslateService({
+            defaultLanguage: 'de',
+            loader: {
+                provide: TranslateLoader,
+                useClass: customTranslate,
+                deps: [HttpClient],
+            },
+        }),
         { provide: LOCALE_ID, useValue: 'de-DE' },
         { provide: DatePipe, useValue: new DatePipe('de-DE') },
-        provideAppInitializer(() => {
-            const translate = inject(TranslateService);
-            return appInitializerFactory(translate)();
-        }),
         provideHttpClient(),
         provideAnimations(),
         provideRouter(

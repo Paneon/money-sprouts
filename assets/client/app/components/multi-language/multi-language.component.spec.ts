@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MultiLanguageComponent } from './multi-language.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 describe('MultiLanguageComponent', () => {
     let component: MultiLanguageComponent;
@@ -9,8 +9,13 @@ describe('MultiLanguageComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot(), MultiLanguageComponent],
-            providers: [TranslateService],
+            imports: [MultiLanguageComponent],
+            providers: [
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
+            ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(MultiLanguageComponent);

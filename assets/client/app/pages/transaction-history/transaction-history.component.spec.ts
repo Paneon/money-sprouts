@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TransactionHistoryComponent } from './transaction-history.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { RouterService } from '../../services/router.service';
@@ -78,13 +78,12 @@ describe('TransactionHistoryComponent', () => {
         } as unknown as ActivatedRouteSnapshot;
 
         await TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule,
-                TranslateModule.forRoot(),
-                TransactionHistoryComponent,
-                MockPageHeaderComponent,
-            ],
+            imports: [HttpClientTestingModule, TransactionHistoryComponent, MockPageHeaderComponent],
             providers: [
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
                 { provide: AccountService, useValue: mockAccountService },
                 { provide: Router, useValue: mockRouter },
                 { provide: RouterService, useValue: mockRouterService },

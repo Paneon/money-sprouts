@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StartComponent } from './start.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { setupMockLocalStorage } from '../../testing/mocks/account-storage.mock';
 import { provideRouter } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
@@ -14,8 +14,15 @@ describe('StartComponent', () => {
         setupMockLocalStorage();
 
         await TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot(), StartComponent, MockMultiLanguageComponent],
-            providers: [provideRouter([{ path: 'login', component: StartComponent }]), provideLocationMocks()],
+            imports: [StartComponent, MockMultiLanguageComponent],
+            providers: [
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
+                TranslateService,
+                provideRouter([{ path: 'login', component: StartComponent }]),
+                provideLocationMocks(),
+            ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(StartComponent);

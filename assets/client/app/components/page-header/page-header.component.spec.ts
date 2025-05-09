@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageHeaderComponent } from './page-header.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { of, BehaviorSubject, Subject } from 'rxjs';
@@ -59,10 +59,13 @@ describe('PageHeaderComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot(), PageHeaderComponent, MockMultiLanguageComponent],
+            imports: [PageHeaderComponent, MockMultiLanguageComponent],
             providers: [
                 provideHttpClient(),
                 provideHttpClientTesting(),
+                provideTranslateService({
+                    defaultLanguage: 'de',
+                }),
                 TranslateService,
                 {
                     provide: ActivatedRoute,

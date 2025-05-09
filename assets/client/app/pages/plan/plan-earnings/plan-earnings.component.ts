@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, computed } from '@angular/core';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -16,7 +16,7 @@ interface Chore {
     selector: 'money-sprouts-plan-earnings',
     templateUrl: './plan-earnings.component.html',
     styleUrls: ['./plan-earnings.component.scss'],
-    imports: [CommonModule, TranslateModule, FormsModule],
+    imports: [CommonModule, TranslatePipe, FormsModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanEarningsComponent {
