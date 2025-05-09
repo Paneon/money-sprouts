@@ -21,6 +21,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "resolveJsonModule": true,
     "lib": [
       "ES2022",
       "dom"
@@ -41,7 +42,8 @@
   },
   "include": [
     "assets/client/main.ts",
-    "assets/client/polyfills.ts"
+    "assets/client/polyfills.ts",
+    "translations/*.json"
   ],
   "exclude": [
     "**/*.spec.ts",

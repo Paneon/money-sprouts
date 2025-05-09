@@ -8,6 +8,7 @@ import { DatePipe, CommonModule } from '@angular/common';
 import { Loggable } from '@/app/services/loggable';
 import { balanceImageMap } from '@/app/components/balance-image-map';
 import { PageHeaderComponent } from '@/app/components/page-header/page-header.component';
+import { TranslationKey } from '@/app/enum/TranslationKey';
 
 interface CombinedDataOverview {
     account: Account | null;
@@ -25,7 +26,6 @@ interface CombinedDataOverview {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BalanceOverviewComponent extends Loggable implements OnInit {
-    private currentLang: string;
     protected currentAccount: Account | null = null;
     account$: Observable<Account | null>;
     nextPayday$: Observable<Date | null>;
@@ -33,15 +33,17 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
     showConfettiText = false;
     showTreasureButton = false;
 
+    private readonly PAYDAY_WEEKDAY_UNKNOWN: TranslationKey = 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN';
+    private readonly PAYDAY_COUNTER_UNKNOWN: TranslationKey = 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
+    private readonly CONFETTI_TEXT: TranslationKey = 'OVERVIEW.CONFETTI_TEXT';
+
     constructor(
         private readonly accountService: AccountService,
-        private readonly datePipe: DatePipe,
         private readonly translate: TranslateService,
         private readonly cd: ChangeDetectorRef,
         private readonly confettiService: ConfettiService,
     ) {
         super();
-        this.currentLang = this.translate.currentLang;
         this.account$ = this.accountService.currentAccount$;
     }
 
@@ -73,10 +75,10 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
                     nextPayday,
                     formatedNextPayday: nextPayday
                         ? this.getFormatedNextPayday(nextPayday)
-                        : 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN',
+                        : this.PAYDAY_WEEKDAY_UNKNOWN,
                     daysUntilNextPayday: nextPayday
                         ? this.getDaysUntilNextPayday(nextPayday)
-                        : 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN',
+                        : this.PAYDAY_COUNTER_UNKNOWN,
                 };
             }),
         );
@@ -97,7 +99,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getFormatedNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'OVERVIEW.PAYDAY_WEEKDAY_UNKNOWN';
+            return this.PAYDAY_WEEKDAY_UNKNOWN;
         }
         const currentLanguage = this.translate.currentLang;
         const datePipe = new DatePipe(currentLanguage);
@@ -109,14 +111,14 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
 
     getDaysUntilNextPayday(nextPayday: Date): string {
         if (!nextPayday) {
-            return 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
+            return this.PAYDAY_COUNTER_UNKNOWN;
         }
         try {
             const dayDifference = this.calculateDaysUntilNextPayday(nextPayday);
             return `${dayDifference}`;
         } catch (error) {
             this.log('Error calculating days until next payday:', error);
-            return 'OVERVIEW.PAYDAY_COUNTER_UNKNOWN';
+            return this.PAYDAY_COUNTER_UNKNOWN;
         }
     }
 
@@ -172,7 +174,7 @@ export class BalanceOverviewComponent extends Loggable implements OnInit {
         });
     }
 
-    get ConfettiText(): string {
-        return 'OVERVIEW.CONFETTI_TEXT';
+    get ConfettiText(): TranslationKey {
+        return this.CONFETTI_TEXT;
     }
 }
