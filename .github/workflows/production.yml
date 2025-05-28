@@ -11,12 +11,23 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
+        php-version: [8.1]
 
     steps:
       - name: 🚚 Get Latest Code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      ## —— PHP & Composer ————————————————————————————————————————————————
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+
+      - name: 🛠 Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
       ## —— Node ————————————————————————————————————————————————
       - name: 🛠 Install Dependencies
@@ -28,33 +39,16 @@ jobs:
       - name: Remove not required files
         run: |
           rm -rf node_modules
+          rm -rf .git
 
       ## —— Deployment ————————————————————————————————————————————————
-      - name: 🚀 Upload files via SCP
-        uses: appleboy/scp-action@v0.1.7
+      - name: 🚀 Upload files via SFTP
+        uses: wangyucode/sftp-upload-action@v2.0.2
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
-          source: './*'
-          target: ${{ secrets.DEPLOYMENT_PATH }}
-
-  clear-cache:
-    name: 🧹 Clear Cache
-    needs: deploy
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: SSH and Clear Symfony Cache
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          port: 22
-          script: |
-            cd ${{ secrets.DEPLOYMENT_PATH }}
-            php81 `which composer` install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-            php81 `which composer` cache
+          localDir: '.'
+          remoteDir: ${{ secrets.DEPLOYMENT_PATH }}
+          exclude: '.git*,.env,.env.*,node_modules,tests'
