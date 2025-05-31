@@ -47,6 +47,7 @@
           "configurations": {
             "production": {
               "namedChunks": true,
+              "sourceMap": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -78,6 +79,20 @@
               "namedChunks": true,
               "outputPath": {
                 "base": "public/build",
+                "browser": ""
+              }
+            },
+            "prod-inject": {
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": false
+              },
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "outputPath": {
+                "base": "public/build/money.paneon.de/build",
                 "browser": ""
               }
             },
@@ -114,6 +129,9 @@
             },
             "development": {
               "buildTarget": "money-sprouts:build:development"
+            },
+            "prod-inject": {
+              "buildTarget": "money-sprouts:build:prod-inject"
             },
             "proxy": {
               "buildTarget": "money-sprouts:build:proxy"
