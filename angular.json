@@ -23,10 +23,7 @@
               "browser": ""
             },
             "index": "assets/client/index.html",
-            "polyfills": [
-              "assets/client/polyfills.ts",
-              "@angular/localize/init"
-            ],
+            "polyfills": ["node_modules/zone.js/bundles/zone.umd.min.js", "@angular/localize/init"],
             "tsConfig": "tsconfig.json",
             "assets": [
               {
@@ -35,13 +32,8 @@
                 "output": "/translations"
               }
             ],
-            "styles": [
-              "assets/client/app/styles/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
-            ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
+            "styles": ["assets/client/app/styles/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
             "browser": "assets/client/main.ts"
           },
           "configurations": {
@@ -142,13 +134,13 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "assets/client/**/*.ts",
-              "assets/client/**/*.html"
-            ]
+            "lintFilePatterns": ["assets/client/**/*.ts", "assets/client/**/*.html"]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "2f0c127e-8187-4b23-bbff-0ab0e083f187"
   }
 }
