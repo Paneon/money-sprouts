@@ -50,5 +50,6 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           localDir: '.'
+          forceUpload: true
           remoteDir: ${{ secrets.DEPLOYMENT_PATH }}
           exclude: '.git*,.env,.env.*,node_modules/,tests/,var/'
