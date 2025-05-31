@@ -1,0 +1,44 @@
+name: Deploy Frontend (Prod) 🚀
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: 🚚 Get Latest Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      ## —— Node ————————————————————————————————————————————————
+      - name: 🛠 Install Dependencies
+        run: npm install
+
+      - name: 🛠 Build Webpack Encore
+        run: npm run build:prod
+
+      - name: Remove not required files
+        run: |
+          rm -rf node_modules
+          rm -rf .git
+
+      ## —— Deployment ————————————————————————————————————————————————
+      - name: 🚀 Upload files via SFTP
+        uses: wangyucode/sftp-upload-action@v2.0.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          localDir: './public/build/'
+          forceUpload: true
+          remoteDir: ${{ secrets.DEPLOYMENT_PATH }}public/build/
+          exclude: '.git*,.env,.env.*,node_modules/,tests/,var/'
