@@ -51,4 +51,4 @@ jobs:
           port: 22
           localDir: '.'
           remoteDir: ${{ secrets.DEPLOYMENT_PATH }}
-          exclude: '.git*,.env,.env.*,node_modules,tests'
+          exclude: '.git*,.env,.env.*,node_modules/,tests/,var/'
