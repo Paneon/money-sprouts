@@ -49,4 +49,4 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           source: './public/build/*'
-          target: ${{ secrets.DEPLOYMENT_PATH }}public/build/
+          target: ${{ secrets.DEPLOYMENT_PATH }}
