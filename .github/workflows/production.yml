@@ -27,7 +27,7 @@ jobs:
           tools: composer:v2
 
       - name: 🛠 Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+        run: composer install --optimize-autoloader --no-interaction --no-progress --no-scripts --prefer-dist
 
       ## —— Node ————————————————————————————————————————————————
       - name: 🛠 Install Dependencies
