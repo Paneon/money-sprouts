@@ -6,6 +6,7 @@ use Monolog\LogRecord;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sentry\Event;
 use Sentry\EventHint;
+use Symfony\Component\HttpFoundation\Request;
 
 class ErrorFilterProcessor
 {
@@ -44,28 +45,37 @@ class ErrorFilterProcessor
 
     private function shouldProcessRecord(LogRecord $record): bool
     {
-        $context = $record->context;
-        $exception = $context['exception'] ?? null;
-
-        // If there's no exception, process the record normally
-        if (!$exception) {
+        $exception = $this->getExceptionFromRecord($record);
+        if (!$exception instanceof NotFoundHttpException) {
             return true;
         }
 
-        // Check if it's a NotFoundHttpException
-        if ($exception instanceof NotFoundHttpException) {
-            $request = $exception->getRequest();
-            if ($request) {
-                $path = $request->getPathInfo();
-                // Check if the path matches any of our ignored paths
-                foreach ($this->ignoredPaths as $ignoredPath) {
-                    if (str_contains($path, $ignoredPath)) {
-                        return false;
-                    }
-                }
-            }
+        return !$this->isIgnoredPath($exception->getRequest());
+    }
+
+    private function getExceptionFromRecord(LogRecord $record): ?NotFoundHttpException
+    {
+        $exception = $record->context['exception'] ?? null;
+        return $exception instanceof NotFoundHttpException ? $exception : null;
+    }
+
+    private function isIgnoredPath(?Request $request): bool
+    {
+        if (!$request) {
+            return false;
         }
 
-        return true;
+        $path = $request->getPathInfo();
+        return $this->pathMatchesIgnoredPaths($path);
+    }
+
+    private function pathMatchesIgnoredPaths(string $path): bool
+    {
+        foreach ($this->ignoredPaths as $ignoredPath) {
+            if (str_contains($path, $ignoredPath)) {
+                return true;
+            }
+        }
+        return false;
     }
 } 
