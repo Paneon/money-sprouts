@@ -65,7 +65,7 @@
     "@types/node": "~18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
-    "cypress": "^12.17.3",
+    "cypress": "^14.5.2",
     "dotenv": "^16.5.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "8.1.0",
