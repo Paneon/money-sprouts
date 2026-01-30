@@ -63,12 +63,11 @@ class TransactionPendingCrudController extends AbstractCrudController
     }
 
     public function createIndexQueryBuilder(
-        SearchDto        $searchDto,
-        EntityDto        $entityDto,
-        FieldCollection  $fields,
-        FilterCollection $filters
-    ): QueryBuilder
-    {
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters,
+    ): QueryBuilder {
         return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters)
             ->andWhere('entity.applied = :applied')
             ->setParameter('applied', false);

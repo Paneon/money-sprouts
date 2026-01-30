@@ -32,10 +32,10 @@ class AppFixtures extends Fixture
         $this->loadAvatars();
         $this->loadCategories();
 
-        if ($_ENV['APP_ENV'] !== 'prod') {
+        if ('prod' !== $_ENV['APP_ENV']) {
             $this->loadUsers();
         }
-        
+
         $this->loadAdmin($manager);
     }
 
@@ -67,7 +67,6 @@ class AppFixtures extends Fixture
 
     /**
      * @param Proxy<Avatar>|Avatar $avatar
-     * @return void
      */
     public function generateAccountWithAvatar(Proxy|Avatar $avatar): void
     {

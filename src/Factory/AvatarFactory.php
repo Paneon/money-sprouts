@@ -59,7 +59,7 @@ final class AvatarFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this// ->afterInstantiate(function(Avatar $avatar): void {})
-            ;
+        ;
     }
 
     protected static function getClass(): string

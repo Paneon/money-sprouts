@@ -89,7 +89,7 @@
     "php:tests": [
       "@php bin/phpunit"
     ],
-    "php:cs-fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src",
+    "php:cs-fix": "vendor/bin/php-cs-fixer fix src",
     "php:lint": "@php vendor/bin/phpcs --standard=phpcs.xml --colors -ps src",
     "php:lint:fix": "@php vendor/bin/phpcbf --standard=phpcs.xml src",
     "typescript": [
@@ -127,6 +127,7 @@
   "require-dev": {
     "dama/doctrine-test-bundle": "^7.2",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
+    "friendsofphp/php-cs-fixer": "^3.93",
     "justinrainbow/json-schema": "^5.2",
     "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "^9.5",

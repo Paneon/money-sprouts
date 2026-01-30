@@ -19,27 +19,27 @@ class AssetPathExtractor
         preg_match_all('/<script src="(.+?)" type="module"><\/script>/', $content, $matches);
         foreach ($matches[1] as $path) {
             $baseName = $this->extractBaseName($path, 'js');
-            $this->javascriptFiles[$baseName] = $buildDir . $path;
+            $this->javascriptFiles[$baseName] = $buildDir.$path;
         }
 
         preg_match_all('/<link rel="stylesheet" href="(.+?)"(\s\/)?>/', $content, $matches);
         foreach ($matches[1] as $path) {
             $baseName = $this->extractBaseName($path, 'css');
-            $this->cssFiles[$baseName] = $buildDir . $path;
+            $this->cssFiles[$baseName] = $buildDir.$path;
         }
     }
 
     /**
-     * Returns the base name without the hash which is used for production builds
+     * Returns the base name without the hash which is used for production builds.
      */
     private function extractBaseName(string $path, string $suffix): string
     {
         // Assuming file names are in the format 'name.hash.js'
-        if (preg_match('/(?<basename>[^"]*?)(?<hash>\.[a-f0-9]*)?\.' . $suffix . '/', $path, $matches)) {
+        if (preg_match('/(?<basename>[^"]*?)(?<hash>\.[a-f0-9]*)?\.'.$suffix.'/', $path, $matches)) {
             return $matches[1];
         }
 
-        return basename($path, '.' . $suffix); // Fallback for non-hashed file names
+        return basename($path, '.'.$suffix); // Fallback for non-hashed file names
     }
 
     public function getScriptPath(string $name): ?string

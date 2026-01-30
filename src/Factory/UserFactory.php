@@ -50,7 +50,7 @@ final class UserFactory extends ModelFactory
     {
         return $this->addState([
             'roles' => [UserRole::ADMIN],
-            'password' => $password
+            'password' => $password,
         ]);
     }
 

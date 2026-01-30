@@ -94,14 +94,10 @@ jobs:
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       ## —— Coding standards ✨ ————————————————————————————————————————————————
-      - name: Install Dependencies (CS)
-        working-directory: ./tools/php-cs-fixer/
-        run: |
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Coding standards checks
         run: |
-          tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
+          composer run php:cs-fix
           composer run php:lint
         if: matrix.php-versions == '8.3'
 

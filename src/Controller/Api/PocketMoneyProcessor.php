@@ -6,7 +6,6 @@ namespace App\Controller\Api;
 
 use App\Entity\Account;
 use App\Factory\EarningFactory;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,23 +17,23 @@ class PocketMoneyProcessor extends AbstractController
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-    )
-    {
+    ) {
     }
 
     public function __invoke(?Account $account, EntityManagerInterface $entityManager): Account
     {
-        $this->logger->debug(PocketMoneyProcessor::class . '::__invoke', [$account]);
+        $this->logger->debug(PocketMoneyProcessor::class.'::__invoke', [$account]);
         if (!$account) {
             $this->json(null, Response::HTTP_NOT_FOUND);
         }
 
-        if ($account->getNextPayday() === null) {
+        if (null === $account->getNextPayday()) {
             $this->logger->warning('Please ask Guardian to enter a first payday to this account.');
+
             return $account;
         }
 
-        $now = new DateTime();
+        $now = new \DateTime();
 
         while ($now >= $account->getNextPayday()) {
             // Update balance and nextPayday

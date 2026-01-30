@@ -27,11 +27,12 @@ class UserEntityListener
     {
         $entity = $args->getObject();
 
-        if (!($entity instanceof User)) {
+        if (!$entity instanceof User) {
             $this->logger->debug('UserEntityListener->prePersist skipped.');
+
             return;
         }
-        $this->logger->debug('UserEntityListener->prePersist for user: ' . $entity->getName());
+        $this->logger->debug('UserEntityListener->prePersist for user: '.$entity->getName());
 
         $entity->setPassword($this->userPasswordHasher->hashPassword($entity, $entity->getPassword()));
     }
@@ -40,12 +41,13 @@ class UserEntityListener
     {
         $entity = $args->getObject();
 
-        if (!($entity instanceof User) || !($args->hasChangedField('password'))) {
+        if (!($entity instanceof User) || !$args->hasChangedField('password')) {
             $this->logger->debug('UserEntityListener->preUpdate skipped.');
+
             return;
         }
-        
-        $this->logger->debug('UserEntityListener->preUpdate for user: ' . $entity->getName());
+
+        $this->logger->debug('UserEntityListener->preUpdate for user: '.$entity->getName());
 
         $entity->setPassword($this->userPasswordHasher->hashPassword($entity, $entity->getPassword()));
     }

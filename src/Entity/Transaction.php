@@ -16,7 +16,6 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Enum\TransactionType;
 use App\Repository\TransactionRepository;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -46,14 +45,14 @@ class Transaction
     private ?string $title = null;
 
     #[ORM\Column]
-    #[ApiProperty(description: "The value of the transaction in cents.")]
+    #[ApiProperty(description: 'The value of the transaction in cents.')]
     private ?int $value = null;
 
     #[ORM\Column]
-    #[ApiProperty(description: "True if the transaction has been factored into the balance of the user.")]
+    #[ApiProperty(description: 'True if the transaction has been factored into the balance of the user.')]
     private bool $applied = false;
 
-    private ?DateTime $appliedAt = null;
+    private ?\DateTime $appliedAt = null;
 
     #[ORM\ManyToOne]
     private ?Category $category = null;
@@ -61,8 +60,8 @@ class Transaction
     #[ORM\Column]
     private ?bool $pocketMoney = false;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private ?DateTime $effectiveOn = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $effectiveOn = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -90,14 +89,13 @@ class Transaction
         return $this->value < 0 ? TransactionType::EXPENSE : TransactionType::EARNING;
     }
 
-    #[SerializedName("isExpense")]
+    #[SerializedName('isExpense')]
     public function isExpense(): bool
     {
         return $this->value < 0;
     }
 
-
-    #[SerializedName("isEarning")]
+    #[SerializedName('isEarning')]
     public function isEarning(): bool
     {
         return $this->value > 0;
@@ -125,7 +123,7 @@ class Transaction
         $this->applied = $applied;
 
         if ($this->applied) {
-            $this->appliedAt = new DateTime();
+            $this->appliedAt = new \DateTime();
         } else {
             $this->appliedAt = null;
         }
@@ -145,12 +143,12 @@ class Transaction
         return $this;
     }
 
-    public function getAppliedAt(): ?DateTime
+    public function getAppliedAt(): ?\DateTime
     {
         return $this->appliedAt;
     }
 
-    #[SerializedName("isPocketMoney")]
+    #[SerializedName('isPocketMoney')]
     public function isPocketMoney(): ?bool
     {
         return $this->pocketMoney;
@@ -163,12 +161,12 @@ class Transaction
         return $this;
     }
 
-    public function getEffectiveOn(): ?DateTime
+    public function getEffectiveOn(): ?\DateTime
     {
         return $this->effectiveOn;
     }
 
-    public function setEffectiveOn(?DateTime $effectiveOn): static
+    public function setEffectiveOn(?\DateTime $effectiveOn): static
     {
         $this->effectiveOn = $effectiveOn;
 
