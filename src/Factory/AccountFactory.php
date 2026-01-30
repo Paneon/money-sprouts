@@ -6,7 +6,6 @@ namespace App\Factory;
 
 use App\Entity\Account;
 use App\Repository\AccountRepository;
-use DateTime;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -76,14 +75,14 @@ final class AccountFactory extends ModelFactory
     public function nextPaydayYesterday(): self
     {
         return $this->addState([
-            'nextPayday' => new DateTime('-1 day'),
+            'nextPayday' => new \DateTime('-1 day'),
         ]);
     }
 
     public function nextPaydayTwoWeeksAgo(): self
     {
         return $this->addState([
-            'nextPayday' => new DateTime('-12 days'),
+            'nextPayday' => new \DateTime('-12 days'),
         ]);
     }
 
@@ -93,7 +92,7 @@ final class AccountFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this// ->afterInstantiate(function(Account $account): void {})
-            ;
+        ;
     }
 
     protected static function getClass(): string

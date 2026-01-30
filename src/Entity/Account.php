@@ -12,8 +12,6 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Api\PocketMoneyProcessor;
 use App\Repository\AccountRepository;
-use DateTime;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -65,16 +63,14 @@ class Account
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Groups(['account'])]
-    private ?DateTimeImmutable $firstPayday = null;
+    private ?\DateTimeImmutable $firstPayday = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Groups(['account'])]
-    private ?DateTime $nextPayday = null;
-
+    private ?\DateTime $nextPayday = null;
 
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Transaction::class, orphanRemoval: true)]
     private Collection $transactions;
-
 
     public function __construct()
     {
@@ -110,24 +106,24 @@ class Account
         return $this;
     }
 
-    public function getFirstPayday(): ?DateTimeImmutable
+    public function getFirstPayday(): ?\DateTimeImmutable
     {
         return $this->firstPayday;
     }
 
-    public function setFirstPayday(?DateTimeImmutable $firstPayday): static
+    public function setFirstPayday(?\DateTimeImmutable $firstPayday): static
     {
         $this->firstPayday = $firstPayday;
 
         return $this;
     }
 
-    public function getNextPayday(): ?DateTime
+    public function getNextPayday(): ?\DateTime
     {
         return $this->nextPayday;
     }
 
-    public function setNextPayday(?DateTime $nextPayday): static
+    public function setNextPayday(?\DateTime $nextPayday): static
     {
         $this->nextPayday = $nextPayday;
 

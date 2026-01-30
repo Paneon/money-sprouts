@@ -33,7 +33,7 @@ final class ExpenseFactory extends ModelFactory
         return [
             'applied' => self::faker()->boolean(),
             'title' => self::faker()->randomElement([
-                'Book', 'Comic', 'Pokemon animal', 'Sweets', 'Sticker', 'Toy', 'Toy Car'
+                'Book', 'Comic', 'Pokemon animal', 'Sweets', 'Sticker', 'Toy', 'Toy Car',
             ]),
             'account' => AccountFactory::random(),
             'category' => CategoryFactory::find(['name' => 'Expense']),
@@ -47,6 +47,6 @@ final class ExpenseFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this// ->afterInstantiate(function(Transaction $transaction): void {})
-            ;
+        ;
     }
 }

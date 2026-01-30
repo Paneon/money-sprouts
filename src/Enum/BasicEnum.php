@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-use ReflectionClass;
-use ReflectionException;
-
 abstract class BasicEnum
 {
     /**
@@ -18,7 +15,7 @@ abstract class BasicEnum
     {
         try {
             $constants = self::getConstants();
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             return false;
         }
 
@@ -27,15 +24,15 @@ abstract class BasicEnum
 
     /**
      * @return string[]|int[]
-     * @throws ReflectionException
      *
+     * @throws \ReflectionException
      */
     public static function getConstants(): array
     {
         $calledClass = static::class;
 
         if (!array_key_exists($calledClass, self::$constCacheArray)) {
-            $reflect = new ReflectionClass($calledClass);
+            $reflect = new \ReflectionClass($calledClass);
             self::$constCacheArray[$calledClass] = $reflect->getConstants();
         }
 
@@ -46,7 +43,7 @@ abstract class BasicEnum
     {
         try {
             $constants = self::getConstants();
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             return false;
         }
 
@@ -65,7 +62,7 @@ abstract class BasicEnum
             $values = array_values(self::getConstants());
 
             return in_array($value, $values, $strict = true);
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             return false;
         }
     }

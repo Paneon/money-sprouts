@@ -59,7 +59,7 @@ final class CategoryFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this// ->afterInstantiate(function(Category $category): void {})
-            ;
+        ;
     }
 
     protected static function getClass(): string

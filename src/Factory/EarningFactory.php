@@ -6,7 +6,6 @@ namespace App\Factory;
 
 use App\Entity\Account;
 use App\Entity\Transaction;
-use DateTime;
 use Zenstruck\Foundry\ModelFactory;
 
 /**
@@ -27,7 +26,7 @@ final class EarningFactory extends ModelFactory
         return Transaction::class;
     }
 
-    public static function createPocketMoney(Account $account, ?DateTime $effectiveOn = null): Transaction
+    public static function createPocketMoney(Account $account, ?\DateTime $effectiveOn = null): Transaction
     {
         $pocketMoney = new Transaction();
         $pocketMoney
@@ -37,10 +36,11 @@ final class EarningFactory extends ModelFactory
             ->setTitle('Pocket Money')
             ->setApplied(true)
             ->setValue($account->getAllowance());
+
         return $pocketMoney;
     }
 
-    public function pocketMoney(Account $account, ?DateTime $effectiveOn): self
+    public function pocketMoney(Account $account, ?\DateTime $effectiveOn): self
     {
         return $this->addState([
             'title' => 'Pocket Money',
@@ -75,6 +75,6 @@ final class EarningFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this// ->afterInstantiate(function(Transaction $transaction): void {})
-            ;
+        ;
     }
 }
