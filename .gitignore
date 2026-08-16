@@ -23,6 +23,7 @@ tmp
 node_modules
 
 # IDEs and editors
+/.claude/
 /.idea
 .project
 .classpath

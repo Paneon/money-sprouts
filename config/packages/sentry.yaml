@@ -6,6 +6,9 @@ when@prod:
         dsn: '%env(SENTRY_DSN)%'
         options:
           traces_sample_rate: 1.0
+          # Discards events from HTTP requests without an authenticated user (scanner 404s).
+          # The value is a service id: SentryExtension resolves it via new Reference().
+          before_send: 'App\Sentry\AuthenticatedUserEventFilter'
         tracing:
           enabled: true
           dbal: # DB queries
@@ -15,10 +18,13 @@ when@prod:
           twig: # templating engine
             enabled: true
 
-#        If you are using Monolog, you also need this additional configuration to log the errors correctly:
-#        https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
-#        register_error_listener: false
-#        register_error_handler: false
+        # The Monolog handler below already reports every exception (Symfony's ErrorListener
+        # logs them at level ERROR). Without this line Sentry's own ErrorListener reports the
+        # same error a second time - double the quota for no added value.
+        # https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
+        # register_error_handler stays enabled on purpose: it catches uncaught fatals outside
+        # the kernel, which Monolog never gets to see.
+        register_error_listener: false
 
     monolog:
         handlers:
