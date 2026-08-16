@@ -6,6 +6,9 @@ when@prod:
         dsn: '%env(SENTRY_DSN)%'
         options:
           traces_sample_rate: 1.0
+          # Verwirft Events aus HTTP-Requests ohne authentifizierten User (Scanner-404er).
+          # Der Wert ist eine Service-ID: SentryExtension loest ihn per new Reference() auf.
+          before_send: 'App\Sentry\AuthenticatedUserEventFilter'
         tracing:
           enabled: true
           dbal: # DB queries
