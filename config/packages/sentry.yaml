@@ -18,10 +18,13 @@ when@prod:
           twig: # templating engine
             enabled: true
 
-#        If you are using Monolog, you also need this additional configuration to log the errors correctly:
-#        https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
-#        register_error_listener: false
-#        register_error_handler: false
+        # Der Monolog-Handler unten meldet bereits jede Exception (Symfonys ErrorListener
+        # loggt sie auf Level ERROR). Ohne diese Zeile meldet Sentrys eigener ErrorListener
+        # denselben Fehler ein zweites Mal - doppelte Quota fuer null Mehrwert.
+        # https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
+        # register_error_handler bleibt bewusst aktiv: es faengt uncaught Fatals ausserhalb
+        # des Kernels ab, die Monolog nie zu sehen bekommt.
+        register_error_listener: false
 
     monolog:
         handlers:
