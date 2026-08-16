@@ -6,8 +6,8 @@ when@prod:
         dsn: '%env(SENTRY_DSN)%'
         options:
           traces_sample_rate: 1.0
-          # Verwirft Events aus HTTP-Requests ohne authentifizierten User (Scanner-404er).
-          # Der Wert ist eine Service-ID: SentryExtension loest ihn per new Reference() auf.
+          # Discards events from HTTP requests without an authenticated user (scanner 404s).
+          # The value is a service id: SentryExtension resolves it via new Reference().
           before_send: 'App\Sentry\AuthenticatedUserEventFilter'
         tracing:
           enabled: true
@@ -18,12 +18,12 @@ when@prod:
           twig: # templating engine
             enabled: true
 
-        # Der Monolog-Handler unten meldet bereits jede Exception (Symfonys ErrorListener
-        # loggt sie auf Level ERROR). Ohne diese Zeile meldet Sentrys eigener ErrorListener
-        # denselben Fehler ein zweites Mal - doppelte Quota fuer null Mehrwert.
+        # The Monolog handler below already reports every exception (Symfony's ErrorListener
+        # logs them at level ERROR). Without this line Sentry's own ErrorListener reports the
+        # same error a second time - double the quota for no added value.
         # https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
-        # register_error_handler bleibt bewusst aktiv: es faengt uncaught Fatals ausserhalb
-        # des Kernels ab, die Monolog nie zu sehen bekommt.
+        # register_error_handler stays enabled on purpose: it catches uncaught fatals outside
+        # the kernel, which Monolog never gets to see.
         register_error_listener: false
 
     monolog:

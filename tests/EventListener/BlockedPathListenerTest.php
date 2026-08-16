@@ -24,7 +24,7 @@ class BlockedPathListenerTest extends TestCase
         $response = $event->getResponse();
         self::assertInstanceOf(Response::class, $response);
         self::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        // RequestEvent::setResponse() stoppt die Propagation -> Router und Firewall laufen nicht mehr.
+        // RequestEvent::setResponse() stops propagation -> router and firewall no longer run.
         self::assertTrue($event->isPropagationStopped());
     }
 
@@ -65,7 +65,7 @@ class BlockedPathListenerTest extends TestCase
         yield 'dashboard' => ['/dashboard'];
         yield 'api resource' => ['/api/accounts/1'];
         yield 'build asset' => ['/build/main.123456.js'];
-        // Belegt, dass das Praefix /administrator die echte /admin-Route nicht mitsperrt.
+        // Proves the /administrator prefix does not also block the real /admin route.
         yield 'admin area' => ['/admin'];
     }
 

@@ -10,14 +10,20 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Beantwortet bekannte Scanner-Pfade direkt mit 404.
+ * Answers known scanner paths with a bare 404.
  *
- * Prioritaet 512 laeuft vor RouterListener (32) und Firewall (8). Dadurch entsteht gar
- * keine NotFoundHttpException, es wird nichts geloggt und Sentry sieht den Request nie.
+ * Priority 512 runs ahead of RouterListener (32) and the firewall (8), so no
+ * NotFoundHttpException is created, nothing is logged, and Sentry never sees the request.
+ * It also runs ahead of Sentry's TracingRequestListener (4), so blocked requests do not
+ * open a performance transaction either.
  *
- * Das Matching ist ein reiner Praefix-Vergleich auf dem kleingeschriebenen pathInfo und
- * damit bewusst grob: /wp-admin-report waere ebenfalls geblockt. Vor dem Aufnehmen eines
- * neuen Praefix daher immer `bin/console debug:router` dagegen pruefen.
+ * Running this early also means it precedes ValidateRequestListener (256): a request with an
+ * inconsistent Host header hitting a blocked path now gets a 404 instead of a 400. Harmless
+ * here, since getPathInfo() does not depend on the Host header.
+ *
+ * Matching is a plain prefix comparison on the lowercased pathInfo and therefore deliberately
+ * coarse: /wp-admin-report would be blocked too. Always check a new prefix against
+ * `bin/console debug:router` before adding it.
  */
 #[AsEventListener(event: KernelEvents::REQUEST, priority: 512)]
 final class BlockedPathListener

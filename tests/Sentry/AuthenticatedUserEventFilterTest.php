@@ -34,7 +34,7 @@ class AuthenticatedUserEventFilterTest extends TestCase
 
     public function testKeepsEventOutsideHttpContext(): void
     {
-        // Console-Command oder Messenger-Worker: kein Request, kein Token - muss trotzdem melden.
+        // Console command or messenger worker: no request, no token - must still report.
         $event = Event::createEvent();
         $filter = $this->createFilter(null, null);
 
