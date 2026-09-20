@@ -36,8 +36,9 @@ jobs:
           tools: composer:v2
 
       - name: 🧙 Composer install (prod)
+        # No --no-dev: FixturesBundle/Foundry are enabled for all envs and EarningFactory is used at runtime.
         # --no-scripts: auto-scripts would run cache:clear and bake runner paths into var/cache.
-        run: composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader --classmap-authoritative --no-scripts
+        run: composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader --classmap-authoritative --no-scripts
 
       - name: 📦 Install bundle assets (public/bundles)
         env:
