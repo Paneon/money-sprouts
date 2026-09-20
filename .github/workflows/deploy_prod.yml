@@ -1,0 +1,111 @@
+name: Deploy Prod 🚀
+
+# Full release deploy: backend (vendor/, config, src) + frontend build.
+# The hosting has no SSH/composer access, so vendor/ MUST be built here and uploaded.
+#
+# Server-side prerequisites (once, via Plesk file manager):
+#   - `.env.local` next to `.env` containing at least:
+#       APP_ENV=prod
+#       APP_DEBUG=0
+#     (.env is never uploaded by this workflow; .env.local overrides it.)
+#   - `.env.prod` with DATABASE_URL etc. stays on the server, untouched.
+#   - PHP version in Plesk must match PHP_VERSION below.
+
+on:
+  workflow_dispatch:
+
+env:
+  PHP_VERSION: '8.3'
+  NODE_VERSION: '20.x'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: 🚚 Checkout
+        uses: actions/checkout@v4
+
+      ## —— Backend ————————————————————————————————————————————————
+      - name: 🐘 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, json
+          tools: composer:v2
+
+      - name: 🧙 Composer install (prod)
+        # No --no-dev: FixturesBundle/Foundry are enabled for all envs and EarningFactory is used at runtime.
+        # --no-scripts: auto-scripts would run cache:clear and bake runner paths into var/cache.
+        run: composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader --classmap-authoritative --no-scripts
+
+      - name: 📦 Install bundle assets (public/bundles)
+        env:
+          APP_ENV: prod
+          APP_DEBUG: '0'
+        run: |
+          php bin/console assets:install public --no-interaction
+          rm -rf var/cache var/log
+
+      ## —— Frontend ————————————————————————————————————————————————
+      - name: 🟢 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: 🛠 npm install
+        run: npm ci
+
+      - name: 🛠 Build frontend (prod)
+        run: npm run build:prod
+
+      ## —— Release artifact ————————————————————————————————————————
+      - name: 🧹 Assemble release directory
+        # Everything the app needs at runtime, nothing else. No env files (server keeps its own).
+        run: |
+          mkdir -p ../release/var/cache ../release/var/log
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.claude' \
+            --exclude='.cursor' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='cypress' \
+            --exclude='docker' \
+            --exclude='var' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='assets/client' \
+            ./ ../release/
+          touch ../release/var/cache/.gitkeep ../release/var/log/.gitkeep
+          mv ../release ./release
+          du -sh release
+
+      ## —— Upload ————————————————————————————————————————————————
+      - name: 🚀 Upload release via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          source: './release/*'
+          strip_components: 1
+          target: ${{ secrets.DEPLOYMENT_PATH }}
+
+      - name: 🧨 Reset server cache (var/cache)
+        # rm: true wipes the target dir before upload, so the stale compiled container is gone.
+        # Symfony rebuilds var/cache/prod on the next request.
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          source: './release/var/cache/.gitkeep'
+          strip_components: 3
+          rm: true
+          target: ${{ secrets.DEPLOYMENT_PATH }}/var/cache
