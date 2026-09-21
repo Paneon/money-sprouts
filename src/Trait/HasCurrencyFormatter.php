@@ -8,7 +8,7 @@ trait HasCurrencyFormatter
 {
     public function formatCurrency(string|int $value): string
     {
-        $value = str_replace(',', '', $value);
+        $value = str_replace(',', '', (string) $value);
         $value = str_replace('.', '', $value);
         $value = intval($value) / 100;
         $nf = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
